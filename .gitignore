@@ -1,4 +1,4 @@
 env
 *.pyc
-settings.py
 db.sqlite3
+shirtstart/settings.py
