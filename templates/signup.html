@@ -1,0 +1,24 @@
+<html>
+<head>
+	<title>Shirtstart | SighUp</title>
+</head>
+<body>
+	<h1>Register Shirtstart ID</h1>
+
+	{% if registered %}
+	Thank you for registering!
+	{% else %}
+	Register Here
+
+	<form id="user_form" method="post" action"/register/" enctype="multipart/form-data">
+		{% csrf_token %}
+
+		{{user_form.as_p}}
+		{{profile_form.as_p}}
+
+		<input type="submit" name="submit" value="Register">
+
+	</form>
+	{% endif %}
+</body>
+</html>

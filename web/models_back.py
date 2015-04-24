@@ -1,21 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import User
-from datetime import datetime
 
 # Create your models here.
-class UserProfile (models.Model):
-	user = models.OneToOneField(User)
+class User (models.Model):
 	GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
     )
-	# name_first = models.CharField(max_length=50)
-	# name_last = models.CharField(max_length=50)
+	name_first = models.CharField(max_length=50)
+	name_last = models.CharField(max_length=50)
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-	# email = models.EmailField(max_length=100)
-	# password = models.CharField(max_length=50)
+	email = models.EmailField(max_length=100)
+	password = models.CharField(max_length=50)
 	birthdate = models.DateField(auto_now=False)
-	is_designer = models.BooleanField(default=False)
+	is_designer = models.BooleanField()
 	address_house_no = models.CharField(max_length=10)
 	address_building = models.CharField(max_length=50)
 	address_road = models.CharField(max_length=50)
@@ -24,10 +21,7 @@ class UserProfile (models.Model):
 	address_province = models.CharField(max_length=50)
 	address_country = models.CharField(max_length=20)
 	address_postcode = models.CharField(max_length=10)
-	created_at = models.DateTimeField(auto_now_add=True)
-
-	def __unicode__(self):
-		return self.user.username
+	created_at = models.DateTimeField()
 
 class Shirt (models.Model):
 	name = models.CharField(max_length=50)
