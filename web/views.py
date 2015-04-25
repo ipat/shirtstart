@@ -22,7 +22,7 @@ def index(request):
   return render(request, 'index.html', {
     'css_list': [
       'home.css',
-    ],
+    ], 'shirts' :shirts
   })
 
 def logout(request):
@@ -99,7 +99,7 @@ def login(request):
 def catalog(request):
   if request.method == 'GET':
     # return a view
-    all_shirts = Shirt.objects.all().select_related() 
+    all_shirts = Shirt.objects.all()
     search_word = request.GET.get('search_word')
     if search_word == None:
       search_word = ""
@@ -107,7 +107,7 @@ def catalog(request):
       # return render_to_response('catalog.html', {'all_shirts': all_shirts, 'search': False})
     else:
       words = search_word.split()
-      shirts = Shirt.objects.all().select_related() 
+      shirts = Shirt.objects.all()
       for word in words:
         shirts = shirts.filter(Q(name__icontains=word) | Q(description__icontains=word))
       all_shirts = shirts
@@ -121,9 +121,9 @@ def catalog(request):
 
     # expose filter selected options to the page
     filters = {
-      'shirt_type': request.GET['shirt_type'],
-      'attribute': request.GET['attribute'],
-      'sort': request.GET['sort'],
+      'shirt_type': request.GET.get('shirt_type'),
+      'attribute': request.GET.get('attribute'),
+      'sort': request.GET.get('sort'),
     }
 
 
@@ -151,16 +151,16 @@ def search(request, search_word):
 def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
-    waiting = Waiting.objects.get(shirt_id=shirt_id)
+    # waiting = Waiting.objects.get(shirt_id=shirt_id)
     shirts = Shirt.objects.get(pk=shirt_id)
     
-    d = (waiting.require_date-date.today()).days
-    created = (waiting.require_date-shirts.created_at.date()).days
+    d = (shirts.waiting_id.require_date-date.today()).days
+    created = (shirts.waiting_id.require_date-shirts.created_at.date()).days
     left = created - d
     percent_left = d*100/created
     # waiting.require_date 
     
-    return render_to_response('join.html', {'shirt':shirts,'waiting':waiting,'percent':percent_left,'created':created,'left':left})
+    return render_to_response('join.html', {'shirt':shirts,'waiting':shirts.waiting_id,'percent':percent_left,'created':created,'left':left})
   
   elif request.method == 'POST':
     # do something interesting here !
@@ -168,6 +168,13 @@ def join(request, shirt_id):
     # redirect to another view
     return HttpResponseRedirect(reverse('status'))
 
+def comment(request, comment_shirt_id):
+  if request.method == 'POST':
+    request.POST.get('comment_text')
+    user_id = request.user.id
+    # return render_to_response('index.html')
+
+  return HttpResponseRedirect(reverse('/join/' + comment_shirt_id + '/'))
 
 def buy(request, shirt_id):
   return render_to_response('buy.html', {})
