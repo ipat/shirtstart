@@ -1,0 +1,74 @@
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+{% include "template.search.html" %}
+<form class="form">
+<div class="container boxContent" id="payment">
+	<h1>PAYMENT</h1>
+		<label>Bank owner</label>
+		<select name="bank_owner">
+			<option>Bank 1</option>
+			<option>Bank 2</option>
+		</select>
+		<label>Name on Card </label><input placeholder=""/>
+		<div class="row">
+			<div class="col-md-6">
+				<label>Card number </label><input placeholder="" pattern="[0-9]{13,16}" type="text" maxlength="16" title="Input 16 digit of your credit card number without dash" name="card_number"/>
+			</div>
+			<div class="col-md-5">
+				<label>Expiry month </label><input placeholder="" type="month" maxlength="16" name="expiry_month"/>
+			</div>
+			<div class="col-md-1">
+				<label>CVV </label><input placeholder="" type="number" maxlength="3" />
+			</div>
+		</div>
+		
+		
+
+
+	<h1>ADDRESS</h1>
+	<!-- address_house_no = models.CharField(max_length=10)
+	address_building = models.CharField(max_length=50)
+	address_road = models.CharField(max_length=50)
+	address_subdistrict = models.CharField(max_length=50)
+	address_district = models.CharField(max_length=50)
+	address_province = models.CharField(max_length=50)
+	address_country = models.CharField(max_length=20)
+	address_postcode = models.CharField(max_length=10) -->
+	<div class="row">
+		<div class="col-md-3">
+			<label>House No. </label><input placeholder="" type="text" name="address_house_no"/>
+		</div>
+		<div class="col-md-5">
+			<label>Building</label><input placeholder="" type="text" name="address_building"/>
+		</div>
+		<div class="col-md-4">
+			<label>Road</label><input placeholder="" type="text" name="address_road"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<label>Subdistrict</label><input placeholder="" type="text" name="address_subdistrict"/>
+		</div>
+		<div class="col-md-4">
+			<label>District</label><input placeholder="" type="text" name="address_district"/>
+		</div>
+		<div class="col-md-4">
+			<label>Province</label><input placeholder="" type="text" name="address_province"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<label>Country</label><input placeholder="" type="text" />
+		</div>
+		<div class="col-md-4">
+			<label>Zipcode</label><input placeholder="" type="text" />
+		</div>
+	</div>
+
+
+
+	<input type="submit" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow" />
+</div>
+</form>
+{% include "template.foot.html" %}
