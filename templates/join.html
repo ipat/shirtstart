@@ -75,8 +75,7 @@
 
 		</div>
 	</div>
-		<form id="commentForm" method="POST" action="/comment/{{shirt.id}}/">
-			{% csrf_token %}
+		<form id="commentForm" method="post" action="/comment/{{shirt.id}}/">{% csrf_token %}
 			<textarea placeholder="write your comment here ..." type="text" id="txtComment" name="comment_text"></textarea>
 			<button type="submit" class="btn btnWhite" id="btnSubmit">submit</button>
 		</form>

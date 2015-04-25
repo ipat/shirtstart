@@ -160,7 +160,7 @@ def join(request, shirt_id):
     percent_left = d*100/created
     # waiting.require_date 
     
-    return render_to_response('join.html', {'shirt':shirts,'waiting':shirts.waiting_id,'percent':percent_left,'created':created,'left':left})
+    return render(request, 'join.html', {'shirt':shirts,'waiting':shirts.waiting_id,'percent':percent_left,'created':created,'left':left})
   
   elif request.method == 'POST':
     # do something interesting here !
@@ -172,9 +172,9 @@ def comment(request, comment_shirt_id):
   if request.method == 'POST':
     request.POST.get('comment_text')
     user_id = request.user.id
-    # return render_to_response('index.html')
+    # return render(request, 'contact.html', {} )
 
-  return HttpResponseRedirect(reverse('/join/' + comment_shirt_id + '/'))
+  return HttpResponseRedirect('/join/' + comment_shirt_id + '/')
 
 def buy(request, shirt_id):
   return render_to_response('buy.html', {})
