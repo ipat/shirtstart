@@ -1,53 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-	<link rel="stylesheet" href="{% static 'style/style.css' %}">
-	<script src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<title>Shirtstart - Design your own shirt</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="{% static 'css/hover.css' %}" rel="stylesheet" media="all">
-</head>
-<body>
-	<div id="topbardiv">
-		<div id="branddiv">
-			<img class="logo hidden-xs" src="{% static 'img/logo.png' %}">
-			<img class="logo hidden-sm hidden-xs" src="{% static 'img/slogan.png' %}">
-		</div>
-		<div id="toplinkdiv">
-			<a href="#" id="order" class="btn round">ORDER STATUS</a>
-			<a href="#" id="cart" class="btn round">CART</a>
-			<a href="#" id="loginbtn" class="btn round">LOG IN <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a>
-		</div>
-	</div>
-	<div class="brandbardiv">
-		<div class="container" id="logo_l">
-			<div class="row">
-				<img src="{% static 'img/logo_alt.png' %}">
-			</div>
-		</div>
-		<div class="container" id="searchDiv">
-			<div class="row">
-				<form id="search">
-					<span style="display:table-cell; width:100%">
-						<input type="text" placeholder="search for name, description or designer name" class="round noborder searchinput" style="width:100%;">
-					</span>
-					<span style="display:table-cell;">
-						<button type="submit" class="circle noborder searchbtn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-					</span>
-				</form>
-			</div>												
-		</div>
-		<div class="container" id="btnDesignDiv">
-			<a href="#" class="btn round hvr-float-shadow"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> DESIGN NEW SHIRT</a>
-		</div>
-		
-	</div>
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+{% include "template.search.html" %}
 
-	<div class="container boxContent" id="recommend">
-		<h1>RECOMMEND</h1>
-	</div>
-</body>
-</html>
+<div class="container boxContent" id="recommend">
+	<h1>RECOMMEND</h1>
+</div>
+
+{% include "template.foot.html" %}
