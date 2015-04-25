@@ -102,7 +102,7 @@ def login(request):
 def catalog(request):
   if request.method == 'GET':
     # return a view
-    all_shirts = Shirt.objects.all()
+    all_shirts = Shirt.objects.all().select_related() 
     search_word = request.GET.get('search_word')
     if search_word == None:
       search_word = ""
@@ -110,14 +110,14 @@ def catalog(request):
       # return render_to_response('catalog.html', {'all_shirts': all_shirts, 'search': False})
     else:
       words = search_word.split()
-      shirts = Shirt.objects.all()
+      shirts = Shirt.objects.all().select_related() 
       for word in words:
         shirts = shirts.filter(Q(name__icontains=word) | Q(description__icontains=word))
       all_shirts = shirts
       search = True
       # return HttpResponse(shirts)
       # return render_to_response('catalog.html', {'all_shirts': shirts, 'search': True, 'search_word': search_word})
-
+    print all_shirts[0].waiting_id.require_date
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
       'css_list': [ 'catalog.css' ],
