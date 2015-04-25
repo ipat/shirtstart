@@ -4,7 +4,11 @@
 {% include "template.search.html" %}
 
 <div class="container boxContent" id="recommend">
-	<h1>ALL SHIRTS</h1>
+	{% if search == False %}
+		<h1>ALL SHIRTS</h1>
+	{% else %}
+		<h1>Results of {{search_word}}</h1>
+	{% endif %}
 	{% for shirt in all_shirts %}
 		{{shirt.name}}
 		<br>

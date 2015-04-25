@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^catalog/$', views.catalog, name="catalog"),
-    url(r'^catalog/(?P<search_word>[\w|\W]+)/$', views.search, name="search"),
+    # url(r'^catalog/(?P<search_word>[\w|\W]+)/$', views.search, name="search"),
     url(r'^join/', views.join, name="join"),
     url(r'^buy/', views.buy, name="buy"),
     url(r'^signup/', views.signup, name="signup"),
