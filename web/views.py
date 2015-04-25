@@ -140,8 +140,7 @@ def join(request, shirt_id):
 
 
 def buy(request, shirt_id):
-  shirts = Shirt.objects.get(pk = shirt_id)
-  return render_to_response('buy.html', {'shirt':shirts})
+  return render_to_response('buy.html', {})
 
 def status_waiting(request):
   return HttpResponse('status_waiting')
