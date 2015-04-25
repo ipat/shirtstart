@@ -11,6 +11,7 @@ from django.db import models
 from web.models import *
 from django.db.models import Q
 from django.db.models import Count
+from datetime import date, timedelta
 
 # Create your views here.
 
@@ -146,7 +147,17 @@ def search(request, search_word):
 def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
-    return render_to_response('join.html', {})
+    waiting = Waiting.objects.get(shirt_id=shirt_id)
+    shirts = Shirt.objects.get(pk=shirt_id)
+    
+    d = (waiting.require_date-date.today()).days
+    created = (waiting.require_date-shirts.created_at.date()).days
+    left = created - d
+    percent_left = d*100/created
+    # waiting.require_date 
+    
+    return render_to_response('join.html', {'shirt':shirts,'waiting':waiting,'percent':percent_left,'created':created,'left':left})
+  
   elif request.method == 'POST':
     # do something interesting here !
 
