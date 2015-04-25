@@ -7,7 +7,51 @@
   <div class="container boxContent">
     <div class="row">
       <div class="col-sm-12">
-        <h1>ALL SHIRTS</h1>
+        <h1>
+          <span>ALL SHIRTS</span>
+          <div class="filters">
+            <form id="filter-form" action="./">
+              <select id="shirt-type-filter" class="filter" name="shirt_type" data-header="ประเภทเสื้อ">
+                <option value="waiting">ร่วมกันซื้อ</option>
+                <option value="on_shelf">พร้อมขาย</option>
+                <option value="both">ทั้งคู่</option>
+              </select>
+              <select id="attribute-filter" class="filter" name="attribute" data-header="คุณสมับติ">
+                <option value="name">ชื่อ</option>
+                <option value="likes">จำนวน Likes</option>
+                <option value="comments">จำนวน Comment</option>
+                <option value="price">ราคา</option>
+              </select>
+              <select id="sort-filter" class="filter" name="sort" data-header="เรียงลำดับ">
+                <option value="ZtoA">มากไปน้อย</option>
+                <option value="AtoZ">น้อยไปมาก</option>
+              </select>
+            </form>
+          </div>
+
+          <script type="text/javascript">
+            var filters = {
+              shirt_type: '{{filters.shirt_type}}',
+              attribute: '{{filters.attribute}}',
+              sort: '{{filters.sort}}',
+            };
+
+            console.log('filters', filters);
+
+            $('.filter').selectpicker({
+              style: 'btn-default',
+              size: 4,
+            }).change(function () {
+              $('#filter-form').submit();
+            });
+
+            // set defaults
+            $('#shirt-type-filter').val(filters.shirt_type);
+            $('#attribute-filter').val(filters.attribute);
+            $('#sort-filter').val(filters.sort);
+            $('.filter').selectpicker('render');
+          </script>
+        </h1>
       </div>
     </div>
     <div class="row">
