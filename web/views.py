@@ -11,6 +11,11 @@ from django.db import models
 from web.models import *
 from django.db.models import Q
 from django.db.models import Count
+from django.conf import settings
+
+
+import datetime
+import pprint
 
 # Create your views here.
 
@@ -175,13 +180,37 @@ def cart(request):
 @login_required
 def design(request):
   if request.method == 'GET':
+    context = RequestContext(request)
     return render_to_response('design.html', {
       'css_list': [ 'design.css' ],
       'js_list': ['dropzone.js'],
-    })
+    }, context)
 
   elif request.method == 'POST':
-    return 'aoeu'
+    # file info
+    file = request.FILES['file']
+    name = file.name
+    extension = name.split('.')[-1]
+    # user info
+    user = User.objects.get(username=request.user)
+    # create a new shirt
+    shirt = Shirt.objects.create(
+      name=request.POST['name'],
+      description=request.POST['description'],
+      file_url=extension,
+      shirt_color=0,
+      owner_id=user,
+      is_on_shelf=False,
+      color_num=request.POST['color_num'],
+      created_at=datetime.datetime.now() )
+
+    # writintg the uploaded file
+    newFilePath = settings.SHIRTS + '/' + str(shirt.id) + '.' + extension
+    with open(newFilePath, 'wb+') as destination:
+      for chunk in file.chunks():
+        destination.write(chunk)
+
+    return HttpResponse('success')
 
 @login_required
 def profile(request):

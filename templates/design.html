@@ -1,8 +1,115 @@
 {% load staticfiles %}
 {% include "template.head.html" %}
 {% include "template.nav.html" %}
-{% include "template.search.html" %}
 
-{# code here ! #}
+<form id="dropzone">
+{% csrf_token %}
+
+<div id="design-wrapper">
+  <div class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <div class="actions">
+            <button class="cancel btn btn-default" type="button">
+              <i class="glyphicon glyphicon-remove"></i>
+              ยกเลิก
+            </button>
+            <button class="finish btn btn-primary" data-toggle="modal" data-target="#form-details" type="button">
+              <i class="glyphicon glyphicon-ok"></i>
+              เสร็จแล้ว
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="body">
+    <div class="container">
+      <div class="empty-shirt">
+        <img src="{% static "img/shirt_template.png" %}">
+        <img class="filler">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="form-details" tabindex="-1" role="dialog" aria-labelledby="form-details-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="form-details-label">
+          ช่วยระบุข้อมูลอีกเล็กน้อย ...
+        </h4>
+      </div>
+      <div class="modal-body">
+        <input name="name" type="text" class="form-control" placeholder="Name ...">
+
+        <input name="description" type="text" class="form-control" placeholder="Description ...">
+
+        <input name="color_num" type="text" class="form-control" placeholder="Number of Colors ...">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">กลับไปแก้ไข</button>
+        <button type="submit" class="btn btn-primary">เสร็จแล้ว</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</form>
+
+<script type="text/javascript">
+
+$('#dropzone')
+  .dropzone({
+    url: './',
+    maxFiles: 1,
+    accetpedFiles: 'image/*',
+    thumbnailWidth: '400',
+    thumbnailHeight: null,
+    autoProcessQueue: false,
+    thumbnail: function (file, data) {
+      $('.filler')
+        .fadeOut(350)
+        .queue(function () {
+          $(this).attr('src', data).dequeue();
+        })
+        .fadeIn(350);
+    },
+    init: function () {
+      var self = this;
+
+      this.element.querySelector("button[type=submit]")
+        .addEventListener("click", function(e) {
+          // Make sure that the form isn't actually being sent.
+          e.preventDefault();
+          e.stopPropagation();
+          self.processQueue();
+        });
+
+      this.on('success', function (files, response) {
+        console.log('sending done!');
+        // redirect to profile page
+        window.location.href = '../profile/';
+      });
+    },
+  })
+  .on('dragover', function () {
+    $(this).addClass('hover');
+  })
+  .on('dragleave', function () {
+    $(this).removeClass('hover');
+  })
+  .on('drop', function () {
+    $(this).removeClass('hover');
+    });
+</script>
 
 {% include "template.foot.html" %}

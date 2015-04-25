@@ -1,0 +1,54 @@
+#dropzone.hover .body {
+  box-shadow: inset 0px 0px 220px 0px rgba(0, 0, 0, 0.75); }
+
+#dropzone {
+  position: relative; }
+  #dropzone .dz-preview {
+    display: none; }
+  #dropzone .body {
+    position: relative;
+    box-shadow: inset 0px 0px 150px 0px rgba(0, 0, 0, 0.44);
+    -webkit-transition: box-shadow 0.35s ease; }
+    #dropzone .body .container {
+      padding: 60px 0px; }
+    #dropzone .body .empty-shirt {
+      position: relative;
+      margin: 0px auto;
+      width: 550px; }
+      #dropzone .body .empty-shirt .filler {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -80px;
+        margin-top: -135px;
+        width: 160px;
+        display: none; }
+      #dropzone .body .empty-shirt img {
+        width: 100%; }
+
+#design-wrapper .header {
+  background-color: #272d47;
+  clear: both; }
+  #design-wrapper .header .actions {
+    text-align: right;
+    padding: 45px 0px 20px 0px; }
+    #design-wrapper .header .actions button {
+      margin: 0px 7.5px;
+      border-radius: 2rem;
+      border: 0px;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 0.35px;
+      color: white; }
+      #design-wrapper .header .actions button i {
+        padding-right: 2px; }
+    #design-wrapper .header .actions .finish.btn:hover {
+      background-color: #37d279; }
+    #design-wrapper .header .actions .finish.btn {
+      background-color: #2ecc71;
+      box-shadow: 0px 3px 0px 0px #29b765; }
+    #design-wrapper .header .actions .cancel.btn:hover {
+      background-color: #e9594a; }
+    #design-wrapper .header .actions .cancel.btn {
+      background-color: #e74c3c;
+      box-shadow: 0px 3px 0px 0px #e43725; }

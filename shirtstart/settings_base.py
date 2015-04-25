@@ -27,8 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
+
+SHIRTS = os.path.join(BASE_DIR, "static", "shirts")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
