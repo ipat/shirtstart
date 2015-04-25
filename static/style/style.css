@@ -292,7 +292,7 @@ p {
 .txtComment {
 	padding-left: 10px;
 }
-#user_form input, #user_form select{
+#user_form input, #user_form select,.form input,.form select{
 	line-height: 1.8em;
 	min-height: 1.8em;
 	vertical-align: middle;
@@ -304,7 +304,7 @@ p {
 	width: 100%;
 	margin-bottom: 10px;
 }
-#user_form label{
+#user_form label.form label{
 	color: #ababab;
 	font-weight: normal;
 	font-family: GillSans;
@@ -314,7 +314,7 @@ p {
 	/*min-height: 52px;*/
 }
 
-#user_form ul {
+#user_form ul ,.form ul{
 	list-style: none;
 	font-style: oblique;
 	color: orange;
@@ -336,7 +336,7 @@ p {
 .genderLabel {
 	margin-right: 20px;
 }
-#user_form {
+#user_form ,.form{
 	margin-left: 100px;
 	margin-right: 100px;
 }
