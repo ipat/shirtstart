@@ -103,7 +103,10 @@ def catalog(request):
     })
 
 def search(request, search_word):
-  return HttpResponse(search_word)
+  words = search_word.split()
+  # for word in words:
+    
+  return HttpResponse(words[0])
 
 @login_required
 def join(request):
