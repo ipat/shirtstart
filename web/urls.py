@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^signup/', views.signup, name="signup"),
     url(r'^logout/', views.logout, name="logout"),
     url(r'^login/', views.login, name="login"),
+    url(r'^comment/(?P<comment_shirt_id>[\w|\W]+)/$', views.comment, name="comment"),
     # url(r'^register/$', views.register, name="re")
     # status things
     url(r'^status/waiting/', views.status_waiting, name="status_waiting"),

@@ -62,9 +62,19 @@
             </div>
 
             <div class="action">
-              <button class="btn-primary btn">
-                เข้าชม
-              </button>
+              {% if shirt.is_on_shelf %}
+                <a href="/buy/{{shirt.id}}">
+                  <button class="btn-primary btn">
+                    เข้าชม
+                  </button>
+                </a>
+              {% else %}
+                <a href="/join/{{shirt.id}}">
+                  <button class="btn-primary btn">
+                    เข้าชม
+                  </button>
+                </a>
+              {% endif %}
             </div>
           </div>
         </div>

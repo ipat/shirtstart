@@ -9,26 +9,26 @@
 			<img src="{% static 'img/shirt.png' %}">
 		</div>
 		<div class="col-md-6 info">
-			<h3>I'M NOT WEIRD. I'M LIMITED EDITION</h3>
-			<p class="italic" id="designer">by Xmenza
+			<h3>{{shirt.name}}</h3>
+			<p class="italic" id="designer">by {{shirt.owned_id.first_name}}
 				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 1
 				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 2
 			</p>
 			<p id="expDate">Timer ended at : </p>
 			<div id="dayLeftDiv">
-				<span id="numberh1">32</span>
+				<span id="numberh1"> {{left}}</span><span id="numberh2">/{{created}}</span>
 				<span>days</span>
 			</div>
 			<div class="progress">
-			  	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+			  	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{percent}}%;">
 			  	</div>
 			</div>
 			<div id="userJoinedDiv">
-				<span id="numberh1">23</span><span id="numberh2">/100</span>
+				<span id="numberh1">{{shirt.current_amount}}</span><span id="numberh2">/{{waiting.require_amount}}</span>
 				<span>people</span>
 			</div>
 			<div class="progress">
-			  	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+			  	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{shirt.people_left}}%;">
 			  	</div>
 			</div>
 			<div class="row textRight centerOnSmall" id="priceView">
@@ -75,8 +75,8 @@
 
 		</div>
 	</div>
-		<form id="commentForm">
-			<textarea placeholder="write your comment here ..." type="text" id="txtComment"></textarea>
+		<form id="commentForm" method="post" action="/comment/{{shirt.id}}/">{% csrf_token %}
+			<textarea placeholder="write your comment here ..." type="text" id="txtComment" name="comment_text"></textarea>
 			<button type="submit" class="btn btnWhite" id="btnSubmit">submit</button>
 		</form>
 		<div class="container" id="commentView">

@@ -13,9 +13,8 @@ from django.db.models import Q
 from django.db.models import Count
 from django.conf import settings
 
-
-import datetime
 import pprint
+from datetime import date, timedelta, datetime
 
 # Create your views here.
 
@@ -26,7 +25,7 @@ def index(request):
   return render(request, 'index.html', {
     'css_list': [
       'home.css',
-    ],
+    ], 'shirts' :shirts
   })
 
 def logout(request):
@@ -122,10 +121,34 @@ def catalog(request):
 
     # expose filter selected options to the page
     filters = {
-      'shirt_type': request.GET['shirt_type'],
-      'attribute': request.GET['attribute'],
-      'sort': request.GET['sort'],
+      'shirt_type': request.GET.get('shirt_type'),
+      'attribute': request.GET.get('attribute'),
+      'sort': request.GET.get('sort'),
     }
+
+    # Filter by type of shirt
+    if filters['shirt_type'] == 'waiting':
+      all_shirts = all_shirts.filter(is_on_shelf=False)
+    elif filters['shirt_type'] == 'on_shelf':
+      all_shirts = all_shirts.filter(is_on_shelf=True)
+
+    # Set order prefix
+    order_prefix = ""
+    if filters['sort'] == 'ZtoA':
+      order_prefix = "-"
+
+    # Set sort by
+    if filters['attribute'] == 'name':
+      all_shirts = all_shirts.order_by(order_prefix + 'name')
+    elif filters['attribute'] == 'likes':
+      all_shirts = all_shirts.annotate(like_count=Count('like')).order_by(order_prefix + 'like_count')
+    elif filters['attribute'] == 'comments':
+      all_shirts = all_shirts.annotate(comments_count=Count('comment')).order_by(order_prefix + 'comments_count')
+    elif filters['attribute'] == 'price':
+      all_shirts = all_shirts.order_by(order_prefix + 'color_num')
+
+    # Add current amount of shirt join
+    all_shirts = all_shirts.annotate(current_amount=Count('join'))
 
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
@@ -151,25 +174,44 @@ def search(request, search_word):
 def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
-    return render_to_response('join.html', {})
+    # waiting = Waiting.objects.get(shirt_id=shirt_id)
+    shirt = Shirt.objects.get(pk=shirt_id)
+    shirt.current_amount = Join.objects.filter(shirt_id=shirt_id).count()
+
+    d = (shirt.waiting_id.require_date-date.today()).days
+    created = (shirt.waiting_id.require_date-shirt.created_at.date()).days
+    left = created - d
+    percent_left = d*100/created
+    shirt.people_left = shirt.current_amount * 100 / shirt.waiting_id.require_amount
+    # waiting.require_date
+
+    return render(request, 'join.html', {'shirt':shirt,'waiting':shirt.waiting_id,'percent':percent_left,'created':created,'left':left})
+
   elif request.method == 'POST':
     # do something interesting here !
 
     # redirect to another view
     return HttpResponseRedirect(reverse('status'))
 
+def comment(request, comment_shirt_id):
+  if request.method == 'POST':
+    request.POST.get('comment_text')
+    user_id = request.user.id
+    # return render(request, 'contact.html', {} )
+
+  return HttpResponseRedirect('/join/' + comment_shirt_id + '/')
 
 def buy(request, shirt_id):
   return render_to_response('buy.html', {})
 
 def status_waiting(request):
-  return HttpResponse('status_waiting')
+  return render_to_response('status_waiting.html', {})
 
 def status_in_progress(request):
-  return HttpResponse('status_in_progress')
+  return render_to_response('status_in-progress.html', {})
 
 def status_purchase_history(request):
-  return HttpResponse('status_purchase_history')
+  return render_to_response('status_purchased.html', {})
 
 def payment(request):
   return render_to_response('payment.html', {})
@@ -202,7 +244,7 @@ def design(request):
       owner_id=user,
       is_on_shelf=False,
       color_num=request.POST['color_num'],
-      created_at=datetime.datetime.now() )
+      created_at=datetime.now() )
 
     # writintg the uploaded file
     newFilePath = settings.SHIRTS + '/' + str(shirt.id) + '.' + extension
