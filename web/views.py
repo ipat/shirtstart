@@ -97,7 +97,10 @@ def catalog(request):
   if request.method == 'GET':
     # return a view
     all_shirts = Shirt.objects.all()
-    return render_to_response('catalog.html', {'all_shirts': all_shirts})
+    return render_to_response('catalog.html', {
+      'all_shirts': all_shirts,
+      'css_list': [ 'catalog.css' ],
+    })
 
 def search(request, search_word):
   return HttpResponse(search_word)

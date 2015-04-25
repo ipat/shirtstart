@@ -1,0 +1,61 @@
+.nl {
+  display: block; }
+
+#catalog-wrapper {
+  margin-top: 45px; }
+  #catalog-wrapper .container {
+    padding: 15px 30px; }
+  #catalog-wrapper .each-shirt-wrapper {
+    margin: 15px 0px; }
+    #catalog-wrapper .each-shirt-wrapper .each-shirt-inner {
+      position: relative;
+      background-color: white;
+      border-radius: 0x;
+      overflow: hidden;
+      padding: 0px;
+      width: 100%;
+      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.18); }
+      #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .flag {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 5px 10px;
+        color: #969696;
+        background-color: #f0f0f0;
+        border-radius: 0px 0px 0px 5px;
+        zoom: 0.9; }
+      #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image {
+        padding: 40px 30px 15px 30px; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image img {
+          width: 100%; }
+      #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .title {
+        font-family: "gillsans";
+        font-size: 1.8rem;
+        text-align: center;
+        line-height: 1.3;
+        font-weight: lighter; }
+      #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .description {
+        padding: 0px 30px;
+        text-align: center;
+        color: #828282; }
+      #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .status {
+        margin-top: 30px;
+        padding: 0px 40px;
+        text-align: center;
+        font-weight: bold; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .people {
+          color: #3498db; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .price {
+          color: black; }
+      #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .action {
+        margin-top: 15px;
+        background-color: #f0f0f0;
+        padding: 10px;
+        text-align: center; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .action button:hover {
+          background-color: #37d279; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .action button {
+          background-color: #2ecc71;
+          border: 0px;
+          border-radius: 6px;
+          box-shadow: 0px 3px 0px 0px #29b765; }

@@ -3,13 +3,73 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div class="container boxContent" id="recommend">
-	<h1>ALL SHIRTS</h1>
-	{% for shirt in all_shirts %}
-		{{shirt.name}}
-		<br>
-	{% endfor %}
+<div id="catalog-wrapper">
+  <div class="container boxContent">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>ALL SHIRTS</h1>
+      </div>
+    </div>
+    <div class="row">
 
+      {% for shirt in shirts %}
+        <div class="each-shirt-wrapper col-sm-3">
+          <div class="each-shirt-inner">
+            <div class="flag">
+              {% if shirt.is_on_shelf %}
+                <span>พร้อมขาย</span>
+              {% else %}
+                <span>กำลังระดมทุน</span>
+              {% endif %}
+            </div>
+
+            <div class="shirt-image">
+              <img src="{% static "img/shirt.png" %}">
+            </div>
+
+            <div class="content">
+              <h4 class="title">
+                <span class="nl">{{shirt.title}}</span>
+              </h4>
+              <p class="description">
+                {{shirt.description}}
+              </p>
+              <div class="status row">
+
+                {% if shirt.is_on_shelf %}
+                  <div class="price col-xs-12">
+                    <i class="glyphicon glyphicon-bitcoin"></i>
+                    <span>{{shirt.price}}</span>
+                  </div>
+                {% else %}
+                  <div class="people col-xs-6">
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span>{{shirt.current_ammount}}/{{shirt.require_amount}}</span>
+                  </div>
+                  <div class="price col-xs-6">
+                    <i class="glyphicon glyphicon-bitcoin"></i>
+                    <span>{{shirt.price}}</span>
+                  </div>
+                  <div class="calendar col-xs-12">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                    <span>{{shirt.require_date}}</span>
+                  </div>
+                {% endif %}
+
+              </div>
+            </div>
+
+            <div class="action">
+              <button class="btn-primary btn">
+                เข้าชม
+              </button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+    </div>
 </div>
 
 {% include "template.foot.html" %}
