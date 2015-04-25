@@ -11,21 +11,18 @@ from django.db import models
 from web.models import *
 from django.db.models import Q
 from django.db.models import Count
+from datetime import date, timedelta
 
 # Create your views here.
 
 def index(request):
   shirts = Shirt.objects.annotate(like_count=Count('like'))\
-                        .order_by('-like_count') 
+                        .order_by('-like_count')
 
   return render(request, 'index.html', {
     'css_list': [
-      'css.css',
-      'test.css',
+      'home.css',
     ],
-    'js_list': [
-      'test.js'
-    ]
   })
 
 def logout(request):
@@ -102,7 +99,7 @@ def login(request):
 def catalog(request):
   if request.method == 'GET':
     # return a view
-    all_shirts = Shirt.objects.all()
+    all_shirts = Shirt.objects.all().select_related() 
     search_word = request.GET.get('search_word')
     if search_word == None:
       search_word = ""
@@ -110,7 +107,7 @@ def catalog(request):
       # return render_to_response('catalog.html', {'all_shirts': all_shirts, 'search': False})
     else:
       words = search_word.split()
-      shirts = Shirt.objects.all()
+      shirts = Shirt.objects.all().select_related() 
       for word in words:
         shirts = shirts.filter(Q(name__icontains=word) | Q(description__icontains=word))
       all_shirts = shirts
@@ -118,20 +115,53 @@ def catalog(request):
       # return HttpResponse(shirts)
       # return render_to_response('catalog.html', {'all_shirts': shirts, 'search': True, 'search_word': search_word})
 
+    print all_shirts[0].waiting_id.require_date
+
+
+
+    # expose filter selected options to the page
+    filters = {
+      'shirt_type': request.GET['shirt_type'],
+      'attribute': request.GET['attribute'],
+      'sort': request.GET['sort'],
+    }
+
+
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
-      'css_list': [ 'catalog.css' ],
-      'search': search, 
+      'css_list': [
+        'catalog.css',
+        'bootstrap-select.min.css',
+      ],
+      'js_list': [
+        'bootstrap-select.min.js',
+      ],
+      'search': search,
       'search_word': search_word,
+      'filters': filters,
     })
 
+def search(request, search_word):
+  words = search_word.split()
+  # for word in words:
 
+  return HttpResponse(words[0])
 
 @login_required
 def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
-    return render_to_response('join.html', {})
+    waiting = Waiting.objects.get(shirt_id=shirt_id)
+    shirts = Shirt.objects.get(pk=shirt_id)
+    
+    d = (waiting.require_date-date.today()).days
+    created = (waiting.require_date-shirts.created_at.date()).days
+    left = created - d
+    percent_left = d*100/created
+    # waiting.require_date 
+    
+    return render_to_response('join.html', {'shirt':shirts,'waiting':waiting,'percent':percent_left,'created':created,'left':left})
+  
   elif request.method == 'POST':
     # do something interesting here !
 
@@ -140,8 +170,7 @@ def join(request, shirt_id):
 
 
 def buy(request, shirt_id):
-  shirts = Shirt.objects.get(pk = shirt_id)
-  return render_to_response('buy.html', {'shirt':shirts})
+  return render_to_response('buy.html', {})
 
 def status_waiting(request):
   return render_to_response('status_waiting.html', {})
@@ -160,7 +189,14 @@ def cart(request):
 
 @login_required
 def design(request):
-  return HttpResponse('design')
+  if request.method == 'GET':
+    return render_to_response('design.html', {
+      'css_list': [ 'design.css' ],
+      'js_list': ['dropzone.js'],
+    })
+
+  elif request.method == 'POST':
+    return 'aoeu'
 
 @login_required
 def profile(request):
@@ -172,7 +208,6 @@ def withdraw(request):
 
 def admin(request):
   return HttpResponse('admin')
-
 
 def restricted(request):
   return HttpResponse("Since you're logged in, you can see this text!")

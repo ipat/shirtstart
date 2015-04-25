@@ -29,6 +29,11 @@ class UserProfile (models.Model):
 	def __unicode__(self):
 		return self.user.username
 
+class Waiting (models.Model):
+	# shirt_id = models.OneToOneField(Shirt)
+	require_amount = models.IntegerField()
+	require_date = models.DateField()
+
 class Shirt (models.Model):
 	name = models.CharField(max_length=50)
 	description = models.TextField()
@@ -38,11 +43,7 @@ class Shirt (models.Model):
 	is_on_shelf = models.BooleanField()
 	color_num = models.IntegerField()
 	created_at = models.DateTimeField()
-
-class Waiting (models.Model):
-	shirt_id = models.OneToOneField(Shirt)
-	require_amount = models.IntegerField()
-	require_date = models.DateField()
+	waiting_id = models.ForeignKey(Waiting)
 
 class Comment (models.Model):
 	user_id = models.ForeignKey(User)
