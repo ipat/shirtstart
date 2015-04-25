@@ -101,18 +101,30 @@ def catalog(request):
     all_shirts = Shirt.objects.all()
     search_word = request.GET.get('search_word')
     if search_word == None:
-      return render_to_response('catalog.html', {'all_shirts': all_shirts, 'search': False})
+      search_word = ""
+      search = False
+      # return render_to_response('catalog.html', {'all_shirts': all_shirts, 'search': False})
     else:
       words = search_word.split()
       shirts = Shirt.objects.all()
       for word in words:
         shirts = shirts.filter(Q(name__icontains=word) | Q(description__icontains=word))
+      all_shirts = shirts
+      search = True
       # return HttpResponse(shirts)
-      return render_to_response('catalog.html', {'all_shirts': shirts, 'search': True, 'search_word': search_word})
+      # return render_to_response('catalog.html', {'all_shirts': shirts, 'search': True, 'search_word': search_word})
+
+    return render_to_response('catalog.html', {
+      'all_shirts': all_shirts,
+      'css_list': [ 'catalog.css' ],
+      'search': search, 
+      'search_word': search_word,
+    })
+
 
 
 @login_required
-def join(request):
+def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
     return render_to_response('join.html', {})
@@ -123,8 +135,8 @@ def join(request):
     return HttpResponseRedirect(reverse('status'))
 
 
-def buy(request):
-  return HttpResponse('buy')
+def buy(request, shirt_id):
+  return render_to_response('buy.html', {})
 
 def status_waiting(request):
   return HttpResponse('status_waiting')
