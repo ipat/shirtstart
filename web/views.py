@@ -115,9 +115,6 @@ def catalog(request):
       # return HttpResponse(shirts)
       # return render_to_response('catalog.html', {'all_shirts': shirts, 'search': True, 'search_word': search_word})
 
-    print all_shirts[0].waiting_id.require_date
-
-
 
     # expose filter selected options to the page
     filters = {
@@ -126,6 +123,29 @@ def catalog(request):
       'sort': request.GET.get('sort'),
     }
 
+    # Filter by type of shirt
+    if filters['shirt_type'] == 'waiting':
+      all_shirts = all_shirts.filter(is_on_shelf=False)
+    elif filters['shirt_type'] == 'on_shelf':
+      all_shirts = all_shirts.filter(is_on_shelf=True)
+
+    # Set order prefix
+    order_prefix = ""
+    if filters['sort'] == 'ZtoA':
+      order_prefix = "-"
+
+    # Set sort by
+    if filters['attribute'] == 'name':
+      all_shirts = all_shirts.order_by(order_prefix + 'name')
+    elif filters['attribute'] == 'likes':
+      all_shirts = all_shirts.annotate(like_count=Count('like')).order_by(order_prefix + 'like_count')
+    elif filters['attribute'] == 'comments':
+      all_shirts = all_shirts.annotate(comments_count=Count('comment')).order_by(order_prefix + 'comments_count')
+    elif filters['attribute'] == 'price':
+      all_shirts = all_shirts.order_by(order_prefix + 'color_num')
+
+    # Add current amount of shirt join
+    all_shirts = all_shirts.annotate(current_amount=Count('join'))
 
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
@@ -152,15 +172,17 @@ def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
     # waiting = Waiting.objects.get(shirt_id=shirt_id)
-    shirts = Shirt.objects.get(pk=shirt_id)
-    
-    d = (shirts.waiting_id.require_date-date.today()).days
-    created = (shirts.waiting_id.require_date-shirts.created_at.date()).days
+    shirt = Shirt.objects.get(pk=shirt_id)
+    shirt.current_amount = Join.objects.filter(shirt_id=shirt_id).count()
+
+    d = (shirt.waiting_id.require_date-date.today()).days
+    created = (shirt.waiting_id.require_date-shirt.created_at.date()).days
     left = created - d
     percent_left = d*100/created
+    shirt.people_left = shirt.current_amount * 100 / shirt.waiting_id.require_amount
     # waiting.require_date 
     
-    return render(request, 'join.html', {'shirt':shirts,'waiting':shirts.waiting_id,'percent':percent_left,'created':created,'left':left})
+    return render(request, 'join.html', {'shirt':shirt,'waiting':shirt.waiting_id,'percent':percent_left,'created':created,'left':left})
   
   elif request.method == 'POST':
     # do something interesting here !
