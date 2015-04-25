@@ -10,10 +10,14 @@ from django.contrib.auth.decorators import login_required
 from django.db import models
 from web.models import *
 from django.db.models import Q
+from django.db.models import Count
 
 # Create your views here.
 
 def index(request):
+  shirts = Shirt.objects.annotate(like_count=Count('like'))\
+                        .order_by('-like_count') 
+
   return render(request, 'index.html', {
     'css_list': [
       'css.css',
@@ -136,7 +140,8 @@ def join(request, shirt_id):
 
 
 def buy(request, shirt_id):
-  return render_to_response('buy.html', {})
+  shirts = Shirt.objects.get(pk = shirt_id)
+  return render_to_response('buy.html', {'shirt':shirts})
 
 def status_waiting(request):
   return HttpResponse('status_waiting')
