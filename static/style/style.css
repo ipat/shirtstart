@@ -304,7 +304,7 @@ p {
 	width: 100%;
 	margin-bottom: 10px;
 }
-#user_form label.form label{
+#user_form label,.form label{
 	color: #ababab;
 	font-weight: normal;
 	font-family: GillSans;
@@ -351,4 +351,7 @@ p {
 }
 #signup {
 	padding-bottom: 20px;
+}
+.form input[type="submit"]{
+	background-color: #7cc576;
 }
