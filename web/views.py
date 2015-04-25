@@ -13,8 +13,14 @@ from web.models import *
 
 def index(request):
   return render(request, 'index.html', {
-    'test': 'mama'
-    })
+    'css_list': [
+      'css.css',
+      'test.css',
+    ],
+    'js_list': [
+      'test.js'
+    ]
+  })
 
 def logout(request):
   auth_logout(request)
@@ -44,14 +50,14 @@ def signup(request):
       profile.save()
 
       registered = True
-      
+
       return HttpResponseRedirect(reverse('login'))
 
     else:
       print user_form.errors, profile_form.errors
 
 
-      
+
 
   else:
     # Create User Form
