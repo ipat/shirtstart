@@ -12,7 +12,7 @@
     </div>
     <div class="row">
 
-      {% for shirt in shirts %}
+      {% for shirt in all_shirts %}
         <div class="each-shirt-wrapper col-sm-3">
           <div class="each-shirt-inner">
             <div class="flag">
@@ -24,12 +24,20 @@
             </div>
 
             <div class="shirt-image">
-              <img src="{% static "img/shirt.png" %}">
+              <img src="{% static 'img/shirt.png' %}">
             </div>
 
             <div class="content">
               <h4 class="title">
-                <span class="nl">{{shirt.title}}</span>
+              	{% if shirt.is_on_shelf %}
+	                <a href="/buy/{{shirt.id}}">
+	                	<span class="nl">{{shirt.name}}</span>
+	                </a>
+	            {% else %}
+	            	<a href="/join/{{shirt.id}}">
+	                	<span class="nl">{{shirt.name}}</span>
+	                </a>
+	            {% endif %}
               </h4>
               <p class="description">
                 {{shirt.description}}

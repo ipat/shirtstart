@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -8,10 +9,15 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.db import models
 from web.models import *
+from django.db.models import Q
+from django.db.models import Count
 
 # Create your views here.
 
 def index(request):
+  shirts = Shirt.objects.annotate(like_count=Count('like'))\
+                        .order_by('-like_count') 
+
   return render(request, 'index.html', {
     'css_list': [
       'css.css',
@@ -97,19 +103,32 @@ def catalog(request):
   if request.method == 'GET':
     # return a view
     all_shirts = Shirt.objects.all()
+    search_word = request.GET.get('search_word')
+    if search_word == None:
+      search_word = ""
+      search = False
+      # return render_to_response('catalog.html', {'all_shirts': all_shirts, 'search': False})
+    else:
+      words = search_word.split()
+      shirts = Shirt.objects.all()
+      for word in words:
+        shirts = shirts.filter(Q(name__icontains=word) | Q(description__icontains=word))
+      all_shirts = shirts
+      search = True
+      # return HttpResponse(shirts)
+      # return render_to_response('catalog.html', {'all_shirts': shirts, 'search': True, 'search_word': search_word})
+
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
       'css_list': [ 'catalog.css' ],
+      'search': search, 
+      'search_word': search_word,
     })
 
-def search(request, search_word):
-  words = search_word.split()
-  # for word in words:
-    
-  return HttpResponse(words[0])
+
 
 @login_required
-def join(request):
+def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
     return render_to_response('join.html', {})
@@ -120,8 +139,8 @@ def join(request):
     return HttpResponseRedirect(reverse('status'))
 
 
-def buy(request):
-  return HttpResponse('buy')
+def buy(request, shirt_id):
+  return render_to_response('buy.html', {})
 
 def status_waiting(request):
   return HttpResponse('status_waiting')
@@ -133,7 +152,7 @@ def status_purchase_history(request):
   return HttpResponse('status_purchase_history')
 
 def payment(request):
-  return HttpResponse('payment')
+  return render_to_response('payment.html', {})
 
 def cart(request):
   return HttpResponse('cart')
