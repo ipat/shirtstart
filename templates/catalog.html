@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Catalog</title>
+</head>
+<body>
+
+	<h1>Catalog</h1>
+
+<!-- <form action="/auth/" method="post"> {% csrf_token %}
+	<label>Username:</label>
+	<input type="text" name="username" value="" id="username">	
+	<label>Password:</label>
+	<input type="password" name="password" value="" id="password">
+
+	<input type="submit" value="login">
+</form> -->
+	{% for shirt in all_shirts %}
+		{{shirt.name}}
+		<br>
+	{% endfor %}
+
+</body>
+</html>

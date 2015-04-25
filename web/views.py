@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from web.forms import UserForm, UserProfileForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.db import models
+from web.models import *
 
 # Create your views here.
 
@@ -34,7 +36,7 @@ def signup(request):
       user = user_form.save()
 
       user.set_password(user.password)
-      user.save()
+      user.save()   # save user to database
 
       profile = profile_form.save(commit=False)
       profile.user = user
@@ -42,21 +44,26 @@ def signup(request):
       profile.save()
 
       registered = True
+      
+      return HttpResponseRedirect(reverse('login'))
 
     else:
       print user_form.errors, profile_form.errors
 
+
+      
 
   else:
     # Create User Form
     user_form = UserForm()
     profile_form = UserProfileForm()
 
-  # Return to the same page
+    # Return to the same page
   return render_to_response(
-    'signup.html',
-    {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
-    context)
+      'signup.html',
+      {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
+      context)
+
 
 def login(request):
   context = RequestContext(request)
@@ -78,12 +85,11 @@ def login(request):
 
 
 
-@login_required
 def catalog(request):
   if request.method == 'GET':
     # return a view
-
-    return HttpResponse('catalog' + request.method)
+    all_shirts = Shirt.objects.all()
+    return render_to_response('catalog.html', {'all_shirts': all_shirts})
 
 @login_required
 def join(request):
@@ -115,6 +121,7 @@ def payment(request):
 def cart(request):
   return HttpResponse('cart')
 
+@login_required
 def design(request):
   return HttpResponse('design')
 

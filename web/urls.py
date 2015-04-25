@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^join/', views.join, name="join"),
     url(r'^buy/', views.buy, name="buy"),
     url(r'^signup/', views.signup, name="signup"),
-    # url(r'^auth/', views.auth_view, name="auth_view"),
     url(r'^logout/', views.logout, name="logout"),
     url(r'^login/', views.login, name="login"),
     # url(r'^register/$', views.register, name="re")

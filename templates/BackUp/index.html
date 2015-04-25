@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shirtstart</title>
+</head>
+<body>
+
+<form action="/auth/" method="post"> {% csrf_token %}
+	<label>Username:</label>
+	<input type="text" name="username" value="" id="username">	
+	<label>Password:</label>
+	<input type="password" name="password" value="" id="password">
+
+	<input type="submit" value="login">
+</form>
+
+
+</body>
+</html>
