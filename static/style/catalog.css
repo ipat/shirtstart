@@ -5,6 +5,14 @@
   margin-top: 45px; }
   #catalog-wrapper .container {
     padding: 15px 30px; }
+    #catalog-wrapper .container span {
+      vertical-align: middle; }
+    #catalog-wrapper .container .filters {
+      display: inline-block;
+      vertical-align: middle;
+      float: right; }
+      #catalog-wrapper .container .filters .filter {
+        width: 150px; }
   #catalog-wrapper .each-shirt-wrapper {
     margin: 15px 0px; }
     #catalog-wrapper .each-shirt-wrapper .each-shirt-inner {

@@ -16,16 +16,12 @@ from django.db.models import Count
 
 def index(request):
   shirts = Shirt.objects.annotate(like_count=Count('like'))\
-                        .order_by('-like_count') 
+                        .order_by('-like_count')
 
   return render(request, 'index.html', {
     'css_list': [
-      'css.css',
-      'test.css',
+      'home.css',
     ],
-    'js_list': [
-      'test.js'
-    ]
   })
 
 def logout(request):
@@ -118,14 +114,33 @@ def catalog(request):
       # return HttpResponse(shirts)
       # return render_to_response('catalog.html', {'all_shirts': shirts, 'search': True, 'search_word': search_word})
 
+
+    # expose filter selected options to the page
+    filters = {
+      'shirt_type': request.GET['shirt_type'],
+      'attribute': request.GET['attribute'],
+      'sort': request.GET['sort'],
+    }
+
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
-      'css_list': [ 'catalog.css' ],
-      'search': search, 
+      'css_list': [
+        'catalog.css',
+        'bootstrap-select.min.css',
+      ],
+      'js_list': [
+        'bootstrap-select.min.js',
+      ],
+      'search': search,
       'search_word': search_word,
+      'filters': filters,
     })
 
+def search(request, search_word):
+  words = search_word.split()
+  # for word in words:
 
+  return HttpResponse(words[0])
 
 @login_required
 def join(request, shirt_id):
@@ -159,7 +174,14 @@ def cart(request):
 
 @login_required
 def design(request):
-  return HttpResponse('design')
+  if request.method == 'GET':
+    return render_to_response('design.html', {
+      'css_list': [ 'design.css' ],
+      'js_list': ['dropzone.js'],
+    })
+
+  elif request.method == 'POST':
+    return 'aoeu'
 
 @login_required
 def profile(request):
@@ -171,7 +193,6 @@ def withdraw(request):
 
 def admin(request):
   return HttpResponse('admin')
-
 
 def restricted(request):
   return HttpResponse("Since you're logged in, you can see this text!")
