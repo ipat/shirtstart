@@ -1,0 +1,47 @@
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+{% include "template.search.html" %}
+
+<div class="container boxContent" id="status-waiting">
+	<h1>ORDER STATUS</h1>
+	<div class="row textcenter" id="menu-status">
+		<a href="" class="btn menuStatus active" id="menuStatusL">WAITING (N)</a><a href="" class="btn menuStatus" id="menuStatusM">IN PROGRESS (N)</a><a href="" class="btn menuStatus" id="menuStatusR">PURCHASE HISTORY (N)</a>
+	</div>
+	<div class="shirtViewOrderStatus">
+		<div class="row shirtItemOrderStatus">
+			<div class="col-sm-3 shirtImgDiv">
+				<img src="{% static 'img/shirt.png' %}"}>
+			</div>
+			<div class="col-sm-9 shirtInfoDiv">
+				<div class="row">
+					<p class="fontBold noMarBot">SHIRT NAME</p>
+					<p class="italic noMarBot" id="designer">by Xmenza</p>
+					<p class="noMarBot limitLine">Was inspired by the graffit old school things. This is a personal illustration designed just to 
+	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable 
+	at A Better Tomorrow. Was inspired by the graffit old school things. This is a personal illustration designed just to 
+	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable 
+	at A Better Tomorrow. Was inspired by the graffit old school things. This is a personal illustration designed just to 
+	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable 
+	at A Better Tomorrow.</p>
+				</div>
+
+
+				<div class="row shirtStatusDiv">
+					<div class="col-sm-6 peopleStatusDiv centerOnSmall">
+						<span class="peopleStatus">23/100</span><span>people joined</span>
+					</div>
+					<div class="col-sm-6 peopleStatusDiv centerOnSmall">
+						<span class="peopleStatus">23</span><span>days left</span>
+					</div>
+				</div>
+				<div class="row italic">
+					<p>Order date : 12/11/14 | S1, M3, L2, XL1</p>
+				<div>
+			</div>
+		
+	</div>
+		
+</div>
+
+{% include "template.foot.html" %}

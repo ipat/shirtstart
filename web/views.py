@@ -180,13 +180,13 @@ def buy(request, shirt_id):
   return render_to_response('buy.html', {})
 
 def status_waiting(request):
-  return HttpResponse('status_waiting')
+  return render_to_response('status_waiting.html', {})
 
 def status_in_progress(request):
-  return HttpResponse('status_in_progress')
+  return render_to_response('status_in-progress.html', {})
 
 def status_purchase_history(request):
-  return HttpResponse('status_purchase_history')
+  return render_to_response('status_purchased.html', {})
 
 def payment(request):
   return render_to_response('payment.html', {})

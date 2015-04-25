@@ -355,3 +355,99 @@ p {
 .form input[type="submit"]{
 	background-color: #7cc576;
 }
+button:focus {outline:0 !important;}
+.textcenter {
+	text-align: center;
+}
+.menuStatus{
+	padding-left: 0px;
+	padding-right: 0px;
+	background-color: #448ccb;
+	line-height: 0.8em;
+	font-size: 0.8em;
+	width: 15em;
+	border: 3px solid #5674b9;
+	font-weight: 500;
+	color: #fff;
+}
+.menuStatus:hover{
+	text-decoration: none;
+	color: #fff;
+	background-color: #5b9ed9;
+}
+.menuStatus.active {
+	font-weight: bold;
+	background-color: #13538b;
+}
+#menuStatusL {
+	border-top-left-radius:2em;
+	border-bottom-left-radius:2em;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+#menuStatusM {
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+#menuStatusR {
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	border-top-right-radius: 2em;
+	border-bottom-right-radius: 2em;
+}
+.shirtItemOrderStatus {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+	-moz-box-shadow:    0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+	box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+}
+.shirtImgDiv img {
+	max-width: 100%;
+	height: auto;
+	padding: 15px 15px;
+	background-color: #dddddd;
+	margin: 5px 5px;
+	
+}
+.shirtViewOrderStatus {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.shirtInfoDiv {
+	padding: 10px 20px;
+}
+#menu-status {
+	white-space: nowrap;
+}
+.noMarBot{
+	margin-bottom: 0px;
+}
+.limitLine {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 92.727px;
+    font-size: 0.8em;
+}
+.shirtStatusDiv {
+
+}
+.peopleStatus {
+	font-size: 3em;
+}
+.peopleStatusDiv {
+	padding: 0px 0px;
+	white-space: nowrap;
+	color: #777;
+}
+#shirtPayInfoDiv {
+	background-color: #e3e3e3;
+	vertical-align: middle;
+}
+.blueFont {
+	color: #115688;
+}
