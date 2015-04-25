@@ -67,6 +67,8 @@ def signup(request):
 
 def login(request):
   context = RequestContext(request)
+  if request.user.is_authenticated():
+    return HttpResponseRedirect(reverse('index'))
 
   if request.method == 'POST':
     username = request.POST['username']
@@ -125,9 +127,11 @@ def cart(request):
 def design(request):
   return HttpResponse('design')
 
+@login_required
 def profile(request):
   return HttpResponse('profile')
 
+@login_required
 def withdraw(request):
   return HttpResponse('withdraw')
 
