@@ -93,11 +93,14 @@ def catalog(request):
     all_shirts = Shirt.objects.all()
     return render_to_response('catalog.html', {'all_shirts': all_shirts})
 
+def search(request, search_word):
+  return HttpResponse(search_word)
+
 @login_required
 def join(request):
   if request.method == 'GET':
     # show the view
-    return HttpResponse('join')
+    return render_to_response('join.html', {})
   elif request.method == 'POST':
     # do something interesting here !
 
