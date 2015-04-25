@@ -148,7 +148,7 @@ def status_purchase_history(request):
   return HttpResponse('status_purchase_history')
 
 def payment(request):
-  return HttpResponse('payment')
+  return render_to_response('payment.html', {})
 
 def cart(request):
   return HttpResponse('cart')
