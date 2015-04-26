@@ -48,7 +48,7 @@
 				</div>
 			</div>
 			<div class="row textRight centerOnSmall">
-				<form>
+				<form method="get" action="/payment/{{shirt.id}}">
 					<div class="row" id="inputAmount">
 						S <input name="sAmount">
 						M <input name="mAmount">
@@ -58,7 +58,7 @@
 					</div>
 					<div class="row" id="btnAmount">
 						<div class="col-md-6">
-							<button href="#" class="btn round btn-grey btn-bigpad fontBold fontBlack hvr-shadow" id="btnBack">
+							<button href="/catalog/" class="btn round btn-grey btn-bigpad fontBold fontBlack hvr-shadow" id="btnBack">
 								BACK
 							</button>
 						</div>
