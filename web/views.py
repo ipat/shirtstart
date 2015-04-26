@@ -17,6 +17,9 @@ from django.conf import settings
 import pprint
 from datetime import date, timedelta, datetime
 
+PRICE_PER_SHIRT = 120
+PRICE_PER_COLOR = 50
+
 # Create your views here.
 
 def index(request):
@@ -34,7 +37,7 @@ def index(request):
 
 def logout(request):
   auth_logout(request)
-  return HttpResponse("You are logout")
+  return HttpResponseRedirect('/')
 
 def signup(request):
 
@@ -150,6 +153,11 @@ def catalog(request):
       all_shirts = all_shirts.annotate(comments_count=Count('comment')).order_by(order_prefix + 'comments_count')
     elif filters['attribute'] == 'price':
       all_shirts = all_shirts.order_by(order_prefix + 'color_num')
+    elif filters['attribute'] == 'time':
+      all_shirts = all_shirts.order_by(order_prefix + 'created_at')
+    else:
+      all_shirts = all_shirts.order_by('-created_at')
+
 
     # Add current amount of shirt join
     all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
@@ -370,7 +378,6 @@ def payment(request, shirt_id):
       credit.save()
     except Credit_card.DoesNotExist:
       credit = Credit_card.objects.create(user_id=User.objects.get(pk=request.user.id), name_on_card=input_info.get('name_on_card'), number=input_info.get('number'), expiry_month=input_info.get('expiry_month').split('-')[1], expiry_year=input_info.get('expiry_month').split('-')[0])
-      # credit.save()
 
 
     for i in range(1,4):
@@ -390,9 +397,6 @@ def payment(request, shirt_id):
           user_id = User.objects.get(pk=request.user.id),
           shirt_id = Shirt.objects.get(pk=shirt_id))
 
-    # user_profile.save(request.POST)
-    # credit = Credit_card.objects.get(user_id=request.user.id)
-    # credit.save(request.POST)
 
     return HttpResponseRedirect('/status/waiting')
 
@@ -409,7 +413,55 @@ def checkout(request):
     return render(request,'checkout.html', {'credit': credit, 'user_profile': user_profile})
 
   else:
-    return HttpResponse("hello")
+    input_info = request.POST
+    user_profile = UserProfile.objects.get(user_id=request.user.id)
+    user_profile.address_house_no = input_info.get('address_house_no')
+    user_profile.address_building = input_info.get('address_building')
+    user_profile.address_road = input_info.get('address_road')
+    user_profile.address_subdistrict = input_info.get('address_subdistrict')
+    user_profile.address_district = input_info.get('address_district')
+    user_profile.address_province = input_info.get('address_province')
+    user_profile.address_country = input_info.get('address_country')
+    user_profile.address_postcode = input_info.get('address_postcode')
+    user_profile.save()
+
+    try:
+      credit = Credit_card.objects.get(user_id=request.user.id)
+      credit.name_on_card = input_info.get('name_on_card')
+      credit.number = input_info.get('number')
+      credit.expiry_month = input_info.get('expiry_month').split('-')[1]
+      credit.expiry_year = input_info.get('expiry_month').split('-')[0]
+      credit.save()
+    except Credit_card.DoesNotExist:
+      credit = Credit_card.objects.create(user_id=User.objects.get(pk=request.user.id), name_on_card=input_info.get('name_on_card'), number=input_info.get('number'), expiry_month=input_info.get('expiry_month').split('-')[1], expiry_year=input_info.get('expiry_month').split('-')[0])
+    
+
+    order = Order.objects.create(
+      time = datetime.now(),
+      address_house_no = input_info.get('address_house_no'),
+      address_building = input_info.get('address_building'),
+      address_road = input_info.get('address_road'),
+      address_subdistrict = input_info.get('address_subdistrict'),
+      address_district = input_info.get('address_district'),
+      address_province = input_info.get('address_province'),
+      address_country = input_info.get('address_country'),
+      address_postcode = input_info.get('address_postcode'),
+      status = 0,
+      user_id = User.objects.get(pk=request.user.id))
+
+    order_lists = Shirt_in_cart.objects.filter(user_id=request.user.id)
+
+    for od in order_lists:
+      price_each = PRICE_PER_SHIRT + od.shirt_id.color_num * PRICE_PER_COLOR
+      Order_list.objects.create(
+        shirt_size = od.shirt_size,
+        amount = od.amount,
+        order_id = order,
+        shirt_id = od.shirt_id,
+        price_each = price_each,)
+      od.delete()
+
+    return HttpResponseRedirect('/status/in-progress/')
 
 
 @login_required
