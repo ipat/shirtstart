@@ -111,8 +111,8 @@ class Transaction (models.Model):
 class Order (models.Model):
 	user_id = models.ForeignKey(User)
 	time = models.DateTimeField()
-	ship_date = models.DateField()
-	ship_tracking_no = models.CharField(max_length=20)
+	ship_date = models.DateField(null=True)
+	ship_tracking_no = models.CharField(max_length=20,null=True)
 	status = models.IntegerField()
 	address_house_no = models.CharField(max_length=10)
 	address_building = models.CharField(max_length=50)
