@@ -22,6 +22,7 @@
                 <option value="likes">จำนวน Likes</option>
                 <option value="comments">จำนวน Comment</option>
                 <option value="price">ราคา</option>
+                <option value="time">วันที่</option>
               </select>
               <select id="sort-filter" class="filter" name="sort" data-header="เรียงลำดับ">
                 <option value="ZtoA">มากไปน้อย</option>
@@ -47,94 +48,103 @@
             });
 
             // set defaults
-            if (filters.shirt_type) {
-              $('#shirt-type-filter').selectpicker('val', filters.shirt_type);
+            if (!filters.shirt_type) {
+              filters.shirt_type = 'both';
             }
-            if (filters.attribute) {
-              $('#attribute-filter').selectpicker('val', filters.attribute);  
+            if (!filters.attribute) {
+              filters.attribute = 'time';   
             }
-            if (filters.sort) {
-              $('#sort-filter').selectpicker('val', filters.sort);
+            if (!filters.sort) {
+              filters.sort = 'ZtoA';
             }
+            console.log(filters);
+            $('#shirt-type-filter').selectpicker('val', filters.shirt_type);
+            $('#attribute-filter').selectpicker('val', filters.attribute);
+            $('#sort-filter').selectpicker('val', filters.sort);
           </script>
         </h1>
       </div>
     </div>
     <div class="row">
-
-      {% for shirt in all_shirts %}
-        <div class="each-shirt-wrapper col-sm-3">
-          <div class="each-shirt-inner">
-            <div class="flag">
-              {% if shirt.is_on_shelf %}
-                <span>พร้อมขาย</span>
-              {% else %}
-                <span>กำลังระดมทุน</span>
-              {% endif %}
-            </div>
-
-            <div class="shirt-image">
-              <img src="{% static 'img/shirt.png' %}">
-            </div>
-
-            <div class="content">
-              <h4 class="title">
-              	{% if shirt.is_on_shelf %}
-	                <a href="/buy/{{shirt.id}}">
-	                	<span class="nl">{{shirt.name}}</span>
-	                </a>
-	            {% else %}
-	            	<a href="/join/{{shirt.id}}">
-	                	<span class="nl">{{shirt.name}}</span>
-	                </a>
-	            {% endif %}
-              </h4>
-              <p class="description">
-                {{shirt.description}}
-              </p>
-              <div class="status row">
-
+      {% if all_shirt|length == 0 %}
+        <div class="col-sm-12">
+          <p>Found nothing ...</p>  
+        </div>
+      {% else %}
+        {% for shirt in all_shirts %}
+          <div class="each-shirt-wrapper col-sm-3">
+            <div class="each-shirt-inner">
+              <div class="flag">
                 {% if shirt.is_on_shelf %}
-                  <div class="price col-xs-12">
-                    <i class="glyphicon glyphicon-bitcoin"></i>
-                    <span>{{shirt.price}}</span>
-                  </div>
+                  <span>พร้อมขาย</span>
                 {% else %}
-                  <div class="people col-xs-6">
-                    <i class="glyphicon glyphicon-user"></i>
-                    <span>{{shirt.current_ammount}}/{{shirt.require_amount}}</span>
-                  </div>
-                  <div class="price col-xs-6">
-                    <i class="glyphicon glyphicon-bitcoin"></i>
-                    <span>{{shirt.price}}</span>
-                  </div>
-                  <div class="calendar col-xs-12">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                    <span>{{shirt.require_date}}</span>
-                  </div>
+                  <span>กำลังระดมทุน</span>
                 {% endif %}
+              </div>
 
+              <div class="shirt-image">
+                <img src="{% static 'img/shirt.png' %}">
+              </div>
+
+              <div class="content">
+                <h4 class="title">
+                	{% if shirt.is_on_shelf %}
+  	                <a href="/buy/{{shirt.id}}">
+  	                	<span class="nl">{{shirt.name}}</span>
+  	                </a>
+  	            {% else %}
+  	            	<a href="/join/{{shirt.id}}">
+  	                	<span class="nl">{{shirt.name}}</span>
+  	                </a>
+  	            {% endif %}
+                </h4>
+                <p class="description">
+                  {{shirt.description}}
+                </p>
+                <div class="status row">
+
+                  {% if shirt.is_on_shelf %}
+                    <div class="price col-xs-12">
+                      <i class="glyphicon glyphicon-bitcoin"></i>
+                      <span>{{shirt.price}}</span>
+                    </div>
+                  {% else %}
+                    <div class="people col-xs-6">
+                      <i class="glyphicon glyphicon-user"></i>
+                      <span>{{shirt.current_ammount}}/{{shirt.require_amount}}</span>
+                    </div>
+                    <div class="price col-xs-6">
+                      <i class="glyphicon glyphicon-bitcoin"></i>
+                      <span>{{shirt.price}}</span>
+                    </div>
+                    <div class="calendar col-xs-12">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                      <span>{{shirt.require_date}}</span>
+                    </div>
+                  {% endif %}
+
+                </div>
+              </div>
+
+              <div class="action">
+                {% if shirt.is_on_shelf %}
+                  <a href="/buy/{{shirt.id}}">
+                    <button class="btn-primary btn">
+                      เข้าชม
+                    </button>
+                  </a>
+                {% else %}
+                  <a href="/join/{{shirt.id}}">
+                    <button class="btn-primary btn">
+                      เข้าชม
+                    </button>
+                  </a>
+                {% endif %}
               </div>
             </div>
-
-            <div class="action">
-              {% if shirt.is_on_shelf %}
-                <a href="/buy/{{shirt.id}}">
-                  <button class="btn-primary btn">
-                    เข้าชม
-                  </button>
-                </a>
-              {% else %}
-                <a href="/join/{{shirt.id}}">
-                  <button class="btn-primary btn">
-                    เข้าชม
-                  </button>
-                </a>
-              {% endif %}
-            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      {% endif %}
 
     </div>
     </div>
