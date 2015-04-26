@@ -35,7 +35,11 @@
 			</tr>
 			<tr>
 				<td class="leftTD">Designer :</td>
-				<td class="rightTD">{{user_profile.is_designer}}</td>
+				{% if user_profile.is_designer %}
+					<td class="rightTD">Yes</td>
+				{% else %}
+					<td class="rightTD">No</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<td class="leftTD">Default Address :</td>
@@ -43,7 +47,11 @@
 			</tr>
 			<tr>
 				<td class="leftTD">Default credit card :</td>
-				<td class="rightTD">{{credit.number}}</td>
+				{% if credit.number == '' %}
+					<td class="rightTD">{{credit.number}}</td>
+				{% else %}
+					<td class="rightTD">None</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<td class="leftTD">Join date :</td>
@@ -51,7 +59,7 @@
 			</tr>
 		</table>
 	</div>
-	{% if not user_profile.is_designer %}
+	{% if user_profile.is_designer %}
 		<h1>Created Shirt</h1>
 		<div class="row" style="background-color=#eee;">
 	      {% for shirt in all_shirts %}
@@ -129,9 +137,9 @@
 	      {% endfor %}
 	    </div>
 	   	<div class="row textcenter">
-		<h1>Wallet : {{ designer.wallet }}฿</h1>
-		<a href="/withdraw" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow width50">Withdraw</a>
-	</div>
+			<h1>Wallet : {{ designer.wallet }}฿</h1>
+			<a href="/withdraw" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow width50">Withdraw</a>
+		</div>
 	{% endif %}
 
 
