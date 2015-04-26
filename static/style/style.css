@@ -139,7 +139,7 @@ input:-moz-placeholder { font-style: oblique; }
 .boxContent {
 	background-color: #fff;
 	margin-top: 5px;
-	margin-bottom: 5px;
+	padding-bottom: 15px;
 }
 h1 {
 	font-family: GillSans; 
@@ -450,4 +450,30 @@ button:focus {outline:0 !important;}
 }
 .blueFont {
 	color: #115688;
+}
+.fitdiv {
+	max-width: 100%;
+	max-height:100%;
+}
+.h0{
+	font-size: 5em;
+	font-family: GillSans;
+	color: #777;
+}
+#profileDiv {
+	color: #555;
+	font-family: GillSans;
+	font-size: 1.5em;
+}
+.leftTD {
+	text-align: right;
+	vertical-align: top;
+}
+.rightTD {
+	padding-left: 10px;
+	text-align: left;
+	max-width: 20em;
+}
+.width50 {
+	max-width: 10em;
 }

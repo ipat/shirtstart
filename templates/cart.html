@@ -4,10 +4,7 @@
 {% include "template.search.html" %}
 
 <div class="container boxContent" id="status-waiting">
-	<h1>ORDER STATUS</h1>
-	<div class="row textcenter" id="menu-status">
-		<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING (N)</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS (N)</a><a href="/status/purchase-history" class="btn menuStatus active" id="menuStatusR">PURCHASE HISTORY (N)</a>
-	</div>
+	<h1>CART</h1>
 	<div class="shirtViewOrderStatus">
 		<div class="row shirtItemOrderStatus">
 			<div class="col-sm-3 shirtImgDiv">
@@ -27,11 +24,16 @@
 				</div>
 
 
-				<div class="row shirtStatusDiv peopleStatusDiv centerOnSmall">
-					<span class="peopleStatus blueFont">$13.32</span>
+				<div class="row shirtStatusDiv">
+					<div class="col-sm-6 peopleStatusDiv centerOnSmall">
+						<span class="peopleStatus">23/100</span><span>people joined</span>
+					</div>
+					<div class="col-sm-6 peopleStatusDiv centerOnSmall">
+						<span class="peopleStatus">23</span><span>days left</span>
+					</div>
 				</div>
 				<div class="row italic">
-					<p>Delivery date : 12/11/14 | S1, M3, L2, XL1</p>
+					<p>Order date : 12/11/14 | S1, M3, L2, XL1</p>
 				<div>
 			</div>
 		

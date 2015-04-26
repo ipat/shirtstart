@@ -1,0 +1,36 @@
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+{% include "template.search.html" %}
+<div class="container boxContent" id="payment">
+	<h1>WITHDRAW</h1>
+	<form class="form">
+	<div class="col-md-4 hidden-sm hiddem-xs">
+		<img src="{% static 'img/withdraw.png' %}" class="fitdiv">
+	</div>
+	<div class="col-md-8">
+		<label>Bank owner</label>
+		<select name="bank_owner">
+			<option>Bank 1</option>
+			<option>Bank 2</option>
+		</select>
+		<label>Account Name </label><input placeholder="" type="text" name="account_name"/>
+		<div class="row">
+			<div class="col-md-6">
+				<label>Branch</label><input placeholder="" type="text" name="brance"/>
+			</div>
+			<div class="col-md-6">
+				<label>Account Number </label><input placeholder="" type="number" name="account_number"/>
+			</div>
+
+		</div>
+		<label>Amount in Baht </label><input placeholder="max : {{designer.wallet}}" type="text" />
+		<input type="submit" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow" />
+		
+	</div>
+	</form>
+
+	
+</div>
+
+{% include "template.foot.html" %}

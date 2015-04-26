@@ -201,23 +201,29 @@ def comment(request, comment_shirt_id):
 
   return HttpResponseRedirect('/join/' + comment_shirt_id + '/')
 
+@login_required
 def buy(request, shirt_id):
   return render_to_response('buy.html', {})
 
+@login_required
 def status_waiting(request):
   return render_to_response('status_waiting.html', {})
 
+@login_required
 def status_in_progress(request):
   return render_to_response('status_in-progress.html', {})
 
+@login_required
 def status_purchase_history(request):
   return render_to_response('status_purchased.html', {})
 
+@login_required
 def payment(request):
   return render_to_response('payment.html', {})
 
+@login_required
 def cart(request):
-  return HttpResponse('cart')
+  return render_to_response('cart.html', {})
 
 @login_required
 def design(request):
@@ -256,11 +262,39 @@ def design(request):
 
 @login_required
 def profile(request):
-  return HttpResponse('profile')
+  user = request.user
+  user_profile = UserProfile.objects.get(user_id=user.id)
+  try:
+    all_shirts = Shirt.objects.get(owner_id=user.id)
+  except Shirt.DoesNotExist:
+      all_shirts = None
+  try:
+    credit = Credit_card.objects.get(user_id=user.id)
+  except Credit_card.DoesNotExist:
+      credit = None
+  try:
+    designer = Designer.objects.get(user_id=user.id)
+  except Designer.DoesNotExist:
+      designer = None
+
+  return render_to_response('profile.html', {
+    'user' : user,
+    'user_profile' : user_profile,
+    'credit' : credit,
+    'all_shirts' : all_shirts,
+    'designer' : designer,
+    })
 
 @login_required
 def withdraw(request):
-  return HttpResponse('withdraw')
+  user = request.user
+  try:
+    designer = Designer.objects.get(user_id=user.id)
+  except Designer.DoesNotExist:
+      designer = None
+  return render_to_response('withdraw.html', {
+      'designer' : designer,
+    })
 
 def admin(request):
   return HttpResponse('admin')
