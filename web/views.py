@@ -247,40 +247,19 @@ def like_buy(request,like_shirt_id):
 #   return HttpResponseRedirect('/cart/')
 
 def add_to_cart(request,add_shirt_id):
-  # if request.method=='POST' and Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id)==0:
-  #   s = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=1,amount=request.POST.get('sAmount'),time=date.today())
-  #   m = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=2,amount=request.POST.get('mAmount'),time=date.today())
-  #   l = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=3,amount=request.POST.get('lAmount'),time=date.today())
-  #   xl = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=4,amount=request.POST.get('xlAmount'),time=date.today())
-  #   s.save()
-  #   m.save()
-  #   l.save()
-  #   xl.save()
-  # elif request.method=='POST':
-  #   s_amount = request.POST.get('sAmount') + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=1)
-  #   m_amount = request.POST.get('mAmount') + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=2)
-  #   l_amount =  request.POST.get('lAmount') + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=3)
-  #   xl_amount = request.POST.get('xlAmount') + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=4)
-  #   s = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=1,amount=s_amount,time=date.today())
-  #   m = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=2,amount=m_amount,time=date.today())
-  #   l = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=3,amount=l_amount,time=date.today())
-  #   xl = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=4,amount=xl_amount,time=date.today())
-  # return HttpResponseRedirect('/cart/' + add_shirt_id + '/')
-
+  sa = request.POST.get('sAmount')
+  sm = request.POST.get('mAmount')
+  sl = request.POST.get('lAmount')
+  sxl = request.POST.get('xlAmount')
+  if request.POST.get('sAmount') == '':
+    sa ='0'
+  if request.POST.get('mAmount') == '':
+    sm ='0'
+  if request.POST.get('lAmount') == '':
+    sl ='0'
+  if request.POST.get('xlAmount') == '':
+    sxl ='0' 
   try:
-    sa = request.POST.get('sAmount')
-    sm = request.POST.get('mAmount')
-    sl = request.POST.get('lAmount')
-    sxl = request.POST.get('xlAmount')
-    if request.POST.get('sAmount') == '':
-      sa ='0'
-    if request.POST.get('mAmount') == '':
-      sm ='0'
-    if request.POST.get('lAmount') == '':
-      sl ='0'
-    if request.POST.get('xlAmount') == '':
-      sxl ='0'  
-    
     s_amount = int(sa) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=1).amount
     m_amount = int(sm) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=2).amount
     l_amount = int(sl) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=3).amount
