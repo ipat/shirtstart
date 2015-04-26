@@ -1,3 +1,32 @@
+#form-details {
+  z-index: 1200; }
+  #form-details .modal-body {
+    padding: 30px; }
+  #form-details h4 {
+    margin-top: 0px; }
+  #form-details small {
+    color: grey; }
+  #form-details .slider {
+    width: 100%; }
+  #form-details .slider-wrapper {
+    padding: 15px;
+    white-space: nowrap; }
+    #form-details .slider-wrapper .icon, #form-details .slider-wrapper input, #form-details .slider-wrapper .slider {
+      display: inline-block;
+      vertical-align: middle; }
+    #form-details .slider-wrapper .icon.small {
+      font-size: 1.5rem;
+      padding-right: 2rem; }
+    #form-details .slider-wrapper .icon.big {
+      font-size: 2.5rem;
+      padding-left: 3rem; }
+  #form-details .wrap-up {
+    text-align: center; }
+    #form-details .wrap-up span {
+      font-size: 120%; }
+  #form-details #require-cost-slider, #form-details #require-people-slider {
+    width: 80%; }
+
 #dropzone.hover .body {
   box-shadow: inset 0px 0px 220px 0px rgba(0, 0, 0, 0.75); }
 

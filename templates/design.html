@@ -2,10 +2,10 @@
 {% include "template.head.html" %}
 {% include "template.nav.html" %}
 
-<form id="dropzone" class="animated fadeIn">
+<form id="dropzone">
 {% csrf_token %}
 
-<div id="design-wrapper">
+<div id="design-wrapper" class="animated fadeIn">
   <div class="header">
     <div class="container">
       <div class="row">
@@ -21,6 +21,7 @@
               เสร็จแล้ว
             </button>
           </div>
+
         </div>
       </div>
     </div>
@@ -45,15 +46,125 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="form-details-label">
-          ช่วยระบุข้อมูลอีกเล็กน้อย ...
+          Before this awesome shirt gets public ...
         </h4>
       </div>
       <div class="modal-body">
-        <input name="name" type="text" class="form-control" placeholder="Name ...">
+        <h4>Shirt Details</h4>
+        <div class="form-group">
+          <label>Name this shirt</label>
+          <input name="name" type="text" class="form-control" placeholder="Name ...">
+        </div>
+        <div class="form-group">
+          <label>
+            Put some descriptions
+            <br>
+            <small>We found that using precise and sufficient text would help shirts can be found easier </small>
+          </label>
+          <input name="description" type="text" class="form-control" placeholder="Description ...">
+        </div>
+        <div class="form-group">
+          <label>
+            How many colors in this shirt ?
+            <br>
+            <small>Be honest .. for your interests</small>
+          </label>
+          <div class="slider-wrapper">
+            <input
+              id="color-num"
+              name="color_num"
+              class="slider"
+              type="text"
+              data-slider-id="color-num-slider"
+              data-slider-min="1"
+              data-slider-max="15"
+              data-slider-step="1"
+              data-slider-value="1">
+          </div>
+        </div>
 
-        <input name="description" type="text" class="form-control" placeholder="Description ...">
+        <h4>Crowd funding details</h4>
+        <div class="form-group">
+          <label>
+            How many days want to wait ?
+            <br>
+            <small>Please do note that the shorter the risker, but too long is not interesting</small>
+          </label>
+          <div class="slider-wrapper">
+            <input
+              id="require-days"
+              name="require_days"
+              class="slider"
+              type="text"
+              data-slider-id="require-days-slider"
+              data-slider-min="1"
+              data-slider-max="30"
+              data-slider-step="1"
+              data-slider-value="7">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>
+            At which cost you wanna buy ?
+            <br>
+            <small>The lower the cost, the more people you need</small>
+          </label>
+          <div class="slider-wrapper">
+            <div class="icon left small">
+              <i class="glyphicon glyphicon-bitcoin"></i>
+            </div>
+            <input
+              id="require-cost"
+              class="slider"
+              type="text"
+              data-slider-id="require-cost-slider"
+              data-slider-step="1">
+            <div class="icon right big">
+              <i class="glyphicon glyphicon-bitcoin"></i>
+            </div>
+          </div>
+        </div>
 
-        <input name="color_num" type="text" class="form-control" placeholder="Number of Colors ...">
+        <div class="form-group">
+          <label>
+            How many buyers you expected ?
+            <br>
+            <small>The more the buyers, the lower the cost</small>
+          </label>
+          <div class="slider-wrapper">
+            <div class="icon left small">
+              <i class="glyphicon glyphicon-user"></i>
+            </div>
+            <input
+              id="require-people"
+              name="require_amount"
+              class="slider"
+              type="text"
+              data-slider-id="require-people-slider"
+              data-slider-step="1">
+            <div class="icon right big">
+              <i class="glyphicon glyphicon-user"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="wrap-up row">
+          <div class="col-sm-6">
+            <h1>
+              <i class="glyphicon glyphicon-bitcoin"></i>
+              <span id="require-cost-text"></span>
+              <span> Baht</span>
+            </h1>
+          </div>
+          <div class="col-sm-6">
+            <h1>
+              <i class="glyphicon glyphicon-user"></i>
+              <span id="require-people-text"></span>
+              <span> People</span>
+            </h1>
+          </div>
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">กลับไปแก้ไข</button>
@@ -66,6 +177,112 @@
 </form>
 
 <script type="text/javascript">
+
+var varyShirtPrice = 120;
+var varyPerColor = 10;
+var baseBlock = 500;
+var baseBlockPerColor = 75;
+
+var largestCrowd = 500;
+
+function ShirtPrice (colors, people) {
+  var fix = (baseBlock + baseBlockPerColor * colors);
+  var vary = varyShirtPrice + varyPerColor;
+  return Math.ceil(vary + fix / people);
+}
+
+function ShirtPeople (colors, price) {
+  var fix = (baseBlock + baseBlockPerColor * colors);
+  var vary = varyShirtPrice + varyPerColor;
+  return Math.ceil(fix / (price - vary));
+}
+
+$('#form-details').on('shown.bs.modal', function () {
+
+  var $colorNum = $('#color-num');
+  var $requireCost = $('#require-cost');
+  var $requirePeople = $('#require-people');
+
+  var $requireCostText = $('#require-cost-text');
+  var $requirePeopleText = $('#require-people-text');
+
+  function initRequireCost(colors) {
+
+    var min = ShirtPrice(colors, largestCrowd);
+    var max = ShirtPrice(colors, 1);
+    var start = max;
+
+    $requireCostText.html(start);
+
+    $requireCost.slider('destroy');
+    $requireCost.slider({
+      min: min,
+      max: max,
+      value: start,
+      formatter: function (val) {
+        return val + ' Baht';
+      },
+    })
+      .on('change', function (res) {
+        var val = res.value.newValue;
+        $requireCostText.html(val);
+
+        var newPeople = ShirtPeople(colors, val);
+        $requirePeople.slider('setValue', newPeople)
+        $requirePeopleText.html(newPeople);
+      });
+  }
+
+  function initRequirePeople(colors) {
+    var start = 1;
+    $requirePeopleText.html(start);
+
+    $requirePeople.slider('destroy');
+    $requirePeople.slider({
+      min: 1,
+      max: largestCrowd,
+      value: start,
+      formatter: function (val) {
+        return val + ' people';
+      },
+    })
+      .on('change', function (res) {
+        var val = res.value.newValue;
+        $requirePeopleText.html(val);
+
+        var newPrice = ShirtPrice(colors, val);
+        $requireCost.slider('setValue', newPrice);
+        $requireCostText.html(newPrice);
+      });
+  }
+
+  var colorNumSlider = $colorNum.slider({
+    formatter: function (val) {
+      return val + ' colors';
+      // return val;
+    }
+  })
+    .on('change', function (res) {
+      // update require-cost
+      initRequireCost(res.value.newValue);
+      initRequirePeople(res.value.newValue);
+    });
+
+  var initialColors = colorNumSlider.slider('getValue');
+  initRequireCost(initialColors);
+  initRequirePeople(initialColors);
+
+  $('#require-days').slider({
+    ticks: [1, 7, 14, 30],
+    ticks_positions: [0, 23, 46, 100],
+    ticks_labels: ['a day', 'a week', 'two weeks', 'a month'],
+    ticks_snap_bounds: 0,
+    formatter: function (val) {
+      return val + ' days';
+    },
+  });
+
+});
 
 $('#dropzone')
   .dropzone({

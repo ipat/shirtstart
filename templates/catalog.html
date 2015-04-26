@@ -52,7 +52,7 @@
               filters.shirt_type = 'both';
             }
             if (!filters.attribute) {
-              filters.attribute = 'time';   
+              filters.attribute = 'time';
             }
             if (!filters.sort) {
               filters.sort = 'ZtoA';
@@ -68,7 +68,7 @@
     <div class="row">
       {% if all_shirts|length == 0 %}
         <div class="col-sm-12">
-          <p>Found nothing ...</p>  
+          <p>Found nothing ...</p>
         </div>
       {% else %}
         {% for shirt in all_shirts %}
