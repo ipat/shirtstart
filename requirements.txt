@@ -1,3 +1,4 @@
 Django
 cx_Oracle
 django-split-settings
+MySQL-python

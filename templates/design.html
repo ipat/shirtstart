@@ -2,7 +2,7 @@
 {% include "template.head.html" %}
 {% include "template.nav.html" %}
 
-<form id="dropzone">
+<form id="dropzone" class="animated fadeIn">
 {% csrf_token %}
 
 <div id="design-wrapper">
@@ -12,7 +12,7 @@
         <div class="col-sm-12">
 
           <div class="actions">
-            <button class="cancel btn btn-default" type="button">
+            <button class="cancel btn btn-default" type="button" onclick="window.history.back()">
               <i class="glyphicon glyphicon-remove"></i>
               ยกเลิก
             </button>

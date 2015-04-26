@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^status/in-progress/', views.status_in_progress, name="status_in_progress"),
     url(r'^status/purchase-history/', views.status_purchase_history, name="status_purchase_history"),
 
-    url(r'^payment/', views.payment, name="payment"),
+    url(r'^payment/(?P<shirt_id>[\w|\W]+)/$', views.payment, name="payment"),
     url(r'^cart/', views.cart, name="cart"),
     url(r'^design/', views.design, name="design"),
     url(r'^profile/', views.profile, name="profile"),

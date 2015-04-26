@@ -1,0 +1,148 @@
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+{% include "template.search.html" %}
+<div class="container boxContent" id="payment">
+	<h1>PROFILE</h1>
+	<div class="row textcenter">
+		<span class="h0">{{ user.username }}</span>
+	</div>
+	<div id="profileDiv" class="textcenter">
+		<table align="center">
+			<tr>
+				<td class="leftTD">Firstname :</td>
+				<td class="rightTD">{{ user.first_name }}</td>
+			</tr>
+			<tr>
+				<td class="leftTD">Lastname :</td>
+				<td class="rightTD">{{ user.last_name }}</td>
+			</tr>
+			<tr>
+				<td class="leftTD">Gender :</td>
+				{% if user_profile.gender == 'M' %}
+					<td class="rightTD">Male</td>
+				{% elif user_profile.gender == 'F' %}
+					<td class="rightTD">Female</td>
+				{% endif %}
+			</tr>
+			<tr>
+				<td class="leftTD">Email :</td>
+				<td class="rightTD">{{ user.email }}</td>
+			</tr>
+			<tr>
+				<td class="leftTD">Birthdate :</td>
+				<td class="rightTD">{{user_profile.birthdate}}</td>
+			</tr>
+			<tr>
+				<td class="leftTD">Designer :</td>
+				{% if user_profile.is_designer %}
+					<td class="rightTD">Yes</td>
+				{% else %}
+					<td class="rightTD">No</td>
+				{% endif %}
+			</tr>
+			<tr>
+				<td class="leftTD">Default Address :</td>
+				<td class="rightTD">{{user_profile.address_house_no}} {{user_profile.address_building}} {{user_profile.address_road}} {{user_profile.address_subdistrict}} {{user_profile.address_district}} {{user_profile.address_province}} {{user_profile.address_country}} {{user_profile.address_postcode}}</td>
+			</tr>
+			<tr>
+				<td class="leftTD">Default credit card :</td>
+				{% if credit.number == '' %}
+					<td class="rightTD">{{credit.number}}</td>
+				{% else %}
+					<td class="rightTD">None</td>
+				{% endif %}
+			</tr>
+			<tr>
+				<td class="leftTD">Join date :</td>
+				<td class="rightTD">{{user_profile.created_at}} UTC</td>
+			</tr>
+		</table>
+	</div>
+	{% if user_profile.is_designer %}
+		<h1>Created Shirt</h1>
+		<div class="row" style="background-color=#eee;">
+	      {% for shirt in all_shirts %}
+	        <div class="each-shirt-wrapper col-sm-3">
+	          <div class="each-shirt-inner">
+	            <div class="flag">
+	              {% if shirt.is_on_shelf %}
+	                <span>พร้อมขาย</span>
+	              {% else %}
+	                <span>กำลังระดมทุน</span>
+	              {% endif %}
+	            </div>
+
+	            <div class="shirt-image">
+	              <img src="{% static 'img/shirt.png' %}">
+	            </div>
+
+	            <div class="content">
+	              <h4 class="title">
+	              	{% if shirt.is_on_shelf %}
+		                <a href="/buy/{{shirt.id}}">
+		                	<span class="nl">{{shirt.name}}</span>
+		                </a>
+		            {% else %}
+		            	<a href="/join/{{shirt.id}}">
+		                	<span class="nl">{{shirt.name}}</span>
+		                </a>
+		            {% endif %}
+	              </h4>
+	              <p class="description">
+	                {{shirt.description}}
+	              </p>
+	              <div class="status row">
+
+	                {% if shirt.is_on_shelf %}
+	                  <div class="price col-xs-12">
+	                    <i class="glyphicon glyphicon-bitcoin"></i>
+	                    <span>{{shirt.price}}</span>
+	                  </div>
+	                {% else %}
+	                  <div class="people col-xs-6">
+	                    <i class="glyphicon glyphicon-user"></i>
+	                    <span>{{shirt.current_amount}}/{{shirt.waiting_id.require_amount}}</span>
+	                  </div>
+	                  <div class="price col-xs-6">
+	                    <i class="glyphicon glyphicon-bitcoin"></i>
+	                    <span>{{shirt.price}}</span>
+	                  </div>
+	                  <div class="calendar col-xs-12">
+	                    <i class="glyphicon glyphicon-calendar"></i>
+	                    <span>{{shirt.waiting_id.require_date}}</span>
+	                  </div>
+	                {% endif %}
+
+	              </div>
+	            </div>
+
+	            <div class="action">
+	              {% if shirt.is_on_shelf %}
+	                <a href="/buy/{{shirt.id}}">
+	                  <button class="btn-primary btn">
+	                    เข้าชม
+	                  </button>
+	                </a>
+	              {% else %}
+	                <a href="/join/{{shirt.id}}">
+	                  <button class="btn-primary btn">
+	                    เข้าชม
+	                  </button>
+	                </a>
+	              {% endif %}
+	            </div>
+	          </div>
+	        </div>
+	      {% endfor %}
+	    </div>
+	   	<div class="row textcenter">
+			<h1>Wallet : {{ designer.wallet }}฿</h1>
+			<a href="/withdraw" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow width50">Withdraw</a>
+		</div>
+	{% endif %}
+
+
+	
+</div>
+{% include "template.foot.html" %}
