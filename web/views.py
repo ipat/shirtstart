@@ -219,8 +219,23 @@ def status_purchase_history(request):
   return render_to_response('status_purchased.html', {})
 
 @login_required
-def payment(request):
-  return render_to_response('payment.html', {})
+def payment(request, shirt_id):
+  if request.method == 'GET':
+    shirt_amount = {
+      's': request.GET.get('sAmount'),
+      'm': request.GET.get('mAmount'),
+      'l': request.GET.get('lAmount'),
+      'xl': request.GET.get('xlAmount')
+    }
+    user_profile = UserProfile.objects.get(user_id=request.user.id)
+    try:
+      credit = Credit_card.objects.get(user_id=user.id)
+    except Credit_card.DoesNotExist:
+        credit = None
+    
+    shirt = Shirt.objects.get(pk=shirt_id)
+
+    return render_to_response('payment.html', {'shirt_amount': shirt_amount, 'credit': credit})
 
 @login_required
 def cart(request):
