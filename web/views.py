@@ -19,8 +19,9 @@ from datetime import date, timedelta, datetime
 # Create your views here.
 
 def index(request):
-  shirts = Shirt.objects.annotate(like_count=Count('like'))\
-                        .order_by('-like_count')
+  shirts = Shirt.objects\
+            .annotate(like_count=Count('like'))\
+            .order_by('-like_count')[:4]
 
   return render(request, 'index.html', {
     'css_list': [
