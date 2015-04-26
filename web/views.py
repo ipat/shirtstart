@@ -13,6 +13,7 @@ from django.db.models import Q
 from django.db.models import Count
 from django.conf import settings
 
+
 import pprint
 from datetime import date, timedelta, datetime
 
@@ -163,6 +164,7 @@ def catalog(request):
       'search': search,
       'search_word': search_word,
       'filters': filters,
+      
     })
 
 def search(request, search_word):
@@ -175,18 +177,22 @@ def search(request, search_word):
 def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
-    # waiting = Waiting.objects.get(shirt_id=shirt_id)
     shirt = Shirt.objects.get(pk=shirt_id)
     shirt.current_amount = Join.objects.filter(shirt_id=shirt_id).count()
+    
+    shirt.comment_list = Comment.objects.filter(shirt_id=shirt_id)
+    shirt.size_of_comment = shirt.comment_list.count
+    
+    shirt.like_count = Like.objects.filter(shirt_id=shirt_id).count()
+
 
     d = (shirt.waiting_id.require_date-date.today()).days
-    created = (shirt.waiting_id.require_date-shirt.created_at.date()).days
-    left = created - d
-    percent_left = d*100/created
+    shirt.created = (shirt.waiting_id.require_date-shirt.created_at.date()).days
+    shirt.left = shirt.created - d
+    shirt.percent_left = d*100/shirt.created
     shirt.people_left = shirt.current_amount * 100 / shirt.waiting_id.require_amount
-    # waiting.require_date
 
-    return render(request, 'join.html', {'shirt':shirt,'waiting':shirt.waiting_id,'percent':percent_left,'created':created,'left':left})
+    return render(request, 'join.html', {'shirt':shirt})
 
   elif request.method == 'POST':
     # do something interesting here !
@@ -194,13 +200,24 @@ def join(request, shirt_id):
     # redirect to another view
     return HttpResponseRedirect(reverse('status'))
 
-def comment(request, comment_shirt_id):
-  if request.method == 'POST':
-    request.POST.get('comment_text')
-    user_id = request.user.id
-    # return render(request, 'contact.html', {} )
-
+def comment(request,comment_shirt_id):
+  if request.method == 'POST'  and request.POST.get('comment_text') != "":
+    cmt = request.POST.get('comment_text')
+    b = Comment(user_id=request.user,shirt_id=Shirt.objects.get(pk=comment_shirt_id),comment=cmt,time=date.today())
+    b.save()
   return HttpResponseRedirect('/join/' + comment_shirt_id + '/')
+  
+
+def like(request,like_shirt_id):
+  if request.method == 'GET' and Like.objects.filter(user_id=request.user).count()==0:
+      b = Like(user_id=request.user,shirt_id=Shirt.objects.get(pk=like_shirt_id),time=date.today())
+      b.save()
+  elif request.method == 'GET' and Like.objects.filter(user_id=request.user).count()==1:
+      b = Like.objects.get(shirt_id=like_shirt_id,user_id=request.user)
+      b.delete()
+
+  return HttpResponseRedirect('/join/' + like_shirt_id + '/')
+
 
 @login_required
 def buy(request, shirt_id):
