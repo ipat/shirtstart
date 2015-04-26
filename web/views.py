@@ -94,10 +94,10 @@ def login(request):
 
     if user:
       auth_login(request, user)
-      return HttpResponse('Login Success');
+      return HttpResponseRedirect('/')
     else:
       print "Invalid login details: {0}, {1}".format(username, password)
-      return HttpResponse("Invalid login")
+      return HttpResponseRedirect('/login')
   else:
     return render_to_response('login.html', {}, context)
 
@@ -393,8 +393,17 @@ def payment(request, shirt_id):
 @login_required
 def checkout(request):
   if request.method == 'GET':
+    user_profile = UserProfile.objects.get(user_id=request.user.id)
+    try:
+      credit = Credit_card.objects.get(user_id=request.user.id)
+      credit.exp = credit.expiry_year + "-" + credit.expiry_month
+    except Credit_card.DoesNotExist:
+      credit = None
 
-    return render_to_response('checkout.html', {})
+    return render(request,'checkout.html', {'credit': credit, 'user_profile': user_profile})
+
+  else:
+    return HttpResponse("hello")
 
 
 @login_required
