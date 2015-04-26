@@ -239,10 +239,10 @@ def status_purchase_history(request):
 def payment(request, shirt_id):
   if request.method == 'GET':
     shirt_amount = {
-      's': request.GET.get('sAmount'),
-      'm': request.GET.get('mAmount'),
-      'l': request.GET.get('lAmount'),
-      'xl': request.GET.get('xlAmount')
+      1: request.GET.get('sAmount'),
+      2: request.GET.get('mAmount'),
+      3: request.GET.get('lAmount'),
+      4: request.GET.get('xlAmount')
     }
     user_profile = UserProfile.objects.get(user_id=request.user.id)
     try:
@@ -256,9 +256,19 @@ def payment(request, shirt_id):
 
     shirt = Shirt.objects.get(pk=shirt_id)
 
-    return render(request,'payment.html', {'shirt_amount': shirt_amount, 'credit': credit, 'user_profile': user_profile})
+    return render(request,'payment.html', {'shirt_amount': shirt_amount, 'credit': credit, 'user_profile': user_profile, 'shirt_amount': shirt_amount})
 
   else:
+
+    shirt_amount = {
+      1: request.POST.get('sAmount'),
+      2: request.POST.get('mAmount'),
+      3: request.POST.get('lAmount'),
+      4: request.POST.get('xlAmount')
+    }
+
+    # return HttpResponse(shirt_amount[2])
+
     input_info = request.POST
     user_profile = UserProfile.objects.get(user_id=request.user.id)
     user_profile.address_house_no = input_info.get('address_house_no')
@@ -273,22 +283,38 @@ def payment(request, shirt_id):
 
     try:
       credit = Credit_card.objects.get(user_id=request.user.id)
+      credit.name_on_card = input_info.get('name_on_card')
+      credit.number = input_info.get('number')
+      credit.expiry_month = input_info.get('expiry_month').split('-')[1]
+      credit.expiry_year = input_info.get('expiry_month').split('-')[0]
+      credit.save()
     except Credit_card.DoesNotExist:
-      credit = Credit_card.objects
-
-    credit.name_on_card = input_info.get('name_on_card')
-    credit.number = input_info.get('number')
-    credit.expiry_month = input_info.get('expiry_month').split('-')[1]
-    credit.expiry_year = input_info.get('expiry_month').split('-')[0]
-    credit.save()
+      credit = Credit_card.objects.create(user_id=User.objects.get(pk=request.user.id), name_on_card=input_info.get('name_on_card'), number=input_info.get('number'), expiry_month=input_info.get('expiry_month').split('-')[1], expiry_year=input_info.get('expiry_month').split('-')[0])
+      # credit.save()
 
 
+    for i in range(1,4):
+      if shirt_amount[i] != "":
+        join_shirt = Join.objects.create(
+          address_house_no = input_info.get('address_house_no'),
+          address_building = input_info.get('address_building'),
+          address_road = input_info.get('address_road'),
+          address_subdistrict = input_info.get('address_subdistrict'),
+          address_district = input_info.get('address_district'),
+          address_province = input_info.get('address_province'),
+          address_country = input_info.get('address_country'),
+          address_postcode = input_info.get('address_postcode'),
+          shirt_size = i,
+          amount = shirt_amount[i],
+          time = datetime.now(),
+          user_id = User.objects.get(pk=request.user.id),
+          shirt_id = Shirt.objects.get(pk=shirt_id))
 
     # user_profile.save(request.POST)
     # credit = Credit_card.objects.get(user_id=request.user.id)
     # credit.save(request.POST)
 
-    return HttpResponse(input_info.get('expiry_month').split('-'))
+    return HttpResponseRedirect('/status/waiting')
 
 
 @login_required

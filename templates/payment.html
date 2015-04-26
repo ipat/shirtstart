@@ -4,16 +4,22 @@
 {% include "template.search.html" %}
 <form class="form" method="POST">{% csrf_token %}
 <div class="container boxContent" id="payment">
+	<input type="hidden" name="sAmount" value="{{shirt_amount.1}}" >
+	<input type="hidden" name="mAmount" value="{{shirt_amount.2}}" >
+	<input type="hidden" name="lAmount" value="{{shirt_amount.3}}" >
+	<input type="hidden" name="xlAmount" value="{{shirt_amount.4}}" >
+
+
 	<h1>PAYMENT</h1>
 		<label>Bank owner</label>
 		<select name="bank_owner">
 			<option>Bank 1</option>
 			<option>Bank 2</option>
 		</select>
-		<label>Name on Card </label><input placeholder=""  value="{{credit.name_on_card}}"/>
+		<label>Name on Card </label><input placeholder="" name="name_on_card"  value="{{credit.name_on_card}}"/>
 		<div class="row">
 			<div class="col-md-6">
-				<label>Card number </label><input placeholder="" pattern="[0-9]{13,16}" type="text" maxlength="16" title="Input 16 digit of your credit card number without dash" name="card_number" value="{{credit.number}}"/>
+				<label>Card number </label><input placeholder="" pattern="[0-9]{13,16}" type="text" maxlength="16" title="Input 16 digit of your credit card number without dash" name="number" value="{{credit.number}}"/>
 			</div>
 			<div class="col-md-5">
 				<label>Expiry month </label><input placeholder="" type="month" maxlength="16" name="expiry_month" value="{{credit.exp}}"/>
@@ -59,10 +65,10 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<label>Country</label><input placeholder="" type="text"  value="{{user_profile.address_country}}"/>
+			<label>Country</label><input placeholder="" type="text" name="address_country" value="{{user_profile.address_country}}"/>
 		</div>
 		<div class="col-md-4">
-			<label>Postcode</label><input placeholder="" type="text"  value="{{user_profile.address_postcode}}"/>
+			<label>Postcode</label><input placeholder="" type="text" name="address_postcode" value="{{user_profile.address_postcode}}"/>
 		</div>
 	</div>
 
