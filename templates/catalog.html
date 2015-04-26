@@ -46,10 +46,15 @@
             });
 
             // set defaults
-            $('#shirt-type-filter').val(filters.shirt_type);
-            $('#attribute-filter').val(filters.attribute);
-            $('#sort-filter').val(filters.sort);
-            $('.filter').selectpicker('render');
+            if (filters.shirt_type) {
+              $('#shirt-type-filter').selectpicker('val', filters.shirt_type);
+            }
+            if (filters.attribute) {
+              $('#attribute-filter').selectpicker('val', filters.attribute);  
+            }
+            if (filters.sort) {
+              $('#sort-filter').selectpicker('val', filters.sort);
+            }
           </script>
         </h1>
       </div>
