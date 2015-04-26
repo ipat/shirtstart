@@ -11,8 +11,11 @@ urlpatterns = [
     url(r'^signup/', views.signup, name="signup"),
     url(r'^logout/', views.logout, name="logout"),
     url(r'^login/', views.login, name="login"),
-    url(r'^comment/(?P<comment_shirt_id>[\w|\W]+)/$', views.comment, name="comment"),
-    url(r'^like/(?P<like_shirt_id>[\w|\W]+)/$', views.like, name="like"),
+    url(r'^comment_join/(?P<comment_shirt_id>[\w|\W]+)/$', views.comment_join, name="comment_join"),
+    url(r'^like_join/(?P<like_shirt_id>[\w|\W]+)/$', views.like_join, name="like_join"),
+    url(r'^comment_buy/(?P<comment_shirt_id>[\w|\W]+)/$', views.comment_buy, name="comment_buy"),
+    url(r'^like_buy/(?P<like_shirt_id>[\w|\W]+)/$', views.like_buy, name="like_buy"),
+    url(r'^add_to_cart/(?P<add_shirt_id>[\w|\W]+)/$', views.add_to_cart, name="add_to_cart"),
     # url(r'^register/$', views.register, name="re")
     # status things
     url(r'^status/waiting/', views.status_waiting, name="status_waiting"),
@@ -20,6 +23,7 @@ urlpatterns = [
     url(r'^status/purchase-history/', views.status_purchase_history, name="status_purchase_history"),
 
     url(r'^payment/(?P<shirt_id>[\w|\W]+)/$', views.payment, name="payment"),
+    url(r'^checkout/$', views.checkout, name="checkout"),
     url(r'^cart/', views.cart, name="cart"),
     url(r'^design/', views.design, name="design"),
     url(r'^profile/', views.profile, name="profile"),

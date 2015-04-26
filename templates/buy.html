@@ -14,8 +14,8 @@
 			<h4>{{shirt.description}}</h4>
 			<h4>{{shirt.owner_id.firts_name}}</h4>
 			<p class="italic" id="designer">by Xmenza
-				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 1
-				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 2
+				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {{shirt.like_count}}
+				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{shirt.size_of_comment}}
 			</p>
 			<!-- <p id="expDate">Timer ended at : </p>
 			<div id="dayLeftDiv">
@@ -51,7 +51,8 @@
 				</div>
 			</div>
 			<div class="row textRight centerOnSmall">
-				<form>
+				<form  method= 'POST' action="/add_to_cart/{{shirt.id}}/">{% csrf_token %}
+					
 					<div class="row" id="inputAmount">
 						S <input name="sAmount">
 						M <input name="mAmount">
@@ -67,8 +68,9 @@
 						</div>
 						<div class="col-md-6">
 							<button class="btn round btn-green btn-bigpad fontBold fontWhite hvr-shadow" id="btnJoin">
-								ADD TO CART
+									ADD TO CART
 							</button>
+							
 						</div>
 					</div>
 
@@ -78,16 +80,21 @@
 
 		</div>
 	</div>
-		<form id="commentForm">
-			<textarea placeholder="write your comment here ..." type="text" id="txtComment"></textarea>
+		<form method='GET' action="/like_buy/{{shirt.id}}">
+			<button name="like" style="padding: 20px">like</button>
+		</form>
+		<form id="commentForm" method='POST' action="/comment_buy/{{shirt.id}}/">{% csrf_token %}
+			<textarea placeholder="write your comment here ..." type="text" id="txtComment" name="comment_text"></textarea>
 			<button type="submit" class="btn btnWhite" id="btnSubmit">submit</button>
 		</form>
+		{% for cmt in shirt.comment_list %}
 		<div class="container" id="commentView">
 			<div class="row card">
-				<p class="userComment">Username</h2>
-				<p class="txtComment">Comment is here</p>
+				<p class="userComment">{{cmt.user_id}}</h2>
+				<p class="txtComment">{{cmt.comment}}</p>
 			</div>
 		</div>
+		{% endfor %}
 	</div>
 </div>
 

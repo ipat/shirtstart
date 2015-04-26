@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import models
 from web.models import *
 from django.db.models import Q
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.conf import settings
 
 
@@ -23,6 +23,8 @@ def index(request):
   shirts = Shirt.objects\
             .annotate(like_count=Count('like'))\
             .order_by('-like_count')[:4]
+
+  shirts = shirts.annotate(current_amount=Sum('join__amount'))
 
   return render(request, 'index.html', {
     'css_list': [
@@ -92,10 +94,10 @@ def login(request):
 
     if user:
       auth_login(request, user)
-      return HttpResponse('Login Success');
+      return HttpResponseRedirect('/')
     else:
       print "Invalid login details: {0}, {1}".format(username, password)
-      return HttpResponse("Invalid login")
+      return HttpResponseRedirect('/login')
   else:
     return render_to_response('login.html', {}, context)
 
@@ -150,7 +152,7 @@ def catalog(request):
       all_shirts = all_shirts.order_by(order_prefix + 'color_num')
 
     # Add current amount of shirt join
-    all_shirts = all_shirts.annotate(current_amount=Count('join'))
+    all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
 
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
@@ -178,7 +180,9 @@ def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
     shirt = Shirt.objects.get(pk=shirt_id)
-    shirt.current_amount = Join.objects.filter(shirt_id=shirt_id).count()
+    shirt.current_amount = 0
+    for inJoin in Join.objects.filter(shirt_id=shirt_id):
+      shirt.current_amount += inJoin.amount
     
     shirt.comment_list = Comment.objects.filter(shirt_id=shirt_id)
     shirt.size_of_comment = shirt.comment_list.count
@@ -200,7 +204,7 @@ def join(request, shirt_id):
     # redirect to another view
     return HttpResponseRedirect(reverse('status'))
 
-def comment(request,comment_shirt_id):
+def comment_join(request,comment_shirt_id):
   if request.method == 'POST'  and request.POST.get('comment_text') != "":
     cmt = request.POST.get('comment_text')
     b = Comment(user_id=request.user,shirt_id=Shirt.objects.get(pk=comment_shirt_id),comment=cmt,time=date.today())
@@ -208,20 +212,92 @@ def comment(request,comment_shirt_id):
   return HttpResponseRedirect('/join/' + comment_shirt_id + '/')
   
 
-def like(request,like_shirt_id):
-  if request.method == 'GET' and Like.objects.filter(user_id=request.user).count()==0:
+def like_join(request,like_shirt_id):
+  if request.method == 'GET' and Like.objects.filter(user_id=request.user ,shirt_id=like_shirt_id).count()==0:
       b = Like(user_id=request.user,shirt_id=Shirt.objects.get(pk=like_shirt_id),time=date.today())
       b.save()
-  elif request.method == 'GET' and Like.objects.filter(user_id=request.user).count()==1:
+  elif request.method == 'GET' and Like.objects.filter(user_id=request.user, shirt_id=like_shirt_id).count()==1:
       b = Like.objects.get(shirt_id=like_shirt_id,user_id=request.user)
       b.delete()
 
   return HttpResponseRedirect('/join/' + like_shirt_id + '/')
 
+def comment_buy(request,comment_shirt_id):
+  if request.method == 'POST'  and request.POST.get('comment_text') != "":
+    cmt = request.POST.get('comment_text')
+    b = Comment(user_id=request.user,shirt_id=Shirt.objects.get(pk=comment_shirt_id),comment=cmt,time=date.today())
+    b.save()
+  return HttpResponseRedirect('/buy/' + comment_shirt_id + '/')
+
+
+  
+
+def like_buy(request,like_shirt_id):
+  if request.method == 'GET' and Like.objects.filter(user_id=request.user ,shirt_id=like_shirt_id).count()==0:
+      b = Like(user_id=request.user,shirt_id=Shirt.objects.get(pk=like_shirt_id),time=date.today())
+      b.save()
+  elif request.method == 'GET' and Like.objects.filter(user_id=request.user,shirt_id=like_shirt_id).count()==1:
+      b = Like.objects.get(shirt_id=like_shirt_id,user_id=request.user)
+      b.delete()
+
+  return HttpResponseRedirect('/buy/' + like_shirt_id + '/')
+
+# def cart(request):
+
+#   return HttpResponseRedirect('/cart/')
+
+def add_to_cart(request,add_shirt_id):
+  
+  try:
+    sa = request.POST.get('sAmount')
+    if request.POST.get('sAmount') != '':
+      s_amount = int(sa) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=1).amount
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=1).update(amount=s_amount)  
+  except Shirt_in_cart.DoesNotExist:
+    if request.POST.get('sAmount') != '': 
+      s = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=1,amount=request.POST.get('sAmount'),time=date.today())
+      s.save()
+  try:
+    sm = request.POST.get('mAmount')
+    if request.POST.get('mAmount') != '':
+      m_amount = int(sm) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=2).amount
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=2).update(amount=m_amount)    
+  except Shirt_in_cart.DoesNotExist:
+    if request.POST.get('mAmount') != '':
+      m = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=2,amount=request.POST.get('mAmount'),time=date.today())
+      m.save()
+  try:
+    sl = request.POST.get('lAmount')
+    if request.POST.get('lAmount') != '':
+      l_amount = int(sl) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=3).amount
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=3).update(amount=l_amount)  
+  except Shirt_in_cart.DoesNotExist:
+    if request.POST.get('lAmount') != '':
+      l = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=3,amount=request.POST.get('lAmount'),time=date.today())
+      l.save()
+  try: 
+    sxl = request.POST.get('xlAmount')
+    if request.POST.get('xlAmount') != '':
+      xl_amount = int(sxl) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=4).amount
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=4).update(amount=xl_amount)  
+  except Shirt_in_cart.DoesNotExist:
+    if request.POST.get('xlAmount') != '':
+      xl = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=4,amount=request.POST.get('xlAmount'),time=date.today())
+      xl.save()
+   
+  return HttpResponseRedirect('/cart/' + add_shirt_id + '/')
+
+
+
 
 @login_required
 def buy(request, shirt_id):
-  return render_to_response('buy.html', {})
+  shirt = Shirt.objects.get(pk=shirt_id)
+  shirt.comment_list = Comment.objects.filter(shirt_id=shirt_id)
+  shirt.size_of_comment = shirt.comment_list.count
+  shirt.like_count = Like.objects.filter(shirt_id=shirt_id).count()
+
+  return render(request,'buy.html', {'shirt':shirt})
 
 @login_required
 def status_waiting(request):
@@ -239,11 +315,14 @@ def status_purchase_history(request):
 def payment(request, shirt_id):
   if request.method == 'GET':
     shirt_amount = {
-      's': request.GET.get('sAmount'),
-      'm': request.GET.get('mAmount'),
-      'l': request.GET.get('lAmount'),
-      'xl': request.GET.get('xlAmount')
+      1: request.GET.get('sAmount'),
+      2: request.GET.get('mAmount'),
+      3: request.GET.get('lAmount'),
+      4: request.GET.get('xlAmount')
     }
+
+    shirt = Shirt.objects.get(pk=shirt_id)
+
     user_profile = UserProfile.objects.get(user_id=request.user.id)
     try:
       credit = Credit_card.objects.get(user_id=request.user.id)
@@ -255,10 +334,21 @@ def payment(request, shirt_id):
     # credit.exp = (credit.expiry_year, credit.expiry_month)
 
     shirt = Shirt.objects.get(pk=shirt_id)
+    # return HttpResponse(user_profile.address_building)
 
-    return render(request,'payment.html', {'shirt_amount': shirt_amount, 'credit': credit, 'user_profile': user_profile})
+    return render(request,'payment.html', {'shirt': shirt, 'shirt_amount': shirt_amount, 'credit': credit, 'user_profile': user_profile, 'shirt_amount': shirt_amount})
 
   else:
+
+    shirt_amount = {
+      1: request.POST.get('sAmount'),
+      2: request.POST.get('mAmount'),
+      3: request.POST.get('lAmount'),
+      4: request.POST.get('xlAmount')
+    }
+
+    # return HttpResponse(shirt_amount[2])
+
     input_info = request.POST
     user_profile = UserProfile.objects.get(user_id=request.user.id)
     user_profile.address_house_no = input_info.get('address_house_no')
@@ -273,34 +363,53 @@ def payment(request, shirt_id):
 
     try:
       credit = Credit_card.objects.get(user_id=request.user.id)
+      credit.name_on_card = input_info.get('name_on_card')
+      credit.number = input_info.get('number')
+      credit.expiry_month = input_info.get('expiry_month').split('-')[1]
+      credit.expiry_year = input_info.get('expiry_month').split('-')[0]
+      credit.save()
     except Credit_card.DoesNotExist:
-      credit = Credit_card.objects
-
-    credit.name_on_card = input_info.get('name_on_card')
-    credit.number = input_info.get('number')
-    credit.expiry_month = input_info.get('expiry_month').split('-')[1]
-    credit.expiry_year = input_info.get('expiry_month').split('-')[0]
-    credit.save()
+      credit = Credit_card.objects.create(user_id=User.objects.get(pk=request.user.id), name_on_card=input_info.get('name_on_card'), number=input_info.get('number'), expiry_month=input_info.get('expiry_month').split('-')[1], expiry_year=input_info.get('expiry_month').split('-')[0])
+      # credit.save()
 
 
+    for i in range(1,4):
+      if shirt_amount[i] != "":
+        join_shirt = Join.objects.create(
+          address_house_no = input_info.get('address_house_no'),
+          address_building = input_info.get('address_building'),
+          address_road = input_info.get('address_road'),
+          address_subdistrict = input_info.get('address_subdistrict'),
+          address_district = input_info.get('address_district'),
+          address_province = input_info.get('address_province'),
+          address_country = input_info.get('address_country'),
+          address_postcode = input_info.get('address_postcode'),
+          shirt_size = i,
+          amount = shirt_amount[i],
+          time = datetime.now(),
+          user_id = User.objects.get(pk=request.user.id),
+          shirt_id = Shirt.objects.get(pk=shirt_id))
 
     # user_profile.save(request.POST)
     # credit = Credit_card.objects.get(user_id=request.user.id)
     # credit.save(request.POST)
+    return HttpResponseRedirect('/status/waiting')
 
-    return HttpResponse(input_info.get('expiry_month').split('-'))
-class shirt_am(object):
-  s = 0
-  m = 0
-  l = 0
-  xl = 0
-  sh_id = 0
-  def __init__(s, m, l, xl, sh_id):
-    self.s = s
-    self.m = m
-    self.l = l
-    self.xl = xl
-    self.sh_id = sh_id
+@login_required
+def checkout(request):
+  if request.method == 'GET':
+    user_profile = UserProfile.objects.get(user_id=request.user.id)
+    try:
+      credit = Credit_card.objects.get(user_id=request.user.id)
+      credit.exp = credit.expiry_year + "-" + credit.expiry_month
+    except Credit_card.DoesNotExist:
+      credit = None
+
+    return render(request,'checkout.html', {'credit': credit, 'user_profile': user_profile})
+
+  else:
+    return HttpResponse("hello")
+
 
 @login_required
 def cart(request):

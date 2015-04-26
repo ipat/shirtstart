@@ -75,7 +75,7 @@ class Join (models.Model):
 	address_postcode = models.CharField(max_length=10)
 
 	class Meta:
-		unique_together = (("user_id", "shirt_id", "shirt_size"),)
+		unique_together = (("user_id", "shirt_id", "shirt_size", "time"),)
 
 class Shirt_in_cart (models.Model):
 	user_id = models.ForeignKey(User)
