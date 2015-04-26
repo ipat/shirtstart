@@ -38,11 +38,14 @@
           width: 100%; }
       #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .title {
         font-family: "gillsans";
-        font-size: 1.8rem;
+        font-size: 2rem;
         text-align: center;
         line-height: 1.3;
-        font-weight: lighter; }
+        font-weight: lighter;
+        margin: 0px; }
       #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .description {
+        margin: 0px;
+        margin-top: 5px;
         padding: 0px 30px;
         text-align: center;
         color: #828282; }
