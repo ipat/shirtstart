@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import models
 from web.models import *
 from django.db.models import Q
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.conf import settings
 
 
@@ -23,6 +23,8 @@ def index(request):
   shirts = Shirt.objects\
             .annotate(like_count=Count('like'))\
             .order_by('-like_count')[:4]
+
+  shirts = shirts.annotate(current_amount=Sum('join__amount'))
 
   return render(request, 'index.html', {
     'css_list': [
@@ -150,7 +152,7 @@ def catalog(request):
       all_shirts = all_shirts.order_by(order_prefix + 'color_num')
 
     # Add current amount of shirt join
-    all_shirts = all_shirts.annotate(current_amount=Count('join'))
+    all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
 
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
@@ -178,7 +180,9 @@ def join(request, shirt_id):
   if request.method == 'GET':
     # show the view
     shirt = Shirt.objects.get(pk=shirt_id)
-    shirt.current_amount = Join.objects.filter(shirt_id=shirt_id).count()
+    shirt.current_amount = 0
+    for inJoin in Join.objects.filter(shirt_id=shirt_id):
+      shirt.current_amount += inJoin.amount
     
     shirt.comment_list = Comment.objects.filter(shirt_id=shirt_id)
     shirt.size_of_comment = shirt.comment_list.count
@@ -244,6 +248,9 @@ def payment(request, shirt_id):
       3: request.GET.get('lAmount'),
       4: request.GET.get('xlAmount')
     }
+
+    shirt = Shirt.objects.get(pk=shirt_id)
+
     user_profile = UserProfile.objects.get(user_id=request.user.id)
     try:
       credit = Credit_card.objects.get(user_id=request.user.id)
@@ -255,8 +262,9 @@ def payment(request, shirt_id):
     # credit.exp = (credit.expiry_year, credit.expiry_month)
 
     shirt = Shirt.objects.get(pk=shirt_id)
+    # return HttpResponse(user_profile.address_building)
 
-    return render(request,'payment.html', {'shirt_amount': shirt_amount, 'credit': credit, 'user_profile': user_profile, 'shirt_amount': shirt_amount})
+    return render(request,'payment.html', {'shirt': shirt, 'shirt_amount': shirt_amount, 'credit': credit, 'user_profile': user_profile, 'shirt_amount': shirt_amount})
 
   else:
 
@@ -315,6 +323,12 @@ def payment(request, shirt_id):
     # credit.save(request.POST)
 
     return HttpResponseRedirect('/status/waiting')
+
+@login_required
+def checkout(request):
+  if request.method == 'GET':
+
+    return render_to_response('checkout.html', {})
 
 
 @login_required
