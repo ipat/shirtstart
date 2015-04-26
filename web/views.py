@@ -397,7 +397,6 @@ def payment(request, shirt_id):
           user_id = User.objects.get(pk=request.user.id),
           shirt_id = Shirt.objects.get(pk=shirt_id))
 
-
     return HttpResponseRedirect('/status/waiting')
 
 @login_required
@@ -466,7 +465,46 @@ def checkout(request):
 
 @login_required
 def cart(request):
-  return render_to_response('cart.html', {})
+  user = request.user
+  shirt_amount = {}
+  shirt_if = []
+  try:
+    shirt_in_cart = Shirt_in_cart.objects.filter(user_id=user.id)
+    for shirt in shirt_in_cart:
+      shirt_amount[str(shirt.shirt_id.id)] = ['a']*8
+      shirt_amount[str(shirt.shirt_id.id)][0] = shirt.shirt_id.name
+      shirt_amount[str(shirt.shirt_id.id)][1] = '0'
+      shirt_amount[str(shirt.shirt_id.id)][2] = '0'
+      shirt_amount[str(shirt.shirt_id.id)][3] = '0'
+      shirt_amount[str(shirt.shirt_id.id)][4] = '0'
+      shirt_amount[str(shirt.shirt_id.id)][5] = shirt.shirt_id.owner_id.username 
+      shirt_amount[str(shirt.shirt_id.id)][6] = shirt.shirt_id.description 
+      
+  
+    for shirt in shirt_in_cart:
+      if shirt.shirt_size == '1':
+        shirt_amount[str(shirt.shirt_id.id)][1] = shirt.amount
+      elif shirt.shirt_size == '2':
+        shirt_amount[str(shirt.shirt_id.id)][2] = shirt.amount
+      elif shirt.shirt_size == '3':
+        shirt_amount[str(shirt.shirt_id.id)][3] = shirt.amount
+      elif shirt.shirt_size == '4':
+        shirt_amount[str(shirt.shirt_id.id)][4] = shirt.amount
+      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * 30 + 50) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1])))) 
+  except Shirt_in_cart.DoesNotExist:
+    shirt_in_cart = None
+  # return HttpResponse(shirt_amount['5'])
+  total = 0
+  for sh in shirt_amount:
+    shirt_if.append(shirt_amount[sh])
+    total += int(shirt_amount[sh][7])
+
+  return render_to_response('cart.html', {
+    'shirt_amount' : shirt_if,
+    'user' : user,
+    'total' : total,
+  })
+
 
 @login_required
 def design(request):
@@ -506,7 +544,10 @@ def design(request):
 @login_required
 def profile(request):
   user = request.user
-  user_profile = UserProfile.objects.get(user_id=user.id)
+  try:
+    user_profile = UserProfile.objects.get(user_id=user.id)
+  except UserProfile.DoesNotExist:
+      user_profile = None
   try:
     all_shirts = Shirt.objects.get(owner_id=user.id)
   except Shirt.DoesNotExist:
