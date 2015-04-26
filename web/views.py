@@ -19,8 +19,9 @@ from datetime import date, timedelta, datetime
 # Create your views here.
 
 def index(request):
-  shirts = Shirt.objects.annotate(like_count=Count('like'))\
-                        .order_by('-like_count')
+  shirts = Shirt.objects\
+            .annotate(like_count=Count('like'))\
+            .order_by('-like_count')[:4]
 
   return render(request, 'index.html', {
     'css_list': [
@@ -121,9 +122,9 @@ def catalog(request):
 
     # expose filter selected options to the page
     filters = {
-      'shirt_type': request.GET.get('shirt_type'),
-      'attribute': request.GET.get('attribute'),
-      'sort': request.GET.get('sort'),
+      'shirt_type': request.GET.get('shirt_type') if request.GET.has_key('shirt_type') else '',
+      'attribute': request.GET.get('attribute') if request.GET.has_key('attribute') else '',
+      'sort': request.GET.get('sort') if request.GET.has_key('sort') else '',
     }
 
     # Filter by type of shirt
