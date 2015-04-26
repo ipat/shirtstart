@@ -163,6 +163,7 @@ def catalog(request):
       'search': search,
       'search_word': search_word,
       'filters': filters,
+      asdfasdfasdf
     })
 
 def search(request, search_word):
