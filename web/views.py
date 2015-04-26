@@ -229,13 +229,50 @@ def payment(request, shirt_id):
     }
     user_profile = UserProfile.objects.get(user_id=request.user.id)
     try:
-      credit = Credit_card.objects.get(user_id=user.id)
+      credit = Credit_card.objects.get(user_id=request.user.id)
+      credit.exp = credit.expiry_year + "-" + credit.expiry_month
     except Credit_card.DoesNotExist:
-        credit = None
+      credit = None
     
+    
+    # credit.exp = (credit.expiry_year, credit.expiry_month)
+
     shirt = Shirt.objects.get(pk=shirt_id)
 
-    return render_to_response('payment.html', {'shirt_amount': shirt_amount, 'credit': credit})
+    return render(request,'payment.html', {'shirt_amount': shirt_amount, 'credit': credit, 'user_profile': user_profile})
+
+  else:
+    input_info = request.POST
+    user_profile = UserProfile.objects.get(user_id=request.user.id)
+    user_profile.address_house_no = input_info.get('address_house_no')
+    user_profile.address_building = input_info.get('address_building')
+    user_profile.address_road = input_info.get('address_road')
+    user_profile.address_subdistrict = input_info.get('address_subdistrict')
+    user_profile.address_district = input_info.get('address_district')
+    user_profile.address_province = input_info.get('address_province')
+    user_profile.address_country = input_info.get('address_country')
+    user_profile.address_postcode = input_info.get('address_postcode')
+    user_profile.save()
+
+    try:
+      credit = Credit_card.objects.get(user_id=request.user.id)
+    except Credit_card.DoesNotExist:
+      credit = Credit_card.objects
+
+    credit.name_on_card = input_info.get('name_on_card')
+    credit.number = input_info.get('number')
+    credit.expiry_month = input_info.get('expiry_month').split('-')[1]
+    credit.expiry_year = input_info.get('expiry_month').split('-')[0]
+    credit.save()
+
+
+
+    # user_profile.save(request.POST)
+    # credit = Credit_card.objects.get(user_id=request.user.id)
+    # credit.save(request.POST)
+
+    return HttpResponse(input_info.get('expiry_month').split('-'))
+
 
 @login_required
 def cart(request):

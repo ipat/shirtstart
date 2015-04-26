@@ -2,7 +2,7 @@
 {% include "template.head.html" %}
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
-<form class="form">
+<form class="form" method="POST">{% csrf_token %}
 <div class="container boxContent" id="payment">
 	<h1>PAYMENT</h1>
 		<label>Bank owner</label>
@@ -10,13 +10,13 @@
 			<option>Bank 1</option>
 			<option>Bank 2</option>
 		</select>
-		<label>Name on Card </label><input placeholder=""/>
+		<label>Name on Card </label><input placeholder=""  value="{{credit.name_on_card}}"/>
 		<div class="row">
 			<div class="col-md-6">
-				<label>Card number </label><input placeholder="" pattern="[0-9]{13,16}" type="text" maxlength="16" title="Input 16 digit of your credit card number without dash" name="card_number"/>
+				<label>Card number </label><input placeholder="" pattern="[0-9]{13,16}" type="text" maxlength="16" title="Input 16 digit of your credit card number without dash" name="card_number" value="{{credit.number}}"/>
 			</div>
 			<div class="col-md-5">
-				<label>Expiry month </label><input placeholder="" type="month" maxlength="16" name="expiry_month"/>
+				<label>Expiry month </label><input placeholder="" type="month" maxlength="16" name="expiry_month" value="{{credit.exp}}"/>
 			</div>
 			<div class="col-md-1">
 				<label>CVV </label><input placeholder="" type="number" maxlength="3" />
@@ -37,32 +37,32 @@
 	address_postcode = models.CharField(max_length=10) -->
 	<div class="row">
 		<div class="col-md-3">
-			<label>House No. </label><input placeholder="" type="text" name="address_house_no"/>
+			<label>House No. </label><input placeholder="" type="text" name="address_house_no" value="{{user_profile.address_house_no}}"/>
 		</div>
 		<div class="col-md-5">
-			<label>Building</label><input placeholder="" type="text" name="address_building"/>
+			<label>Building</label><input placeholder="" type="text" name="address_building" value="{{user_profile.address_builing}}"/>
 		</div>
 		<div class="col-md-4">
-			<label>Road</label><input placeholder="" type="text" name="address_road"/>
+			<label>Road</label><input placeholder="" type="text" name="address_road"  value="{{user_profile.addrss_road}}"/>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-4">
-			<label>Subdistrict</label><input placeholder="" type="text" name="address_subdistrict"/>
+			<label>Subdistrict</label><input placeholder="" type="text" name="address_subdistrict"  value="{{user_profile.address_subdistrict}}"/>
 		</div>
 		<div class="col-md-4">
-			<label>District</label><input placeholder="" type="text" name="address_district"/>
+			<label>District</label><input placeholder="" type="text" name="address_district"  value="{{user_profile.address_district}}"/>
 		</div>
 		<div class="col-md-4">
-			<label>Province</label><input placeholder="" type="text" name="address_province"/>
+			<label>Province</label><input placeholder="" type="text" name="address_province"  value="{{user_profile.address_province}}"/>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<label>Country</label><input placeholder="" type="text" />
+			<label>Country</label><input placeholder="" type="text"  value="{{user_profile.address_country}}"/>
 		</div>
 		<div class="col-md-4">
-			<label>Zipcode</label><input placeholder="" type="text" />
+			<label>Postcode</label><input placeholder="" type="text"  value="{{user_profile.address_postcode}}"/>
 		</div>
 	</div>
 
