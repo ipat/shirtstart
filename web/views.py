@@ -810,7 +810,7 @@ def admin_login(request):
     if username == 'shirt' and password == 'start':
       request.session['admin_login'] = True
       return HttpResponseRedirect('/admin/')
-    else
+    else:
       return HttpResponseRedirect('/admin_login/')
 
 
