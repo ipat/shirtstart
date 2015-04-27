@@ -4,25 +4,17 @@
     <div id="branddiv">
         <img class="logo hidden-xs" src="{% static 'img/logo.png' %}">
         <img class="logo hidden-sm hidden-xs" src="{% static 'img/slogan.png' %}">
+
     </div>
   </a>
   <div id="toplinkdiv">
-    <a href="/status/waiting" id="order" class="btn round">ORDER STATUS</a>
-    <a href="/cart" id="cart" class="btn round">CART</a>
-    {# check whether the user is logged in #}
-    {% if user.username %}
-      <a href="/profile">
-        <button id="loginbtn" class="btn round">
-          {{user.username}}
-        </button>
-      </a>
+    {% if user.is_authenticated %}
+      <a href="/status/waiting" id="order" class="btn round">ORDER STATUS</a>
+      <a href="/cart" id="cart" class="btn round">CART</a>
+      <a href="/profile" id="loginbtn" class="btn round">{{user.username}}</a>
     {% else %}
-      <a href="/login">
-        <button id="loginbtn" class="btn round">
-          เข้าสู่ระบบ
-        </button>
-      </a>
+      <a href="/profile" id="loginbtn" class="btn round">LOG IN</a>
     {% endif %}
-  </div>
+    </div>
 </div>
 
