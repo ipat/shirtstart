@@ -25,7 +25,7 @@
         color: #969696;
         background-color: #f0f0f0;
         border-radius: 0px 0px 0px 5px;
-        zoom: 1.4; }
+        zoom: 1.2; }
       #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image {
         padding-top: 2rem; }
         #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .inner {
@@ -42,7 +42,7 @@
         #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .filler {
           width: 30%; }
       #home-wrapper .each-shirt-wrapper .each-shirt-inner .content {
-        zoom: 1.5; }
+        zoom: 1.1; }
         #home-wrapper .each-shirt-wrapper .each-shirt-inner .content .title {
           font-family: "gillsans";
           font-size: 2rem;
@@ -65,8 +65,10 @@
             color: #3498db; }
           #home-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .price {
             color: black; }
+          #home-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .calendar {
+            padding-top: 0.5rem; }
       #home-wrapper .each-shirt-wrapper .each-shirt-inner .action {
-        zoom: 1.5;
+        zoom: 1.2;
         margin-top: 15px;
         background-color: #f0f0f0;
         padding: 10px;

@@ -1,0 +1,181 @@
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+
+<div id="admin-wrapper" class="animated fadeIn">
+  <div class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <div class="actions">
+            <a href="/admin/logout/">
+              <button class="finish btn btn-primary" data-toggle="modal" data-target="#form-details" type="button">
+                <i class="glyphicon glyphicon-remove"></i>
+                Logout
+              </button>
+            </a>
+          </div>
+
+          {# <h1 class="title">God, I am</h1> #}
+          <h1 class="title">Sweet land of thee, I sing</h1>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="left">IN PROGRESS</th>
+            <th class="right">SENT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {# Left col #}
+            <td class="left">
+
+              {# set the link "data-target" to the right box #}
+
+              {% for ip in in_progress %}
+                <a href="" data-target="#order-{{ip.id}}" data-toggle="modal">
+                  <div class="each-order-wrapper">
+                    <div class="total">
+                      <span class="total-title">TOTAL</span>
+                      <span class="total-amount">{{ip.total_price}} Baht</span>
+
+                      <p class="date">
+                        <span>{{ip.time}}</span>
+                      </p>
+                    </div>
+
+                    <h3 class="buyer">{{ip.user_id.first_name}} {{ip.user_id.last_name}}</h3>
+
+                    <div style="clear:both;"></div>
+                  </div>
+                </a>
+              {% endfor %}
+
+            </td>
+
+            {# Right col #}
+            <td class="right">
+
+              {% for se in sent %}
+                <div class="each-order-wrapper">
+                  <div class="total">
+                    <span class="total-title">TOTAL</span>
+                    <span class="total-amount">{{se.total_price}} Baht</span>
+
+                    <p class="date">
+                      <span>{{se.ship_date}}</span>
+                    </p>
+                  </div>
+
+                  <h3 class="buyer">{{se.user_id.first_name}} {{se.user_id.last_name}}</h3>
+
+                  <div style="clear:both;"></div>
+                </div>
+              {% endfor %}
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="admin-modal-wrapper">
+  {% for ip in in_progress %}
+    <div id="order-{{ip.id}}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Order No. {{ip.id}} - Invoice</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row" style="text-align: center">
+              {% for ol in ip.order_list %}
+                <div class="each-shirt-wrapper col-sm-4">
+                  <div class="each-shirt-inner">
+                    <div class="shirt-image">
+                      <div class="inner">
+                        <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+                        <div class="filler-wrapper">
+                          <img class="filler" src="{% static 'shirts/' %}{{ol.shirt_id.id}}.{{ol.shirt_id.file_url}}">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="content">
+                      <h4 class="title">
+                        <span class="nl">{{ol.shirt_id.name}}</span>
+                      </h4>
+                      <div class="status row">
+
+                        <div class="price col-xs-12">
+                          <span>{{ol.shirt_size}}</span>
+                          <span>{{ol.amount}} ea.</span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <div class="total row">
+              <p>
+                <span class="title">TOTAL</span>
+                <span class="amount">{{ip.total_price}} Baht</span>
+              </p>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="address row">
+              <div class="col-sm-12">
+                <h4>Konpat Preechakul</h4>
+                <address>
+                  {{ip.address_house_no}} {{ip.address_building}} {{ip.address_road}}<br>
+                  {{ip.address_subdistrict}} {{ip.address_district}} {{ip.address_province}} {{ip.postcode}}
+                </address>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <div class="container">
+              <form method="POST">{% csrf_token %}
+                <div class="form-group">
+                  <label>Ship Tracking Number</label>
+                  <input name="ship_tracking_no" type="name" class="form-control" id="" placeholder="Enter tracking number ..">
+                  <input name="order_id" type="hidden" class="form-control" id="" value="{{ip.id}}">
+                </div>
+                <div style="text-align: center;">
+                  <button type="submit" class="submit btn btn-default">
+                    Package has been sent !
+                  </button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  {% endfor %}
+</div>
+
+<script type="text/javascript">
+  // $('#order-18').modal();
+</script>
+
+{% include "template.foot.html" %}

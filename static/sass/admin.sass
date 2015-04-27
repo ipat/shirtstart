@@ -1,0 +1,247 @@
+@import "colors"
+
+body
+  background-color: rgb(39,45,71)
+
+#admin-modal-wrapper
+  .modal-dialog
+    width: 860px
+
+  .modal-content
+    overflow: hidden
+
+  .modal-body
+    padding: 15px 30px 15px 30px
+
+  .modal-footer
+    background-color: rgb(240,240,240)
+
+    .container
+      padding: 20px 0px
+      max-width: 350px
+      text-align: left
+
+      input
+        font-size: 1.8rem
+        height: 4rem
+        margin: 0.4rem 0rem 2rem 0rem
+
+      button:hover
+        background-color: lighten($light-green, 3%)
+      button
+        background-color: $light-green
+        border: 0px
+        font-size: 2rem
+        font-weight: bold
+        color: white
+        padding: 6px 15px
+        border-radius: 6px
+        box-shadow: 0px 3px 0px 0px darken($light-green, 5%)
+
+  .total
+    padding: 20px 40px
+    text-align: center
+    font-size: 4rem
+
+    .title
+      font-size: 2rem
+      font-weight: bold
+
+  .address
+    padding: 20px 40px 0px 40px
+    text-align: center
+
+  .tracking
+    padding: 20px 40px
+    text-align: center
+
+  .separator
+    height: 2px
+    background-color: rgb(200,200,200)
+    width: 50%
+    margin: auto
+
+  .each-shirt-wrapper
+    margin: 15px 0px
+    display: inline-block
+    vertical-align: top
+    float: none
+
+  .each-shirt-inner
+    position: relative
+    // background-color: rgb(250,250,250)
+    background-color: rgb(255,255,255)
+    border-radius: 0x
+    overflow: hidden
+    padding: 0px
+    width: 100%
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.18)
+
+    .shirt-image
+
+      .inner
+        position: relative
+        width: 100%
+
+      .shirt-template
+        width: 100%
+        padding: 0px
+
+      .filler-wrapper
+        width: 100%
+        position: absolute
+        top: 25%
+        text-align: center
+      .filler
+        width: 30%
+
+
+    .content
+      .title
+        font-family: "gillsans"
+        font-size: 2rem
+        text-align: center
+        line-height: 1.3
+        font-weight: lighter
+        margin: 0px
+
+        a
+          text-decoration: none
+
+      .status
+        margin-top: 0.5rem
+        margin-bottom: 2rem
+        padding: 0px 40px
+        text-align: center
+        font-weight: bold
+
+        .people
+          color: rgb(52, 152, 219)
+
+        .price
+          color: black
+
+        .calendar
+          padding-top: 0.5rem
+
+#admin-wrapper
+  .header
+    background-color: rgb(39,45,71)
+    clear: both
+
+    .title
+      color: rgba(255,255,255,0.9)
+      font-size: 5rem
+      text-shadow: 0px 2px 0px rgba(0,0,0,0.4)
+      padding: 40px 0px
+      margin: 0px
+
+
+    .actions
+      float: right
+      text-align: right
+      padding: 55px 0px 20px 0px
+
+      button
+        margin: 0px 7.5px
+        border-radius: 2rem
+        border: 0px
+        font-weight: bold
+        font-size: 1.5rem
+        letter-spacing: 0.35px
+        color: white
+
+        i
+          padding-right: 2px
+
+      .finish.btn:hover
+        background-color: lighten($light-green, 3%)
+      .finish.btn
+        background-color: $light-green
+        box-shadow: 0px 3px 0px 0px darken($light-green, 10%)
+
+      .cancel.btn:hover
+        background-color: lighten($red, 3%)
+      .cancel.btn
+        background-color: $red
+        box-shadow: 0px 3px 0px 0px darken($red, 10%)
+
+  .body
+    color: white
+
+    .container
+
+    .table
+      border: solid rgb(255,255,255) 3px
+      border-radius: 20px
+      border-collapse: separate
+      overflow: hidden
+      thead
+        background-color: white
+        tr
+          background-color: white
+          th
+            background-color: white
+            text-align: center
+            width: 50%
+            padding: 15px 0px
+            color: rgb(39,45,71)
+            border-bottom: none
+      tbody
+        tr
+          td.right
+            border-left: 3px dashed white
+          td
+            padding: 0px
+
+
+    // .each-order-wrapper:not(:last-child)
+    //   border-bottom: 2px solid rgb(255,255,255)
+
+    a
+      text-decoration: none
+      color: white
+
+    .left
+      .each-order-wrapper:hover
+        background-color: rgba(0,0,0,0.15)
+
+    .each-order-wrapper
+      padding: 20px
+      margin: 20px
+      background-color: rgba(0,0,0,0.25)
+      border-radius: 12px
+      box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15)
+      -webkit-transition: background-color 0.35s ease
+
+      .buyer
+        margin: 0px
+        padding: 10px 0px
+
+
+      .total
+        float: right
+        .total-title
+          font-size: 1.2rem
+          font-weight: bold
+          padding-right: 5px
+        .total-amount
+          font-size: 3rem
+
+        .date
+          color: rgb(200,200,200)
+          margin: 0px
+          font-size: 1.2rem
+
+          .sent-date
+            padding-left: 5px
+            color: rgb(220,220,220)
+
+    // .left
+    //   .each-order-wrapper
+    //     margin-right: 10px
+    // .right
+    //   .each-order-wrapper
+    //     margin-left: 10px
+
+

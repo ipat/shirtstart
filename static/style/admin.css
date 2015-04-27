@@ -1,0 +1,181 @@
+body {
+  background-color: #272d47; }
+
+#admin-modal-wrapper .modal-dialog {
+  width: 860px; }
+#admin-modal-wrapper .modal-content {
+  overflow: hidden; }
+#admin-modal-wrapper .modal-body {
+  padding: 15px 30px 15px 30px; }
+#admin-modal-wrapper .modal-footer {
+  background-color: #f0f0f0; }
+  #admin-modal-wrapper .modal-footer .container {
+    padding: 20px 0px;
+    max-width: 350px;
+    text-align: left; }
+    #admin-modal-wrapper .modal-footer .container input {
+      font-size: 1.8rem;
+      height: 4rem;
+      margin: 0.4rem 0rem 2rem 0rem; }
+    #admin-modal-wrapper .modal-footer .container button:hover {
+      background-color: #37d279; }
+    #admin-modal-wrapper .modal-footer .container button {
+      background-color: #2ecc71;
+      border: 0px;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      padding: 6px 15px;
+      border-radius: 6px;
+      box-shadow: 0px 3px 0px 0px #29b765; }
+#admin-modal-wrapper .total {
+  padding: 20px 40px;
+  text-align: center;
+  font-size: 4rem; }
+  #admin-modal-wrapper .total .title {
+    font-size: 2rem;
+    font-weight: bold; }
+#admin-modal-wrapper .address {
+  padding: 20px 40px 0px 40px;
+  text-align: center; }
+#admin-modal-wrapper .tracking {
+  padding: 20px 40px;
+  text-align: center; }
+#admin-modal-wrapper .separator {
+  height: 2px;
+  background-color: #c8c8c8;
+  width: 50%;
+  margin: auto; }
+#admin-modal-wrapper .each-shirt-wrapper {
+  margin: 15px 0px;
+  display: inline-block;
+  vertical-align: top;
+  float: none; }
+#admin-modal-wrapper .each-shirt-inner {
+  position: relative;
+  background-color: white;
+  border-radius: 0x;
+  overflow: hidden;
+  padding: 0px;
+  width: 100%;
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.18); }
+  #admin-modal-wrapper .each-shirt-inner .shirt-image .inner {
+    position: relative;
+    width: 100%; }
+  #admin-modal-wrapper .each-shirt-inner .shirt-image .shirt-template {
+    width: 100%;
+    padding: 0px; }
+  #admin-modal-wrapper .each-shirt-inner .shirt-image .filler-wrapper {
+    width: 100%;
+    position: absolute;
+    top: 25%;
+    text-align: center; }
+  #admin-modal-wrapper .each-shirt-inner .shirt-image .filler {
+    width: 30%; }
+  #admin-modal-wrapper .each-shirt-inner .content .title {
+    font-family: "gillsans";
+    font-size: 2rem;
+    text-align: center;
+    line-height: 1.3;
+    font-weight: lighter;
+    margin: 0px; }
+    #admin-modal-wrapper .each-shirt-inner .content .title a {
+      text-decoration: none; }
+  #admin-modal-wrapper .each-shirt-inner .content .status {
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0px 40px;
+    text-align: center;
+    font-weight: bold; }
+    #admin-modal-wrapper .each-shirt-inner .content .status .people {
+      color: #3498db; }
+    #admin-modal-wrapper .each-shirt-inner .content .status .price {
+      color: black; }
+    #admin-modal-wrapper .each-shirt-inner .content .status .calendar {
+      padding-top: 0.5rem; }
+
+#admin-wrapper .header {
+  background-color: #272d47;
+  clear: both; }
+  #admin-wrapper .header .title {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 5rem;
+    text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.4);
+    padding: 40px 0px;
+    margin: 0px; }
+  #admin-wrapper .header .actions {
+    float: right;
+    text-align: right;
+    padding: 55px 0px 20px 0px; }
+    #admin-wrapper .header .actions button {
+      margin: 0px 7.5px;
+      border-radius: 2rem;
+      border: 0px;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 0.35px;
+      color: white; }
+      #admin-wrapper .header .actions button i {
+        padding-right: 2px; }
+    #admin-wrapper .header .actions .finish.btn:hover {
+      background-color: #37d279; }
+    #admin-wrapper .header .actions .finish.btn {
+      background-color: #2ecc71;
+      box-shadow: 0px 3px 0px 0px #25a25a; }
+    #admin-wrapper .header .actions .cancel.btn:hover {
+      background-color: #e9594a; }
+    #admin-wrapper .header .actions .cancel.btn {
+      background-color: #e74c3c;
+      box-shadow: 0px 3px 0px 0px #d62c1a; }
+#admin-wrapper .body {
+  color: white; }
+  #admin-wrapper .body .table {
+    border: solid white 3px;
+    border-radius: 20px;
+    border-collapse: separate;
+    overflow: hidden; }
+    #admin-wrapper .body .table thead {
+      background-color: white; }
+      #admin-wrapper .body .table thead tr {
+        background-color: white; }
+        #admin-wrapper .body .table thead tr th {
+          background-color: white;
+          text-align: center;
+          width: 50%;
+          padding: 15px 0px;
+          color: #272d47;
+          border-bottom: none; }
+    #admin-wrapper .body .table tbody tr td.right {
+      border-left: 3px dashed white; }
+    #admin-wrapper .body .table tbody tr td {
+      padding: 0px; }
+  #admin-wrapper .body a {
+    text-decoration: none;
+    color: white; }
+  #admin-wrapper .body .left .each-order-wrapper:hover {
+    background-color: rgba(0, 0, 0, 0.15); }
+  #admin-wrapper .body .each-order-wrapper {
+    padding: 20px;
+    margin: 20px;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, 0.15);
+    -webkit-transition: background-color 0.35s ease; }
+    #admin-wrapper .body .each-order-wrapper .buyer {
+      margin: 0px;
+      padding: 10px 0px; }
+    #admin-wrapper .body .each-order-wrapper .total {
+      float: right; }
+      #admin-wrapper .body .each-order-wrapper .total .total-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding-right: 5px; }
+      #admin-wrapper .body .each-order-wrapper .total .total-amount {
+        font-size: 3rem; }
+      #admin-wrapper .body .each-order-wrapper .total .date {
+        color: #c8c8c8;
+        margin: 0px;
+        font-size: 1.2rem; }
+        #admin-wrapper .body .each-order-wrapper .total .date .sent-date {
+          padding-left: 5px;
+          color: gainsboro; }

@@ -3,7 +3,7 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div class="container boxContent" id="status-waiting">
+<div id="status-purchase-history-wrapper" class="container boxContent animated fadeIn">
 	<h1>ORDER STATUS</h1>
 	<div class="row textcenter" id="menu-status">
 		<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING ({{join_len}})</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus active" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
@@ -23,6 +23,7 @@
 	      </div>
 
 			</div>
+
 			<div class="col-sm-9 shirtInfoDiv">
 				<div class="row">
 					<p class="fontBold noMarBot">{{sh.0}}</p>

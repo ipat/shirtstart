@@ -1,0 +1,55 @@
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+{% include "template.search.html" %}
+
+<div class="container boxContent" id="signup">
+	<h1><span style="color:red">CONFIDENTIAL</span> - ADMIN LOGIN</h1>
+	<div id="inputDiv text-center ">
+		<!-- <form id="user_form" class="centerOnSmall" method="post" action"/register/" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="row">
+				<input class="noborder" placeholder="Username" type="text" name="username">
+			</div>
+			<div class="row">
+				<input class="noborder" placeholder="Password" type="password" name="password">
+			</div>
+			<div class="row" id="twoColInputSignUp">
+				<div class="col-md-6 noPadLeft noPadOnSmall">
+					<input class="noborder" placeholder="First Name" type="text" name="first_name">
+				</div>
+				<div class="col-md-6 noPadRight noPadOnSmall">
+					<input class="noborder" placeholder="Last Name" type="text" name="last_name">
+				</div>
+			</div>
+			<div class="row">
+				<input class="noborder" placeholder="E-mail" type="email" name="email">
+			</div>
+			<div class="row" id="twoColInputSignUp">
+				<div class="col-sm-6 noPadLeft noPadOnSmall centerOnSmall">
+					<label class="radio-inline genderLabel"><input type="radio" name="gender" class="genderRadio"><span class="moreLeftMargin">Male</span></label>
+					<label class="radio-inline genderLabel"><input type="radio" name="gender" class="genderRadio"><span class="moreLeftMargin">Female</span></label>
+				</div>
+				<div class="col-sm-6 noPadRight noPadOnSmall centerOnSmall">
+					<input id="mytext" class=" noborder" placeholder="Birthdate" type="date" data-toggle="popover" data-trigger="hover" data-content="Birthdate" name="birthdate">
+				</div>
+			</div>
+			<div class="row textcenter">
+				<div class="col-md-4 col-md-offset-4">
+					<input type="submit" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow" id="btnSignUp">Sign Up</input>
+				</div>
+			</div>
+		</form> -->
+
+		<form id="login_form" method="post" class="form">
+				{% csrf_token %}
+				<label>Username: </label><input type="text" name="username" value="" size="50">
+				<br>
+				<label>Password: </label><input type="password" name="password" value="" size="50">
+				<br>
+
+				<input type="submit" value="Log In" class="btn btn-green round fontWhite btn-bigpad fontBold hvr-shadow" >
+			</form>
+</div>
+
+{% include "template.foot.html" %}

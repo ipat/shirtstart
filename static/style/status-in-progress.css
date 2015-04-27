@@ -1,8 +1,11 @@
+#status-in-progress-wrapper dl {
+  margin: 0px; }
 #status-in-progress-wrapper .shirt-image {
   margin: 5px; }
   #status-in-progress-wrapper .shirt-image img {
     padding: 0px;
-    margin: 0px; }
+    margin: 0px;
+    background-color: transparent; }
   #status-in-progress-wrapper .shirt-image .inner {
     position: relative;
     width: 100%; }
@@ -16,3 +19,28 @@
   #status-in-progress-wrapper .shirt-image .filler {
     width: 30%;
     box-shadow: none; }
+#status-in-progress-wrapper .shirt-description {
+  text-align: center; }
+  #status-in-progress-wrapper .shirt-description h5 {
+    margin: 0px;
+    font-size: 1.2rem; }
+  #status-in-progress-wrapper .shirt-description p {
+    margin: 5px 0px; }
+    #status-in-progress-wrapper .shirt-description p .title, #status-in-progress-wrapper .shirt-description p .amount {
+      font-weight: bold; }
+#status-in-progress-wrapper .orders-wrapper {
+  padding: 15px 30px;
+  background-color: #f3f3f3; }
+#status-in-progress-wrapper .each-order-wrapper {
+  margin: 15px;
+  padding: 30px 20px;
+  background-color: white;
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.14); }
+  #status-in-progress-wrapper .each-order-wrapper .about {
+    width: 30%; }
+  #status-in-progress-wrapper .each-order-wrapper .shirts {
+    width: 70%; }
+  #status-in-progress-wrapper .each-order-wrapper .total-cost {
+    font-size: 3.5rem; }
+  #status-in-progress-wrapper .each-order-wrapper .shirtImgDiv {
+    padding: 0px 7px; }
