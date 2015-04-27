@@ -3,13 +3,22 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div class="container boxContent" id="status-waiting">
+<div id="cart-wrapper" class="container boxContent animated fadeIn" id="status-waiting">
 	<h1>CART</h1>
 	<div class="shirtViewOrderStatus">
 		{% for sh in shirt_amount %}
 		<div class="row shirtItemOrderStatus">
 			<div class="col-sm-3 shirtImgDiv">
-				<img src="{% static 'img/shirt.png' %}"}>
+
+				<div class="shirt-image">
+	        <div class="inner">
+	          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+	          <div class="filler-wrapper">
+	            <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
+	          </div>
+	        </div>
+	      </div>
+
 			</div>
 			<div class="col-sm-9 shirtInfoDiv">
 				<div class="row">
@@ -31,7 +40,7 @@
 		</div>
 		{% endfor %}
 	</div>
-	
+
 	<div class="row textcenter">
 		<h1>Total : {{total}} Baht</h1>
 		<a href="/checkout" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow width50" />Check out</a>

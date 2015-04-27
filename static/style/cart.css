@@ -1,0 +1,18 @@
+#cart-wrapper .shirt-image {
+  margin: 5px; }
+  #cart-wrapper .shirt-image img {
+    padding: 0px;
+    margin: 0px; }
+  #cart-wrapper .shirt-image .inner {
+    position: relative;
+    width: 100%; }
+  #cart-wrapper .shirt-image .shirt-template {
+    width: 100%; }
+  #cart-wrapper .shirt-image .filler-wrapper {
+    width: 100%;
+    position: absolute;
+    top: 25%;
+    text-align: center; }
+  #cart-wrapper .shirt-image .filler {
+    width: 30%;
+    box-shadow: none; }

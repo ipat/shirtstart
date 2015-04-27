@@ -27,9 +27,20 @@
         border-radius: 0px 0px 0px 5px;
         zoom: 1.4; }
       #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image {
-        padding: 40px 30px 15px 30px; }
-        #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image img {
+        padding-top: 2rem; }
+        #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .inner {
+          position: relative;
           width: 100%; }
+        #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .shirt-template {
+          width: 100%;
+          padding: 0px; }
+        #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .filler-wrapper {
+          width: 100%;
+          position: absolute;
+          top: 25%;
+          text-align: center; }
+        #home-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .filler {
+          width: 30%; }
       #home-wrapper .each-shirt-wrapper .each-shirt-inner .content {
         zoom: 1.5; }
         #home-wrapper .each-shirt-wrapper .each-shirt-inner .content .title {

@@ -1,0 +1,17 @@
+#buy-wrapper .shirt-image {
+  padding-top: 2rem; }
+  #buy-wrapper .shirt-image img {
+    padding: 0px; }
+  #buy-wrapper .shirt-image .inner {
+    position: relative;
+    width: 100%; }
+  #buy-wrapper .shirt-image .shirt-template {
+    width: 100%; }
+  #buy-wrapper .shirt-image .filler-wrapper {
+    width: 100%;
+    position: absolute;
+    top: 25%;
+    text-align: center; }
+  #buy-wrapper .shirt-image .filler {
+    width: 30%;
+    box-shadow: none; }

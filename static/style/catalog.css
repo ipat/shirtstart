@@ -33,9 +33,20 @@
         border-radius: 0px 0px 0px 5px;
         zoom: 0.9; }
       #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image {
-        padding: 40px 30px 15px 30px; }
-        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image img {
+        padding-top: 2rem; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .inner {
+          position: relative;
           width: 100%; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .shirt-template {
+          width: 100%;
+          padding: 0px; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .filler-wrapper {
+          width: 100%;
+          position: absolute;
+          top: 25%;
+          text-align: center; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .shirt-image .filler {
+          width: 30%; }
       #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .title {
         font-family: "gillsans";
         font-size: 2rem;
@@ -43,6 +54,8 @@
         line-height: 1.3;
         font-weight: lighter;
         margin: 0px; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .title a {
+          text-decoration: none; }
       #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .description {
         margin: 0px;
         margin-top: 5px;
@@ -58,6 +71,8 @@
           color: #3498db; }
         #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .price {
           color: black; }
+        #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .calendar {
+          padding-top: 0.5rem; }
       #catalog-wrapper .each-shirt-wrapper .each-shirt-inner .action {
         margin-top: 15px;
         background-color: #f0f0f0;
