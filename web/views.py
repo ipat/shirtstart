@@ -38,21 +38,22 @@ def index(request):
             .order_by('-like_count')[:4]
   shirts = shirts.annotate(current_amount=Sum('join__amount'))
 
-
+  
   for sh in shirts:
       if sh.is_on_shelf :
         sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
       else:
       # if sh.current_amount !=
         cur = Join.objects.filter(shirt_id=sh.id).count()
+        # req_amount = sh.waiting_id.require_amount
+        # if cur != req_amount:
+        #   if(cur!=0):
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
+        #   else:
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
+        # else:
         req_amount = sh.waiting_id.require_amount
-        if cur != req_amount:
-          if(cur!=0):
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
-          else:
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
-        else:
-          sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+        sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
       sh.price = int(sh.price)
   return render(request, 'index.html', {
     'shirts' :shirts,
@@ -199,14 +200,15 @@ def catalog(request):
       # if sh.current_amount !=
         cur = Join.objects.filter(shirt_id=sh.id).count()
         req_amount = sh.waiting_id.require_amount
-        if cur != req_amount:
-          if(cur!=0):
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
-          else:
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
-        else:
-          sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+        # if cur != req_amount:
+        #   if(cur!=0):
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
+        #   else:
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
+        # else:
+        sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
       sh.price = int(sh.price)
+        
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
       'css_list': [
@@ -247,7 +249,7 @@ def join(request, shirt_id):
     d = (shirt.waiting_id.require_date-date.today()).days
     shirt.created = (shirt.waiting_id.require_date-shirt.created_at.date()).days
     shirt.left = shirt.created - d
-    shirt.percent_left = d*100/shirt.created
+    shirt.percent_left = 100-(d*100/shirt.created)
     shirt.people_left = shirt.current_amount * 100 / shirt.waiting_id.require_amount
     try:
       like = Like.objects.filter(shirt_id=shirt_id).filter(user_id=user.id)
@@ -260,7 +262,7 @@ def join(request, shirt_id):
       is_like = True
 
     ratio = (shirt.current_amount/shirt.waiting_id.require_amount)
-    ratio_date = 1-(shirt.left/shirt.created)
+    ratio_date = shirt.percent_left/100
     print 'ratio' + str(ratio_date) + ' ' + str(shirt.waiting_id.require_amount)
 
 
@@ -276,6 +278,16 @@ def join(request, shirt_id):
     shirt.price = int(shirt.price)
 
     # shirt.total =
+    # if cur != req_amount:
+    #   if(cur!=0):
+    #     shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num/cur)
+    #   else:
+    #     shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num)
+    # else:
+    shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num/req_amount)
+    shirt.price = int(shirt.price)  
+
+    # shirt.total =   
     return render(request, 'join.html', {
       'shirt':shirt,
       'css_list': [
@@ -879,7 +891,7 @@ def profile(request):
   except UserProfile.DoesNotExist:
       user_profile = None
   try:
-    all_shirts = Shirt.objects.filter(owner_id=user.id)
+    all_shirts = Shirt.objects.filter(owner_id=user.id).annotate(current_amount=Sum('join__amount'))
   except Shirt.DoesNotExist:
       all_shirts = None
   try:
