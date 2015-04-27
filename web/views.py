@@ -26,6 +26,8 @@ PRICE_BASE_BLOCK = 0
 PRICE_BASE_PER_COLOR = 400
 # how many people they can expect to buy their shirts
 LARGEST_CROWD = 500
+# money per shirt that designer will get
+MONEY_PER_SHIRT = 10
 
 
 # Create your views here.
@@ -750,6 +752,10 @@ def checkout(request):
         order_id = order,
         shirt_id = od.shirt_id,
         price_each = price_each,)
+      print od.shirt_id.owner_id
+      designer = Designer.objects.get(user_id=od.shirt_id.owner_id)
+      designer.wallet = designer.wallet + MONEY_PER_SHIRT * od.amount
+      designer.save()
       od.delete()
 
     return HttpResponseRedirect('/status/in-progress/')
