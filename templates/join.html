@@ -9,7 +9,14 @@
 			<img src="{% static 'img/shirt.png' %}">
 		</div>
 		<div class="col-md-6 info">
-			<h3>{{shirt.name}}</h3>
+			<form method='GET' action="/like_join/{{shirt.id}}/">
+			<h3>{{shirt.name}}
+			{% if not is_like%}
+				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Like</button>
+			{% else %}
+				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Unlike</button>
+			{% endif %}
+			</h3> </form>
 			<p class="italic" id="designer">by {{shirt.owned_id.first_name}}
 				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {{shirt.like_count}}
 				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{shirt.size_of_comment}} 
@@ -75,9 +82,6 @@
 
 		</div>
 	</div>
-		<form method='GET' action="/like_join/{{shirt.id}}/">
-			<button name="like" style="padding: 20px">like</button>
-		</form>
 		<form id="commentForm" method="POST" action="/comment_join/{{shirt.id}}/">{% csrf_token %}
 			<textarea placeholder="write your comment here ..." type="text" id="txtComment" name="comment_text"></textarea>
 			

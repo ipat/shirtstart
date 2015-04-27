@@ -186,6 +186,7 @@ def search(request, search_word):
 
 @login_required
 def join(request, shirt_id):
+  user = request.user
   if request.method == 'GET':
     # show the view
     shirt = Shirt.objects.get(pk=shirt_id)
@@ -204,8 +205,17 @@ def join(request, shirt_id):
     shirt.left = shirt.created - d
     shirt.percent_left = d*100/shirt.created
     shirt.people_left = shirt.current_amount * 100 / shirt.waiting_id.require_amount
+    try:
+      like = Like.objects.filter(shirt_id=shirt_id).filter(user_id=user.id)
+    except Like.DoesNotExist:
+      like = None
 
-    return render(request, 'join.html', {'shirt':shirt})
+    if len(like) == 0:
+      is_like = False
+    else:
+      is_like = True
+
+    return render(request, 'join.html', {'shirt':shirt, 'is_like': is_like})
 
   elif request.method == 'POST':
     # do something interesting here !
@@ -718,7 +728,7 @@ def profile(request):
   except UserProfile.DoesNotExist:
       user_profile = None
   try:
-    all_shirts = Shirt.objects.get(owner_id=user.id)
+    all_shirts = Shirt.objects.filter(owner_id=user.id)
   except Shirt.DoesNotExist:
       all_shirts = None
   try:

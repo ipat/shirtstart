@@ -480,3 +480,15 @@ button:focus {outline:0 !important;}
 .width50 {
 	max-width: 10em;
 }
+.btnLike {
+	color: #fff;
+	padding: 3px 7px;
+}
+#toLike {
+	background-color: #E866B6;
+	border : 3px solid #F0A8D4;
+}
+#toUnlike {
+	background-color: #bbb;
+	border : 3px solid #eee;
+}
