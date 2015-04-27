@@ -1018,8 +1018,7 @@ def admin(request):
     return HttpResponseRedirect('/admin_login/')
 
   if request.method == 'GET':
-
-	in_progress = Order.objects.filter(status=False)
+    in_progress = Order.objects.filter(status=False)
     for ip in in_progress:
       ip.total_price = 0
       ip.order_list = Order_list.objects.filter(order_id=ip.id)
@@ -1051,9 +1050,8 @@ def admin(request):
     })
   else :
 
-  	ship_tracking_no = request.POST.get('ship_tracking_no')
+    ship_tracking_no = request.POST.get('ship_tracking_no')
     order_id = request.POST.get('order_id')
-
     order = Order.objects.get(pk=order_id)
     order.ship_date = datetime.now()
     order.status = True
@@ -1061,6 +1059,11 @@ def admin(request):
     order.save()
 
     return HttpResponseRedirect('/admin/')
+
+def admin_logout(request):
+  request.session['admin_login'] = False
+  return HttpResponseRedirect('/admin/')
+
 
 def restricted(request):
   return HttpResponse("Since you're logged in, you can see this text!")
