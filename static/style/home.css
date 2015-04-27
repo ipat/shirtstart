@@ -65,6 +65,8 @@
             color: #3498db; }
           #home-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .price {
             color: black; }
+          #home-wrapper .each-shirt-wrapper .each-shirt-inner .content .status .calendar {
+            padding-top: 0.5rem; }
       #home-wrapper .each-shirt-wrapper .each-shirt-inner .action {
         zoom: 1.5;
         margin-top: 15px;
