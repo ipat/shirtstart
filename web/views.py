@@ -980,13 +980,52 @@ def admin(request):
 
   if request.method == 'GET':
 
-    return render_to_response('admin.html', {
+    in_progress = Order.objects.filter(status=False)
+    for ip in in_progress:
+      ip.total_price = 0
+      ip.order_list = Order_list.objects.filter(order_id=ip.id)
+      for od in ip.order_list:
+        ip.total_price += od.amount*od.price_each
+        if od.shirt_size == '1':
+          od.shirt_size = 'S'
+        elif od.shirt_size == '2':
+          od.shirt_size = 'M'
+        elif od.shirt_size == '3':
+          od.shirt_size = 'L'
+        elif od.shirt_size == '4':
+          od.shirt_size = 'XL'
+
+    sent = Order.objects.filter(status=True)
+    for se in sent:
+      se.total_price = 0
+      se.order_list = Order_list.objects.filter(order_id=se.id)
+      for od in se.order_list:
+        se.total_price += od.amount*od.price_each
+
+    return render(request, 'admin.html', {
       'css_list': [
         'admin.css'
       ],
+      'in_progress' : in_progress,
+      'sent': sent,
+
     })
   else :
+
+    ship_tracking_no = request.POST.get('ship_tracking_no')
+    order_id = request.POST.get('order_id')
+
+    order = Order.objects.get(pk=order_id)
+    order.ship_date = datetime.now()
+    order.status = True
+    order.ship_tracking_no = ship_tracking_no
+    order.save()
+
     return HttpResponseRedirect('/admin/')
 
 def restricted(request):
   return HttpResponse("Since you're logged in, you can see this text!")
+
+def admin_logout(request):
+  request.session['admin_login'] = False
+  return HttpResponseRedirect('/admin/')

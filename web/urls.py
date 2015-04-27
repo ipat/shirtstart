@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^withdraw/', views.withdraw, name="withdraw"),
 
     url(r'^admin_login/', views.admin_login, name="admin_login"),
-    url(r'^admin/', views.admin, name="admin"),
+    url(r'^admin/$', views.admin, name="admin"),
+    url(r'^admin/logout/$', views.admin_logout, name="admin_logout"),
 ]
