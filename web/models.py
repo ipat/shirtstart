@@ -97,8 +97,9 @@ class Credit_card (models.Model):
 class Designer (models.Model):
 	user_id = models.OneToOneField(User)
 	wallet = models.DecimalField(max_digits=10, decimal_places=2)
-	bank_account_name = models.CharField(max_length=100)
-	bank_account_number = models.CharField(max_length=30)
+	bank_account_bank = models.CharField(max_length=30,null=True)
+	bank_account_name = models.CharField(max_length=100,null=True)
+	bank_account_number = models.CharField(max_length=30,null=True)
 
 class Transaction (models.Model):
 	user_id = models.ForeignKey(User)
