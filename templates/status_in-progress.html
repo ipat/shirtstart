@@ -7,7 +7,7 @@
 	<div class="container boxContent animated fadeIn">
 		<h1>ORDER STATUS</h1>
 		<div class="row textcenter" id="menu-status">
-			<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING</a><a href="/status/in-progress" class="btn menuStatus active" id="menuStatusM">IN PROGRESS</a><a href="/status/purchase-history" class="btn menuStatus" id="menuStatusR">PURCHASE HISTORY</a>
+			<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING ({{join_len}})</a><a href="/status/in-progress" class="btn menuStatus active" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus " id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
 		</div>
 		<div style="height: 20px"></div>
 		<div class="orders-wrapper">
@@ -64,6 +64,10 @@
 				
 			</div>
 		{% endfor %}
+		{% if noti_inpro == 0 %}
+		<span class="textcenter"><h1>Nothing is in progress. Maybe it's done :)</h1></span>
+		{% endif %}
+
 		</div>
 	</div>
 </div>

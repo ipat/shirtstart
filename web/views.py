@@ -401,61 +401,16 @@ def status_waiting(request):
   shirt_purhis = {}
   shirt_info_inpro = []
   try:
-    order = Order.objects.filter(user_id=user.id)
-    for o in order:
-      if o.status == 0:
-        order_list = Order_list.objects.filter(order_id=o.id)
-        for order_item in order_list:
-          shirt_inpro[str(order_item.id)] = ['a']*9
-          shirt_inpro[str(order_item.id)][0] = order_item.shirt_id.name
-          shirt_inpro[str(order_item.id)][1] = '0'
-          shirt_inpro[str(order_item.id)][2] = '0'
-          shirt_inpro[str(order_item.id)][3] = '0'
-          shirt_inpro[str(order_item.id)][4] = '0'
-          shirt_inpro[str(order_item.id)][5] = order_item.shirt_id.owner_id.username
-          shirt_inpro[str(order_item.id)][6] = order_item.shirt_id.description
-          shirt_inpro[str(order_item.id)][8] = order_item.shirt_id
-      elif o.status == 1:
-        order_list = Order_list.objects.filter(order_id=o.id)
-        for order_item in order_list:
-          shirt_purhis[str(order_item.id)] = ['a']*9
-          shirt_purhis[str(order_item.id)][0] = order_item.shirt_id.name
-          shirt_purhis[str(order_item.id)][1] = '0'
-          shirt_purhis[str(order_item.id)][2] = '0'
-          shirt_purhis[str(order_item.id)][3] = '0'
-          shirt_purhis[str(order_item.id)][4] = '0'
-          shirt_purhis[str(order_item.id)][5] = order_item.shirt_id.owner_id.username
-          shirt_purhis[str(order_item.id)][6] = order_item.shirt_id.description
-          shirt_purhis[str(order_item.id)][8] = order_item.shirt_id
-
-
-    for o in order:
-      if o.status == 0:
-        order_list = Order_list.objects.filter(order_id=o.id)
-        for order_item in order_list:
-          if order_item.shirt_size == '1':
-            shirt_inpro[str(order_item.id)][1] = order_item.amount
-          elif order_item.shirt_size == '2':
-            shirt_inpro[str(order_item.id)][2] = order_item.amount
-          elif order_item.shirt_size == '3':
-            shirt_inpro[str(order_item.id)][3] = order_item.amount
-          elif order_item.shirt_size == '4':
-            shirt_inpro[str(order_item.id)][4] = order_item.amount
-          shirt_inpro[str(order_item.id)][7] = str((order_item.price_each) * ((int(shirt_inpro[str(order_item.id)][4])) + (int(shirt_inpro[str(order_item.id)][3])) + (int(shirt_inpro[str(order_item.id)][2])) + (int(shirt_inpro[str(order_item.id)][1]))))
-      elif o.status == 1:
-        order_list = Order_list.objects.filter(order_id=o.id)
-        for order_item in order_list:
-          if order_item.shirt_size == '1':
-            shirt_purhis[str(order_item.id)][1] = order_item.amount
-          elif order_item.shirt_size == '2':
-            shirt_purhis[str(order_item.id)][2] = order_item.amount
-          elif order_item.shirt_size == '3':
-            shirt_purhis[str(order_item.id)][3] = order_item.amount
-          elif order_item.shirt_size == '4':
-            shirt_purhis[str(order_item.id)][4] = order_item.amount
-          shirt_purhis[str(order_item.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_purhis[str(order_item.id)][4])) + (int(shirt_purhis[str(order_item.id)][3])) + (int(shirt_purhis[str(order_item.id)][2])) + (int(shirt_purhis[str(order_item.id)][1]))))
+    order_arr = Order.objects.filter(user_id=user.id)
+    for order_obj in order_arr:
+      if order_obj.status == 1:
+        shirt_purhis[str(order_obj.id)] = []
+      elif order_obj.status == 0:
+        shirt_inpro[str(order_obj.id)] = []
   except Shirt_in_cart.DoesNotExist:
     shirt_ordered = None
+  # return HttpResponse(shirt_purhis['5'])
+  total = 0
   noti_inpro = len(shirt_inpro)
   noti_purhis = len(shirt_purhis)
   return render_to_response('status_waiting.html', {
@@ -474,6 +429,11 @@ def status_in_progress(request):
   user = request.user
   shirt_inpro = {}
   shirt_purhis = {}
+  join = Join.objects.filter(user_id=request.user)
+  join.user = request.user
+  join.count = join.count()
+  join.today = date.today()
+  join_len = len(join)
   shirt_info_inpro = []
   try:
     order_arr = Order.objects.filter(user_id=user.id)
@@ -491,6 +451,7 @@ def status_in_progress(request):
           shirt_inpro[str(order_obj.id)][order_item.shirt_id]['creator'] = order_item.shirt_id.owner_id.username
           shirt_inpro[str(order_obj.id)][order_item.shirt_id]['des'] = order_item.shirt_id.description
           shirt_inpro[str(order_obj.id)][order_item.shirt_id]['sh_id'] = order_item.shirt_id.id
+          shirt_inpro[str(order_obj.id)][order_item.shirt_id]['shirt'] = order_item.shirt_id
       elif order_obj.status == 1:
         order_list = Order_list.objects.filter(order_id=order_obj.id)
         for order_item in order_list:
@@ -535,6 +496,7 @@ def status_in_progress(request):
     'css_list': [
       'status-in-progress.css',
     ],
+    'join_len' : join_len,
   })
 
 @login_required
@@ -555,39 +517,48 @@ def status_purchase_history(request):
         order_list = Order_list.objects.filter(order_id=order_obj.id)
         shirt_purhis[str(order_obj.id)] = {}
         for order_item in order_list:
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id] = ['']*9
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][0] = order_item.shirt_id.name
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][1] = '0'
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][2] = '0'
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][3] = '0'
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][4] = '0'
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][5] = order_item.shirt_id.owner_id.username
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][6] = order_item.shirt_id.description
-          shirt_purhis[str(order_obj.id)][order_item.shirt_id][8] = order_item.shirt_id
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id] = {}
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['name'] = order_item.shirt_id.name
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['s'] = '0'
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['m'] = '0'
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['l'] = '0'
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['xl'] = '0'
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['creator'] = order_item.shirt_id.owner_id.username
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['des'] = order_item.shirt_id.description
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['sh_id'] = order_item.shirt_id.id
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['shirt'] = order_item.shirt_id
       elif order_obj.status == 0:
-        order_list = Order_list.objects.filter(order_id=order_obj.id)
-        for order_item in order_list:
-          shirt_inpro[str(order_obj.id)] = []
+        shirt_inpro[str(order_obj.id)] = []
 
     for order_obj in order_arr:
       if order_obj.status == 1:
         order_list = Order_list.objects.filter(order_id=order_obj.id)
         for order_item in order_list:
           if order_item.shirt_size == '1':
-            shirt_purhis[str(order_obj.id)][order_item.shirt_id][1] = order_item.amount
+            shirt_purhis[str(order_obj.id)][order_item.shirt_id]['s'] = order_item.amount
           elif order_item.shirt_size == '2':
-            shirt_purhis[str(order_obj.id)][order_item.shirt_id][2] = order_item.amount
+            shirt_purhis[str(order_obj.id)][order_item.shirt_id]['m'] = order_item.amount
           elif order_item.shirt_size == '3':
-            shirt_purhis[str(order_obj.id)][order_item.shirt_id][3] = order_item.amount
+            shirt_purhis[str(order_obj.id)][order_item.shirt_id]['l'] = order_item.amount
           elif order_item.shirt_size == '4':
-            shirt_purhis[str(order_obj.id)][order_item.shirt_id][1] = order_item.amount
+            shirt_purhis[str(order_obj.id)][order_item.shirt_id]['xl'] = order_item.amount
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['p_per_des'] = (order_item.price_each) * ((int(shirt_purhis[str(order_obj.id)][order_item.shirt_id]['s'])) + (int(shirt_purhis[str(order_obj.id)][order_item.shirt_id]['m'])) + (int(shirt_purhis[str(order_obj.id)][order_item.shirt_id]['l'])) + (int(shirt_purhis[str(order_obj.id)][order_item.shirt_id]['xl'])))
+          shirt_purhis[str(order_obj.id)][order_item.shirt_id]['file_url'] = order_item.shirt_id.file_url
+        shirt_purhis[str(order_obj.id)]['info'] = {}
+        shirt_purhis[str(order_obj.id)]['info']['p_per_des'] = '0'
+        shirt_purhis[str(order_obj.id)]['info']['time'] = order_obj.time
+        shirt_purhis[str(order_obj.id)]['info']['address'] = str(order_obj.address_house_no)+ ' ' + str(order_obj.address_building)+ ' ' + str(order_obj.address_road)+ ' ' + str(order_obj.address_subdistrict)+ ' ' + str(order_obj.address_district)+ ' ' + str(order_obj.address_province)+ ' ' + str(order_obj.address_country)+ ' ' + str(order_obj.address_postcode)
+        shirt_purhis[str(order_obj.id)]['info']['send_date'] = order_obj.ship_date
   except Shirt_in_cart.DoesNotExist:
     shirt_ordered = None
-  # return HttpResponse(shirt_inpro['5'])
+  # return HttpResponse(shirt_purhis['5'])
   total = 0
   noti_inpro = len(shirt_inpro)
   noti_purhis = len(shirt_purhis)
-  # return HttpResponse(shirt_inpro['5'])
+  for key,order in shirt_purhis.items():
+    order['info']['total'] = 0
+    for key2,sh in order.items():
+        order['info']['total'] += int(sh['p_per_des'])
 
   return render_to_response('status_purchased.html', {
     'shirt_amount' : shirt_purhis,

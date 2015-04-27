@@ -12,13 +12,13 @@
 		</div>
 		<div style="height: 20px"></div>
 		<div class="orders-wrapper">
-
+		{% for key,order in shirt_amount.items %}
 			<div class="each-order-wrapper row">
 				<div class="about col-sm-6">
 					<dl>
 						<dt>Buying date</dt>
 						<dd>
-							<p class="date">April 10, 2015</p>
+							<p class="date">{{order.info.time}}</p>
 						</dd>
 
 						<dt>Sending date</dt>
@@ -29,42 +29,50 @@
 						<dt>Address</dt>
 						<dd>
 							<address>
-                218/238 Rhythm Ratchada-Huaikwang<br>
-                Ratchadapisek RD, Huaikwang Bangkok 10310
+              	{{order.info.address}}
               </address>
 						</dd>
 
 						<dt>Total</dt>
 						<dd>
-							<span class="total-cost">7,143 Baht</span>
+							<span class="total-cost">{{order.info.total}} Baht</span>
 						</dd>
 					</dl>
 				</div>
 
 				<div class="shirts col-sm-6">
 					<div class="row">
-
-						<div class="col-sm-3 shirtImgDiv">
-							<div class="shirt-image">
-				        <div class="inner">
-				          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
-				          <div class="filler-wrapper">
-				            <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
-				          </div>
-				        </div>
-				      </div>
-				      <div class="shirt-description">
-				      	<h5>Shirt name here</h5>
-				      	<p>
-				      		<span class="title">S</span>
-				      		<span class="amount">10</span>
-				      	</p>
-				      </div>
-						</div>
-
+						{% for key,shirt in order.items %}
+						{% if not key == "info" %}
+							<div class="col-sm-3 shirtImgDiv">
+								<div class="shirt-image">
+					        <div class="inner">
+					          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+					          <div class="filler-wrapper">
+					            <img class="filler" src="{% static 'shirts/' %}{{shirt.sh_id}}.{{shirt.file_url}}">
+					          </div>
+					        </div>
+					      </div>
+					      <div class="shirt-description">
+					      	<h5>{{shirt.name}}</h5>
+					      	<p>
+					      		<span class="title">S</span><span class="amount">{{shirt.s}}</span>
+					      		<span class="title">M</span><span class="amount">{{shirt.m}}</span>
+					      		<span class="title">L</span><span class="amount">{{shirt.l}}</span>
+					      		<span class="title">XL</span><span class="amount">{{shirt.xl}}</span>
+					      	</p>
+					      </div>
+							</div>
+						{% endif %}
+						{% endfor %}
 					</div>
 				</div>
+				
 			</div>
+		{% endfor %}
+		{% if noti_purhis == 0 %}
+		<span class="textcenter"><h1>Emptiness is everywhere :(</h1></span>
+		{% endif %}
 
 		</div>
 	</div>
