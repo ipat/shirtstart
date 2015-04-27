@@ -129,7 +129,11 @@
                   {% else %}
                     <div class="people col-xs-6">
                       <i class="glyphicon glyphicon-user"></i>
-                      <span>{{shirt.current_amount}}/{{shirt.waiting_id.require_amount}}</span>
+                      {% if shirt.current_amount == None %}
+                        <span>0/{{shirt.waiting_id.require_amount}}</span>
+                      {% else %}
+                        <span>{{shirt.current_amount}}/{{shirt.waiting_id.require_amount}}</span>
+                      {% endif %}
                     </div>
                     <div class="price col-xs-6">
                       <i class="glyphicon glyphicon-bitcoin"></i>
