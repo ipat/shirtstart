@@ -25,12 +25,13 @@
 				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Unlike</button>
 			{% endif %}
 			</h3> </form>
-			<h4>{{shirt.description}}</h4>
+			
 			<h4>{{shirt.owner_id.firts_name}}</h4>
-			<p class="italic" id="designer">by Xmenza
+			<p class="italic" id="designer">by {{shirt.owner_id.username}}
 				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {{shirt.like_count}}
 				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{shirt.size_of_comment}}
 			</p>
+			<p>{{shirt.description}}</p>
 			<!-- <p id="expDate">Timer ended at : </p>
 			<div id="dayLeftDiv">
 				<span id="numberh1">32</span>

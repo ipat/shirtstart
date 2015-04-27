@@ -255,7 +255,7 @@ def join(request, shirt_id):
     d = (shirt.waiting_id.require_date-date.today()).days
     shirt.created = (shirt.waiting_id.require_date-shirt.created_at.date()).days
     shirt.left = shirt.created - d
-    shirt.percent_left = d*100/shirt.created
+    shirt.percent_left = 100-(d*100/shirt.created)
     shirt.people_left = shirt.current_amount * 100 / shirt.waiting_id.require_amount
     try:
       like = Like.objects.filter(shirt_id=shirt_id).filter(user_id=user.id)
@@ -268,7 +268,7 @@ def join(request, shirt_id):
       is_like = True
 
     ratio = (shirt.current_amount/shirt.waiting_id.require_amount)
-    ratio_date = 1-(shirt.left/shirt.created)
+    ratio_date = shirt.percent_left/100
     print 'ratio' + str(ratio_date) + ' ' + str(shirt.waiting_id.require_amount)
 
 
