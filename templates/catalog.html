@@ -76,15 +76,19 @@
         </div>
       {% else %}
         {% for shirt in all_shirts %}
-          <div class="each-shirt-wrapper col-sm-3">
+          <div class="each-shirt-wrapper col-sm-3" style="max-height:500px;">
             <div class="each-shirt-inner">
-              <div class="flag">
+              
                 {% if shirt.is_on_shelf %}
+                <div class="flag" style="background-color : #4FD14F; color: white">
                   <span>พร้อมขาย</span>
+                </div>
                 {% else %}
+                <div class="flag" style="background-color : #E6B15C; color: white">
                   <span>กำลังระดมทุน</span>
+                </div>
                 {% endif %}
-              </div>
+              
 
               <div class="shirt-image">
                 <div class="inner">
@@ -107,10 +111,10 @@
   	                </a>
   	            {% endif %}
                 </h4>
-                <p class="description">
+                <p class="description" style="height:3em; overflow: hidden; text-overflow: ellipsis;">
                   {{shirt.description}}
                 </p>
-                <div class="status row">
+                <div class="status row" style="margin-top:5px;">
 
                   {% if shirt.is_on_shelf %}
                     <div class="price col-xs-12">

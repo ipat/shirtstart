@@ -3,9 +3,9 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div class="container boxContent" id="signup">
+<div class="container boxContent smallCtn" id="signup">
 	<h1>LOG IN</h1>
-	<div id="inputDiv text-center ">
+	<div id="inputDiv" class="">
 		<!-- <form id="user_form" class="centerOnSmall" method="post" action"/register/" enctype="multipart/form-data">
 			{% csrf_token %}
 			<div class="row">
@@ -42,14 +42,15 @@
 		</form> -->
 
 		<form id="login_form" method="post" action="/login/" class="form">
-				{% csrf_token %}
-				<label>Username: </label><input type="text" name="username" value="" size="50">
-				<br>
-				<label>Password: </label><input type="password" name="password" value="" size="50">
-				<br>
+			{% csrf_token %}
+			<label>Username: </label><input type="text" name="username" value="" size="50">
+			<br>
+			<label>Password: </label><input type="password" name="password" value="" size="50">
+			<br>
 
-				<input type="submit" value="Log In" class="btn btn-green round fontWhite btn-bigpad fontBold hvr-shadow" >
-			</form>
+			<input type="submit" value="Log In" class="btn btn-green round fontWhite btn-bigpad fontBold hvr-shadow" >
+		</form>
+	</div>
 </div>
 
 {% include "template.foot.html" %}

@@ -135,6 +135,9 @@ input:-moz-placeholder { font-style: oblique; }
 #btnDesignDiv a:hover{
 	background-color: #a0d15c;
 }
+.smallCtn {
+	max-width: 700px;
+}
 
 .boxContent {
 	background-color: #fff;
