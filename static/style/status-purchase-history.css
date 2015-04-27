@@ -1,8 +1,11 @@
+#status-purchase-history-wrapper dl {
+  margin: 0px; }
 #status-purchase-history-wrapper .shirt-image {
   margin: 5px; }
   #status-purchase-history-wrapper .shirt-image img {
     padding: 0px;
-    margin: 0px; }
+    margin: 0px;
+    background-color: transparent; }
   #status-purchase-history-wrapper .shirt-image .inner {
     position: relative;
     width: 100%; }
@@ -16,3 +19,28 @@
   #status-purchase-history-wrapper .shirt-image .filler {
     width: 30%;
     box-shadow: none; }
+#status-purchase-history-wrapper .shirt-description {
+  text-align: center; }
+  #status-purchase-history-wrapper .shirt-description h5 {
+    margin: 0px;
+    font-size: 1.2rem; }
+  #status-purchase-history-wrapper .shirt-description p {
+    margin: 5px 0px; }
+    #status-purchase-history-wrapper .shirt-description p .title, #status-purchase-history-wrapper .shirt-description p .amount {
+      font-weight: bold; }
+#status-purchase-history-wrapper .orders-wrapper {
+  padding: 15px 30px;
+  background-color: #f3f3f3; }
+#status-purchase-history-wrapper .each-order-wrapper {
+  margin: 15px;
+  padding: 30px 20px;
+  background-color: white;
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.14); }
+  #status-purchase-history-wrapper .each-order-wrapper .about {
+    width: 30%; }
+  #status-purchase-history-wrapper .each-order-wrapper .shirts {
+    width: 70%; }
+  #status-purchase-history-wrapper .each-order-wrapper .total-cost {
+    font-size: 3.5rem; }
+  #status-purchase-history-wrapper .each-order-wrapper .shirtImgDiv {
+    padding: 0px 7px; }
