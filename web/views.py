@@ -659,7 +659,7 @@ def cart(request):
   try:
     shirt_in_cart = Shirt_in_cart.objects.filter(user_id=user.id)
     for shirt in shirt_in_cart:
-      shirt_amount[str(shirt.shirt_id.id)] = ['a']*8
+      shirt_amount[str(shirt.shirt_id.id)] = ['a']*9
       shirt_amount[str(shirt.shirt_id.id)][0] = shirt.shirt_id.name
       shirt_amount[str(shirt.shirt_id.id)][1] = '0'
       shirt_amount[str(shirt.shirt_id.id)][2] = '0'
@@ -678,11 +678,13 @@ def cart(request):
         shirt_amount[str(shirt.shirt_id.id)][3] = shirt.amount
       elif shirt.shirt_size == '4':
         shirt_amount[str(shirt.shirt_id.id)][4] = shirt.amount
-      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
+      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.color_num * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
+      shirt_amount[str(shirt.shirt_id.id)][8] = shirt.shirt_id.id
   except Shirt_in_cart.DoesNotExist:
     shirt_in_cart = None
   # return HttpResponse(shirt_amount['5'])
   total = 0
+
   for sh in shirt_amount:
     shirt_if.append(shirt_amount[sh])
     total += int(shirt_amount[sh][7])
@@ -695,6 +697,16 @@ def cart(request):
       'cart.css',
     ],
   })
+
+def delete_in_cart(request, shirt_id):
+  if shirt_id == '0':
+    Shirt_in_cart.objects.filter(user_id = request.user.id).delete()
+  else :
+    try:
+        Shirt_in_cart.objects.get(user_id=request.user.id, shirt_id=shirt_id).delete()
+    except Shirt_in_cart.DoesNotExist:
+      user_profile = None
+  return HttpResponseRedirect('/cart/') 
 
 
 @login_required
