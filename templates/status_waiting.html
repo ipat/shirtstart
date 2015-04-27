@@ -3,7 +3,7 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div class="container boxContent" id="status-waiting">
+<div id="status-waiting-wrapper" class="container boxContent animated fadeIn">
 	<h1>ORDER STATUS</h1>
 	<div class="row textcenter" id="menu-status">
 		<a href="status/waiting" class="btn menuStatus active" id="menuStatusL">WAITING ({{join_len}})</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
@@ -17,14 +17,14 @@
 				<div class="col-sm-3 shirtImgDiv">
 					<img src="{% static 'img/shirt.png' %}"}>
 				</div>
-				
+
 				<div class="col-sm-9 shirtInfoDiv">
 					<div class="row">
 						<p class="fontBold noMarBot">{{join_list.shirt_id.name}}</p>
 						<p class="italic noMarBot" id="designer">by {{join.user}}</p>
 						<p class="noMarBot limitLine">{{join_list.shirt_id.description}}</p>
 					</div>
-					
+
 					{% if join_list.shirt_size == '1' %}
 						<h4>S: {{join_list.amount}} </h4>
 					{% endif %}
@@ -39,7 +39,7 @@
 					{% endif %}
 					<div class="row shirtStatusDiv">
 						<div class="col-sm-6 peopleStatusDiv centerOnSmall">
-							<span class="peopleStatus"></span><span>House No. {{join_list.address_house_no}} Building {{join_list.address_building}}  Road {{join_list.address_road}} <br> Subdistrict {{join_list.address_subdistrict}} District {{join_list.address_district}} Province {{join_list.address_province}}<br> Country {{join_list.address_country}} postcode {{join_list.address_postcode}}</span> 
+							<span class="peopleStatus"></span><span>House No. {{join_list.address_house_no}} Building {{join_list.address_building}}  Road {{join_list.address_road}} <br> Subdistrict {{join_list.address_subdistrict}} District {{join_list.address_district}} Province {{join_list.address_province}}<br> Country {{join_list.address_country}} postcode {{join_list.address_postcode}}</span>
 						</div>
 					</div>
 					<div class="row italic">
@@ -61,7 +61,7 @@
 			{% endfor %}
 		{% endif %}
 	</div>
-		
+
 </div>
 
 {% include "template.foot.html" %}

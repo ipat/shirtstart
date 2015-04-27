@@ -1,0 +1,174 @@
+{% load staticfiles %}
+{% include "template.head.html" %}
+{% include "template.nav.html" %}
+
+<div id="admin-wrapper" class="animated fadeIn">
+  <div class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <div class="actions">
+            <a href="">
+              <button class="finish btn btn-primary" data-toggle="modal" data-target="#form-details" type="button">
+                <i class="glyphicon glyphicon-remove"></i>
+                Logout
+              </button>
+            </a>
+          </div>
+
+          {# <h1 class="title">God, I am</h1> #}
+          <h1 class="title">Sweet land of thee, I sing</h1>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="left">IN PROGRESS</th>
+            <th class="right">SENT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {# Left col #}
+            <td class="left">
+
+              {# set the link "data-target" to the right box #}
+              <a href="" data-target="#order-18" data-toggle="modal">
+                <div class="each-order-wrapper">
+                  <div class="total">
+                    <span class="total-title">TOTAL</span>
+                    <span class="total-amount">7,132 Baht</span>
+
+                    <p class="date">
+                      <span>April 10, 2015</span>
+                    </p>
+                  </div>
+
+                  <h3 class="buyer">Konpat Preechakul</h3>
+
+                  <div style="clear:both;"></div>
+                </div>
+              </a>
+
+            </td>
+
+            {# Right col #}
+            <td class="right">
+
+              <div class="each-order-wrapper">
+                <div class="total">
+                  <span class="total-title">TOTAL</span>
+                  <span class="total-amount">7,132 Baht</span>
+
+                  <p class="date">
+                    <span>April 10, 2015</span>
+                    <span class="sent-date">September 15, 2014</span>
+                  </p>
+                </div>
+
+                <h3 class="buyer">Konpat Preechakul</h3>
+
+                <div style="clear:both;"></div>
+              </div>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="admin-modal-wrapper">
+  <div id="order-18" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Order No. 18 - Invoice</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row" style="text-align: center">
+
+            <div class="each-shirt-wrapper col-sm-4">
+              <div class="each-shirt-inner">
+                <div class="shirt-image">
+                  <div class="inner">
+                    <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+                    <div class="filler-wrapper">
+                      <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="content">
+                  <h4 class="title">
+                    <span class="nl">Inception</span>
+                  </h4>
+                  <div class="status row">
+
+                    <div class="price col-xs-12">
+                      <span>S</span>
+                      <span>10 ea.</span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="total row">
+            <p>
+              <span class="title">TOTAL</span>
+              <span class="amount">1,712 Baht</span>
+            </p>
+          </div>
+
+          <div class="separator"></div>
+
+          <div class="address row">
+            <div class="col-sm-12">
+              <h4>Konpat Preechakul</h4>
+              <address>
+                218/238 Rhythm Ratchada-Huaikwang<br>
+                Ratchadapisek RD, Huaikwang Bangkok 10310
+              </address>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <div class="container">
+            <form>
+              <div class="form-group">
+                <label>Ship Tracking Number</label>
+                <input name="ship_tracking_no" type="name" class="form-control" id="" placeholder="Enter tracking number ..">
+              </div>
+              <div style="text-align: center;">
+                <button type="submit" class="submit btn btn-default">
+                  Package has been sent !
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
+
+<script type="text/javascript">
+  // $('#order-18').modal();
+</script>
+
+{% include "template.foot.html" %}

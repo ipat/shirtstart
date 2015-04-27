@@ -38,9 +38,10 @@ def index(request):
   shirts = shirts.annotate(current_amount=Sum('join__amount'))
 
   return render(request, 'index.html', {
+    'shirts' :shirts,
     'css_list': [
       'home.css',
-    ], 'shirts' :shirts
+    ],
   })
 
 def logout(request):
@@ -423,11 +424,14 @@ def status_waiting(request):
   noti_inpro = len(shirt_inpro)
   noti_purhis = len(shirt_purhis)
   return render_to_response('status_waiting.html', {
-    'join':join,
-    'user' : user,
-    'join_len' : join_len,
-    'noti_inpro' : noti_inpro,
-    'noti_purhis' : noti_purhis,
+      'join':join,
+      'user' : user,
+      'join_len' : join_len,
+      'noti_inpro' : noti_inpro,
+      'noti_purhis' : noti_purhis,
+      'css_list': [
+        'status-waiting.css',
+      ],
     })
 
 @login_required
@@ -970,16 +974,19 @@ def admin_login(request):
 
 
 def admin(request):
+
   if request.session.get('admin_login') != True:
     return HttpResponseRedirect('/admin_login/')
 
   if request.method == 'GET':
 
-    return render(request, 'admin.html')
+    return render_to_response('admin.html', {
+      'css_list': [
+        'admin.css'
+      ],
+    })
   else :
-
     return HttpResponseRedirect('/admin/')
-
 
 def restricted(request):
   return HttpResponse("Since you're logged in, you can see this text!")
