@@ -3,7 +3,7 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div id="status-in-progress-wrapper" class="container boxContent" id="status-waiting">
+<div id="status-in-progress-wrapper" class="container boxContent animated fadeIn" id="status-waiting">
 	<h1>ORDER STATUS</h1>
 	<div class="row textcenter" id="menu-status">
 		<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING ({{join_len}})</a><a href="/status/in-progress" class="btn menuStatus active" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>

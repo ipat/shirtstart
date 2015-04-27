@@ -34,6 +34,7 @@ gulp.task('sass', function() {
   var dest = root + 'style/';
   var once = true;
   return gulp.src(src.sass)
+    .pipe(cache())
     .pipe(plumber({ errorHandler: function (err) {
       console.log(err.toString());
       this.emit('end');
