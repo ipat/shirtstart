@@ -26,7 +26,7 @@
 				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Unlike</button>
 			{% endif %}
 			</h3> </form>
-			<p class="italic" id="designer">by {{shirt.owned_id.username}}
+			<p class="italic" id="designer">by {{shirt.owner_id.username}}
 				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {{shirt.like_count}}
 				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{shirt.size_of_comment}}
 			</p>

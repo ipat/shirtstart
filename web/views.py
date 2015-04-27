@@ -501,7 +501,7 @@ def status_in_progress(request):
         shirt_inpro[str(order_obj.id)]['info'] = {}
         shirt_inpro[str(order_obj.id)]['info']['p_per_des'] = '0'
         shirt_inpro[str(order_obj.id)]['info']['time'] = order_obj.time
-        shirt_inpro[str(order_obj.id)]['info']['address'] = str(order_obj.address_house_no)+ ' ' + str(order_obj.address_building)+ ' ' + str(order_obj.address_road)+ ' ' + str(order_obj.address_subdistrict)+ ' ' + str(order_obj.address_district)+ ' ' + str(order_obj.address_province)+ ' ' + str(order_obj.address_country)+ ' ' + str(order_obj.address_postcode)
+        shirt_inpro[str(order_obj.id)]['info']['address'] = order_obj.address_house_no+ ' ' + order_obj.address_building)+ ' ' + order_obj.address_road+ ' ' + order_obj.address_subdistrict+ ' ' + order_obj.address_district+ ' ' + order_obj.address_province+ ' ' + order_obj.address_country+ ' ' + order_obj.address_postcode
   except Shirt_in_cart.DoesNotExist:
     shirt_ordered = None
   # return HttpResponse(shirt_inpro['5'])
@@ -887,7 +887,7 @@ def profile(request):
   address = ""
   try:
     user_profile = UserProfile.objects.get(user_id=user.id)
-    address = str(user_profile.address_house_no)+ ' ' + str(user_profile.address_building)+ ' ' + str(user_profile.address_road)+ ' ' + str(user_profile.address_subdistrict)+ ' ' + str(user_profile.address_district)+ ' ' + str(user_profile.address_province)+ ' ' + str(user_profile.address_country)+ ' ' + str(user_profile.address_postcode)
+    address = user_profile.address_house_no+ ' ' + user_profile.address_building+ ' ' + user_profile.address_road+ ' ' + user_profile.address_subdistrict+ ' ' + user_profile.address_district+ ' ' + user_profile.address_province+ ' ' + user_profile.address_country+ ' ' + user_profile.address_postcode
   except UserProfile.DoesNotExist:
       user_profile = None
   try:
