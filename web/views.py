@@ -423,7 +423,7 @@ def status_waiting(request):
   noti_inpro = len(shirt_inpro)
   noti_purhis = len(shirt_purhis)
   return render_to_response('status_waiting.html', {
-    'join':join, 
+    'join':join,
     'user' : user,
     'join_len' : join_len,
     'noti_inpro' : noti_inpro,
@@ -809,7 +809,7 @@ def delete_in_cart(request, shirt_id):
         Shirt_in_cart.objects.get(user_id=request.user.id, shirt_id=shirt_id).delete()
     except Shirt_in_cart.DoesNotExist:
       user_profile = None
-  return HttpResponseRedirect('/cart/') 
+  return HttpResponseRedirect('/cart/')
 
 
 @login_required
@@ -843,6 +843,12 @@ def design(request):
     extension = name.split('.')[-1]
     # user info
     user = User.objects.get(username=request.user)
+    # create a waiting shirt
+    time_d = timedelta(days=int(request.POST['require_days']))
+    require_date = datetime.now() + time_d
+    waiting = Waiting.objects.create(
+      require_amount=request.POST['require_amount'],
+      require_date=require_date)
     # create a new shirt
     shirt = Shirt.objects.create(
       name=request.POST['name'],
@@ -968,12 +974,12 @@ def admin(request):
     return HttpResponseRedirect('/admin_login/')
 
   if request.method == 'GET':
-    
+
     return render(request, 'admin.html')
   else :
 
     return HttpResponseRedirect('/admin/')
-  
+
 
 def restricted(request):
   return HttpResponse("Since you're logged in, you can see this text!")
