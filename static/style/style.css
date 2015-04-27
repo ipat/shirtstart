@@ -94,7 +94,7 @@ body {
 	border-style: none;
 }
 .circle {
-	border-radius: 50%;
+	border-radius: 2em;
 }
 #search {
 	padding-top: 30px;
@@ -104,7 +104,7 @@ body {
 	color : #fff;
 	float: right;
 	height: 2em;
-	width: 2em;
+	width: 3em;
 }
 #search button:hover{
 	background-color: #d29f45;

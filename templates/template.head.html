@@ -12,10 +12,18 @@
   <link rel="stylesheet" href="{% static 'style/ta.css' %}">
   <link href="{% static 'css/hover.css' %}" rel="stylesheet" media="all">
 
-  <script src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
+  <script src="{% static 'js/jquery-1.11.2.min.js' %}">
+
+    
+  </script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
-
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#s_in").change(function(){
+          $("#btnSch").html('<span class="glyphicon glyphicon-search" aria-hidden="true"></span>');
+      });
+    });
+  </script>
   <!-- page's css -->
   {% for css in css_list %}
     <link rel="stylesheet" type="text/css" href="{% static 'style/' %}{{css}}">
