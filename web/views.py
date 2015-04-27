@@ -33,7 +33,7 @@ LARGEST_CROWD = 500
 def index(request):
   shirts = Shirt.objects\
             .annotate(like_count=Count('like'))\
-            .order_by('-like_count')[:4]
+            .order_by('-like_count')[:6]
 
   shirts = shirts.annotate(current_amount=Sum('join__amount'))
 
