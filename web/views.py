@@ -14,7 +14,7 @@ from django.db.models import Q
 from django.db.models import Count, Sum
 from django.conf import settings
 
-
+import math
 import pprint
 from datetime import date, timedelta, datetime
 
@@ -26,6 +26,8 @@ PRICE_BASE_BLOCK = 0
 PRICE_BASE_PER_COLOR = 400
 # how many people they can expect to buy their shirts
 LARGEST_CROWD = 500
+# money per shirt that designer will get
+MONEY_PER_SHIRT = 10
 
 
 # Create your views here.
@@ -33,10 +35,25 @@ LARGEST_CROWD = 500
 def index(request):
   shirts = Shirt.objects\
             .annotate(like_count=Count('like'))\
-            .order_by('-like_count')[:6]
-
+            .order_by('-like_count')[:4]
   shirts = shirts.annotate(current_amount=Sum('join__amount'))
-
+  
+    
+  for sh in shirts:
+      if sh.is_on_shelf :
+        sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
+      else:
+      # if sh.current_amount !=
+        cur = Join.objects.filter(shirt_id=sh.id).count()
+        req_amount = sh.waiting_id.require_amount
+        if cur != req_amount:
+          if(cur!=0):
+            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
+          else:
+            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
+        else:
+          sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+      sh.price = int(sh.price)  
   return render(request, 'index.html', {
     'shirts' :shirts,
     'css_list': [
@@ -120,6 +137,10 @@ def catalog(request):
   if request.method == 'GET':
     # return a view
     all_shirts = Shirt.objects.all()
+    
+
+     
+    
     search_word = request.GET.get('search_word')
     if search_word == None:
       search_word = ""
@@ -169,8 +190,22 @@ def catalog(request):
       all_shirts = all_shirts.order_by('-created_at')
 
     # Add current amount of shirt join
-    all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
-
+    all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))  
+    for sh in all_shirts:
+      if sh.is_on_shelf :
+        sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
+      else:
+      # if sh.current_amount !=
+        cur = Join.objects.filter(shirt_id=sh.id).count()
+        req_amount = sh.waiting_id.require_amount
+        if cur != req_amount:
+          if(cur!=0):
+            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
+          else:
+            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
+        else:
+          sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+      sh.price = int(sh.price)   
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
       'css_list': [
@@ -709,6 +744,10 @@ def checkout(request):
         order_id = order,
         shirt_id = od.shirt_id,
         price_each = price_each,)
+      print od.shirt_id.owner_id
+      designer = Designer.objects.get(user_id=od.shirt_id.owner_id)
+      designer.wallet = designer.wallet + MONEY_PER_SHIRT * od.amount
+      designer.save()
       od.delete()
 
     return HttpResponseRedirect('/status/in-progress/')
@@ -940,7 +979,6 @@ def admin(request):
     return HttpResponseRedirect('/admin_login/')
 
   if request.method == 'GET':
-
     in_progress = Order.objects.filter(status=False)
     for ip in in_progress:
       ip.total_price = 0
@@ -975,7 +1013,6 @@ def admin(request):
 
     ship_tracking_no = request.POST.get('ship_tracking_no')
     order_id = request.POST.get('order_id')
-
     order = Order.objects.get(pk=order_id)
     order.ship_date = datetime.now()
     order.status = True
@@ -984,9 +1021,10 @@ def admin(request):
 
     return HttpResponseRedirect('/admin/')
 
-def restricted(request):
-  return HttpResponse("Since you're logged in, you can see this text!")
-
 def admin_logout(request):
   request.session['admin_login'] = False
   return HttpResponseRedirect('/admin/')
+
+
+def restricted(request):
+  return HttpResponse("Since you're logged in, you can see this text!")

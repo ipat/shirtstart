@@ -3,6 +3,74 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
+
+<div id="status-purchase-history-wrapper">
+	<div class="container boxContent animated fadeIn">
+		<h1>ORDER STATUS</h1>
+		<div class="row textcenter" id="menu-status">
+			<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING ({{join_len}})</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus active" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
+		</div>
+		<div style="height: 20px"></div>
+		<div class="orders-wrapper">
+
+			<div class="each-order-wrapper row">
+				<div class="about col-sm-6">
+					<dl>
+						<dt>Buying date</dt>
+						<dd>
+							<p class="date">April 10, 2015</p>
+						</dd>
+
+						<dt>Sending date</dt>
+						<dd>
+							<p class="date">April 13, 2015</p>
+						</dd>
+
+						<dt>Address</dt>
+						<dd>
+							<address>
+                218/238 Rhythm Ratchada-Huaikwang<br>
+                Ratchadapisek RD, Huaikwang Bangkok 10310
+              </address>
+						</dd>
+
+						<dt>Total</dt>
+						<dd>
+							<span class="total-cost">7,143 Baht</span>
+						</dd>
+					</dl>
+				</div>
+
+				<div class="shirts col-sm-6">
+					<div class="row">
+
+						<div class="col-sm-3 shirtImgDiv">
+							<div class="shirt-image">
+				        <div class="inner">
+				          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+				          <div class="filler-wrapper">
+				            <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
+				          </div>
+				        </div>
+				      </div>
+				      <div class="shirt-description">
+				      	<h5>Shirt name here</h5>
+				      	<p>
+				      		<span class="title">S</span>
+				      		<span class="amount">10</span>
+				      	</p>
+				      </div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!--
 <div id="status-purchase-history-wrapper" class="container boxContent animated fadeIn">
 	<h1>ORDER STATUS</h1>
 	<div class="row textcenter" id="menu-status">
@@ -50,5 +118,6 @@
 	</div>
 
 </div>
+!-->
 
 {% include "template.foot.html" %}
