@@ -207,6 +207,14 @@ def catalog(request):
         else:
           sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
       sh.price = int(sh.price)
+        # if cur != req_amount:
+        #   if(cur!=0):
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
+        #   else:
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
+        # else:
+      sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+      sh.price = int(sh.price)   
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
       'css_list': [
@@ -276,6 +284,16 @@ def join(request, shirt_id):
     shirt.price = int(shirt.price)
 
     # shirt.total =
+    # if cur != req_amount:
+    #   if(cur!=0):
+    #     shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num/cur)
+    #   else:
+    #     shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num)
+    # else:
+    shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num/req_amount)
+    shirt.price = int(shirt.price)  
+
+    # shirt.total =   
     return render(request, 'join.html', {
       'shirt':shirt,
       'css_list': [
