@@ -437,11 +437,6 @@ def status_waiting(request):
 @login_required
 def status_in_progress(request):
   user = request.user
-  join = Join.objects.filter(user_id=request.user)
-  join.user = request.user
-  join.count = join.count()
-  join.today = date.today()
-  join_len = len(join)
   shirt_inpro = {}
   shirt_purhis = {}
   shirt_info_inpro = []
@@ -460,7 +455,7 @@ def status_in_progress(request):
           shirt_inpro[str(order_obj.id)][order_item.shirt_id]['xl'] = '0'
           shirt_inpro[str(order_obj.id)][order_item.shirt_id]['creator'] = order_item.shirt_id.owner_id.username
           shirt_inpro[str(order_obj.id)][order_item.shirt_id]['des'] = order_item.shirt_id.description
-          shirt_inpro[str(order_obj.id)][order_item.shirt_id]['sh_id'] = order_item.shirt_id
+          shirt_inpro[str(order_obj.id)][order_item.shirt_id]['sh_id'] = order_item.shirt_id.id
       elif order_obj.status == 1:
         order_list = Order_list.objects.filter(order_id=order_obj.id)
         for order_item in order_list:
@@ -478,13 +473,23 @@ def status_in_progress(request):
             shirt_inpro[str(order_obj.id)][order_item.shirt_id]['l'] = order_item.amount
           elif order_item.shirt_size == '4':
             shirt_inpro[str(order_obj.id)][order_item.shirt_id]['xl'] = order_item.amount
-          shirt_inpro[str(order_obj.id)][order_item.shirt_id]['p_per_des'] = str((order_item.price_each) * ((int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['s'])) + (int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['m'])) + (int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['l'])) + (int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['xl']))))
+          shirt_inpro[str(order_obj.id)][order_item.shirt_id]['p_per_des'] = (order_item.price_each) * ((int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['s'])) + (int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['m'])) + (int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['l'])) + (int(shirt_inpro[str(order_obj.id)][order_item.shirt_id]['xl'])))
+          shirt_inpro[str(order_obj.id)][order_item.shirt_id]['file_url'] = order_item.shirt_id.file_url
+        shirt_inpro[str(order_obj.id)]['info'] = {}
+        shirt_inpro[str(order_obj.id)]['info']['p_per_des'] = '0'
+        shirt_inpro[str(order_obj.id)]['info']['time'] = order_obj.time
+        shirt_inpro[str(order_obj.id)]['info']['address'] = str(order_obj.address_house_no)+ ' ' + str(order_obj.address_building)+ ' ' + str(order_obj.address_road)+ ' ' + str(order_obj.address_subdistrict)+ ' ' + str(order_obj.address_district)+ ' ' + str(order_obj.address_province)+ ' ' + str(order_obj.address_country)+ ' ' + str(order_obj.address_postcode)
   except Shirt_in_cart.DoesNotExist:
     shirt_ordered = None
   # return HttpResponse(shirt_inpro['5'])
   total = 0
   noti_inpro = len(shirt_inpro)
   noti_purhis = len(shirt_purhis)
+  for key,order in shirt_inpro.items():
+    order['info']['total'] = 0
+    for key2,sh in order.items():
+        order['info']['total'] += int(sh['p_per_des'])
+
 
   return render_to_response('status_in-progress.html', {
     'shirt_amount' : shirt_inpro,
@@ -495,7 +500,6 @@ def status_in_progress(request):
     'css_list': [
       'status-in-progress.css',
     ],
-    'join_len' : join_len,
   })
 
 @login_required
@@ -765,7 +769,7 @@ def delete_in_cart(request, shirt_id):
     Shirt_in_cart.objects.filter(user_id = request.user.id).delete()
   else :
     try:
-        Shirt_in_cart.objects.get(user_id=request.user.id, shirt_id=shirt_id).delete()
+        Shirt_in_cart.objects.filter(user_id=request.user.id, shirt_id=shirt_id).delete()
     except Shirt_in_cart.DoesNotExist:
       user_profile = None
   return HttpResponseRedirect('/cart/')
