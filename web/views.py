@@ -954,7 +954,7 @@ def withdraw(request):
     return HttpResponseRedirect('/withdraw')
 
 def admin_login(request):
-  if request.session['admin_login'] == True:
+  if request.session.get('admin_login') == True:
     return HttpResponseRedirect('/admin/')
   if request.method == 'GET':
     return render(request, 'admin_login.html')
@@ -970,7 +970,7 @@ def admin_login(request):
 
 
 def admin(request):
-  if request.session['admin_login'] != True:
+  if request.session.get('admin_login') != True:
     return HttpResponseRedirect('/admin_login/')
 
   if request.method == 'GET':
