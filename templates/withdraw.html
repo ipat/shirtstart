@@ -4,31 +4,49 @@
 {% include "template.search.html" %}
 <div class="container boxContent" id="payment">
 	<h1>WITHDRAW</h1>
-	<form class="form">
+	<form class="form" method="POST">{% csrf_token %}
 	<div class="col-md-4 hidden-sm hiddem-xs">
 		<img src="{% static 'img/withdraw.png' %}" class="fitdiv">
 	</div>
 	<div class="col-md-8">
 		<label>Bank owner</label>
-		<select name="bank_owner">
-			<option>Bank 1</option>
-			<option>Bank 2</option>
-		</select>
-		<label>Account Name </label><input placeholder="" type="text" name="account_name"/>
+		<input name="bank_account_bank" value="{{designer.bank_account_bank}}">
+		<label>Account Name </label><input placeholder="" type="text" name="bank_account_name" value="{{designer.bank_account_name}}"/>
 		<div class="row">
-			<div class="col-md-6">
-				<label>Branch</label><input placeholder="" type="text" name="brance"/>
-			</div>
-			<div class="col-md-6">
-				<label>Account Number </label><input placeholder="" type="number" name="account_number"/>
+			<!-- <div class="col-md-6">
+				<label>Branch</label><input placeholder="" type="text" name="bank_account_name"/>
+			</div> -->
+			<div class="col-md-12">
+				<label>Account Number </label><input placeholder="" type="number" name="bank_account_number" value="{{designer.bank_account_number}}"/>
 			</div>
 
 		</div>
-		<label>Amount in Baht </label><input placeholder="max : {{designer.wallet}}" type="text" />
+		<label>Amount in Baht </label><input placeholder="max : {{designer.wallet}}" type="number" name="amount" />
 		<input type="submit" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow" />
 		
 	</div>
 	</form>
+
+	<div class="">
+		<h1>TRANSACTIONS</h1>
+		<table class="table">
+			<tr>
+				<th>Bank</th>
+				<th>Name</th>
+				<th>Number</th>
+				<th>Amount</th>
+			</tr>
+			{% for tran in trans %}
+				<tr>
+					<td>{{tran.to_account_bank}}</td>
+					<td>{{tran.to_account_name}}</td>
+					<td>{{tran.to_account_number}}</td>
+					<td>{{tran.amount}}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+	
 
 	
 </div>

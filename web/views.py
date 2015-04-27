@@ -854,6 +854,18 @@ def design(request):
       color_num=request.POST['color_num'],
       created_at=datetime.now() )
 
+    user_profile = UserProfile.objects.get(user_id=user.id)
+    user_profile.is_designer = True
+    user_profile.save()
+
+    try:
+      Designer.objects.get(user_id=user.id)
+    except Designer.DoesNotExist:
+      designer = Designer.objects.create(
+        wallet=0,
+        user_id=user,
+      )
+
     # writintg the uploaded file
     newFilePath = settings.SHIRTS + '/' + str(shirt.id) + '.' + extension
     with open(newFilePath, 'wb+') as destination:
@@ -897,14 +909,43 @@ def profile(request):
 
 @login_required
 def withdraw(request):
-  user = request.user
-  try:
-    designer = Designer.objects.get(user_id=user.id)
-  except Designer.DoesNotExist:
-      designer = None
-  return render_to_response('withdraw.html', {
-      'designer' : designer,
-    })
+  if request.method == 'GET':
+    user = request.user
+    try:
+      designer = Designer.objects.get(user_id=user.id)
+    except Designer.DoesNotExist:
+        designer = None
+
+    trans = Transaction.objects.filter(user_id=user.id)
+
+    return render(request, 'withdraw.html', {
+        'designer' : designer,
+        'trans': trans,
+      })
+  else :
+    designer = Designer.objects.get(user_id=request.user.id)
+    if request.POST.get('amount') == '':
+      return HttpResponseRedirect('/withdraw')
+    if int(request.POST.get('amount')) > designer.wallet:
+      return HttpResponseRedirect('/withdraw')
+
+    designer.wallet = designer.wallet - int(request.POST.get('amount'))
+    designer.bank_account_bank = request.POST.get('bank_account_bank')
+    designer.bank_account_number = request.POST.get('bank_account_number')
+    designer.bank_account_name = request.POST.get('bank_account_name')
+    designer.save()
+
+    transaction = Transaction.objects.create(
+      user_id=User.objects.get(pk=request.user.id),
+      to_account_bank=request.POST.get('bank_account_bank'),
+      to_account_number=request.POST.get('bank_account_number'),
+      to_account_name=request.POST.get('bank_account_name'),
+      time=datetime.now(),
+      amount=int(request.POST.get('amount')) )
+
+
+
+    return HttpResponseRedirect('/withdraw')
 
 def admin_login(request):
   if request.session['admin_login'] == True:
