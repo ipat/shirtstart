@@ -17,8 +17,14 @@ from django.conf import settings
 import pprint
 from datetime import date, timedelta, datetime
 
+# variable costs
 PRICE_PER_SHIRT = 120
-PRICE_PER_COLOR = 50
+PRICE_PER_COLOR = 10
+# fix costs
+PRICE_BASE_BLOCK = 0
+PRICE_BASE_PER_COLOR = 400
+# how many people they can expect to buy their shirts
+LARGEST_CROWD = 500
 
 # Create your views here.
 
@@ -433,7 +439,7 @@ def checkout(request):
       credit.save()
     except Credit_card.DoesNotExist:
       credit = Credit_card.objects.create(user_id=User.objects.get(pk=request.user.id), name_on_card=input_info.get('name_on_card'), number=input_info.get('number'), expiry_month=input_info.get('expiry_month').split('-')[1], expiry_year=input_info.get('expiry_month').split('-')[0])
-    
+
 
     order = Order.objects.create(
       time = datetime.now(),
@@ -511,6 +517,15 @@ def design(request):
   if request.method == 'GET':
     context = RequestContext(request)
     return render_to_response('design.html', {
+      'costs' : {
+        'price_per_shirt': PRICE_PER_SHIRT,
+        'price_per_color': PRICE_PER_COLOR,
+        'price_base_block': PRICE_BASE_BLOCK,
+        'price_base_per_color': PRICE_BASE_PER_COLOR,
+        'test': {
+          'eiei': 12,
+        },
+      },
       'css_list': [
         'design.css',
         'bootstrap-slider.min.css',
