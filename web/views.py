@@ -37,8 +37,8 @@ def index(request):
             .annotate(like_count=Count('like'))\
             .order_by('-like_count')[:4]
   shirts = shirts.annotate(current_amount=Sum('join__amount'))
-  
-    
+
+
   for sh in shirts:
       if sh.is_on_shelf :
         sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
@@ -53,7 +53,7 @@ def index(request):
             sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
         else:
           sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
-      sh.price = int(sh.price)  
+      sh.price = int(sh.price)
   return render(request, 'index.html', {
     'shirts' :shirts,
     'css_list': [
@@ -137,10 +137,10 @@ def catalog(request):
   if request.method == 'GET':
     # return a view
     all_shirts = Shirt.objects.all()
-    
 
-     
-    
+
+
+
     search_word = request.GET.get('search_word')
     if search_word == None:
       search_word = ""
@@ -190,7 +190,7 @@ def catalog(request):
       all_shirts = all_shirts.order_by('-created_at')
 
     # Add current amount of shirt join
-    all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))  
+    all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
     for sh in all_shirts:
       if sh.is_on_shelf :
         print "xxxxx"
@@ -206,6 +206,14 @@ def catalog(request):
             sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
         else:
           sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+      sh.price = int(sh.price)
+        # if cur != req_amount:
+        #   if(cur!=0):
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
+        #   else:
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
+        # else:
+      sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
       sh.price = int(sh.price)   
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
@@ -262,7 +270,7 @@ def join(request, shirt_id):
     ratio = (shirt.current_amount/shirt.waiting_id.require_amount)
     ratio_date = 1-(shirt.left/shirt.created)
     print 'ratio' + str(ratio_date) + ' ' + str(shirt.waiting_id.require_amount)
-    
+
 
     cur = Join.objects.filter(shirt_id=shirt_id).count()
     req_amount = shirt.waiting_id.require_amount
@@ -273,9 +281,19 @@ def join(request, shirt_id):
         shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num)
     else:
       shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirtcolor_num/req_amount)
+    shirt.price = int(shirt.price)
+
+    # shirt.total =
+    # if cur != req_amount:
+    #   if(cur!=0):
+    #     shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num/cur)
+    #   else:
+    #     shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num)
+    # else:
+    shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num/req_amount)
     shirt.price = int(shirt.price)  
 
-    # shirt.total = 
+    # shirt.total =   
     return render(request, 'join.html', {
       'shirt':shirt,
       'css_list': [
@@ -891,17 +909,20 @@ def profile(request):
   except Designer.DoesNotExist:
       designer = None
 
-  
+
   if address == '       ' or address == "":
     address = "None"
   print 'ad' + address
   return render_to_response('profile.html', {
-    'user' : user,
-    'user_profile' : user_profile,
-    'credit' : credit,
-    'all_shirts' : all_shirts,
-    'designer' : designer,
-    'address' : address,
+      'user' : user,
+      'user_profile' : user_profile,
+      'credit' : credit,
+      'all_shirts' : all_shirts,
+      'designer' : designer,
+      'address' : address,
+      'css_list': [
+        'profile.css',
+      ],
     })
 
 @login_required
