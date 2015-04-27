@@ -493,7 +493,7 @@ def status_in_progress(request):
         shirt_inpro[str(order_obj.id)]['info'] = {}
         shirt_inpro[str(order_obj.id)]['info']['p_per_des'] = '0'
         shirt_inpro[str(order_obj.id)]['info']['time'] = order_obj.time
-        shirt_inpro[str(order_obj.id)]['info']['address'] = order_obj.address_house_no+ ' ' + order_obj.address_building+ ' ' + order_obj.address_road+ ' ' + order_obj.address_subdistrict+ ' ' + order_obj.address_district+ ' ' + order_obj.address_province+ ' ' + order_obj.address_country+ ' ' + order_obj.address_postcode
+        shirt_inpro[str(order_obj.id)]['info']['address'] = order_obj.address_house_no+ ' ' + order_obj.address_building + ' ' + order_obj.address_road+ ' ' + order_obj.address_subdistrict+ ' ' + order_obj.address_district+ ' ' + order_obj.address_province+ ' ' + order_obj.address_country+ ' ' + order_obj.address_postcode
   except Shirt_in_cart.DoesNotExist:
     shirt_ordered = None
   # return HttpResponse(shirt_inpro['5'])

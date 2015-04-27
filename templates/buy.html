@@ -25,7 +25,7 @@
 				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Unlike</button>
 			{% endif %}
 			</h3> </form>
-			
+
 			<h4>{{shirt.owner_id.firts_name}}</h4>
 			<p class="italic" id="designer">by {{shirt.owner_id.username}}
 				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {{shirt.like_count}}
@@ -62,7 +62,7 @@
 				<form  method= 'POST' action="/add_to_cart/{{shirt.id}}/">{% csrf_token %}
 
 					<div class="row" id="inputAmount">
-						S <input name="sAmount" placeholder="0"> 
+						S <input name="sAmount" placeholder="0">
 						M <input name="mAmount" placeholder="0">
 						L <input name="lAmount" placeholder="0">
 						XL <input name="xlAmount" placeholder="0">
@@ -70,9 +70,11 @@
 					</div>
 					<div class="row" id="btnAmount">
 						<div class="col-md-6">
-							<button href="#" class="btn round btn-grey btn-bigpad fontBold fontBlack hvr-shadow" id="btnBack">
-								BACK
-							</button>
+							<a href="javascript:window.history.back()">
+								<button type="button" class="btn round btn-grey btn-bigpad fontBold fontBlack hvr-shadow" id="btnBack">
+									BACK
+								</button>
+							</a>
 						</div>
 						<div class="col-md-6">
 							<button class="btn round btn-green btn-bigpad fontBold fontWhite hvr-shadow" id="btnJoin">
@@ -84,11 +86,11 @@
 
 				</form>
 			</div>
-			
+
 		</div>
 
 
-			
+
 	</div>
 	<div class="row" id="commentDiv">
 			<form id="commentForm" method='POST' action="/comment_buy/{{shirt.id}}/" style="margin-top:30px;">{% csrf_token %}
