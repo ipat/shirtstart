@@ -6,35 +6,37 @@
 <div class="container boxContent" id="status-waiting">
 	<h1>ORDER STATUS</h1>
 	<div class="row textcenter" id="menu-status">
-		<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING (N)</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS (N)</a><a href="/status/purchase-history" class="btn menuStatus active" id="menuStatusR">PURCHASE HISTORY (N)</a>
+		<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING (N)</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus active" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
 	</div>
 	<div class="shirtViewOrderStatus">
+		{% for sh in shirt_amount %}
 		<div class="row shirtItemOrderStatus">
 			<div class="col-sm-3 shirtImgDiv">
 				<img src="{% static 'img/shirt.png' %}"}>
 			</div>
 			<div class="col-sm-9 shirtInfoDiv">
 				<div class="row">
-					<p class="fontBold noMarBot">SHIRT NAME</p>
-					<p class="italic noMarBot" id="designer">by Xmenza</p>
-					<p class="noMarBot limitLine">Was inspired by the graffit old school things. This is a personal illustration designed just to 
-	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable 
-	at A Better Tomorrow. Was inspired by the graffit old school things. This is a personal illustration designed just to 
-	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable 
-	at A Better Tomorrow. Was inspired by the graffit old school things. This is a personal illustration designed just to 
-	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable 
-	at A Better Tomorrow.</p>
+					<p class="fontBold noMarBot">{{sh.0}}</p>
+					<p class="italic noMarBot" id="designer">by {{sh.5}}</p>
+					<p class="noMarBot limitLine">{{sh.6}}</p>
 				</div>
 
 
-				<div class="row shirtStatusDiv peopleStatusDiv centerOnSmall">
-					<span class="peopleStatus blueFont">$13.32</span>
+				<div class="row shirtStatusDiv">
+					<div class="col-sm-6 peopleStatusDiv centerOnSmall">
+						<span class="peopleStatus">{{ sh.7 }}</span><span> Baht</span>
+					</div>
 				</div>
 				<div class="row italic">
-					<p>Delivery date : 12/11/14 | S1, M3, L2, XL1</p>
-				<div>
+					<p>Ship date : {{sh.9}}</p>
+					<p>Amount : S{{sh.1}}, M{{sh.2}}, L{{sh.3}}, XL{{sh.4}}</p>
+				</div>
 			</div>
-		
+		</div>
+		{% endfor %}
+		{% if noti_purhis == 0 %}
+		<span class="textcenter"><h1>No shirt in purchased history</h1></span>
+		{% endif %}
 	</div>
 		
 </div>
