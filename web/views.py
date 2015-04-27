@@ -38,21 +38,22 @@ def index(request):
             .order_by('-like_count')[:4]
   shirts = shirts.annotate(current_amount=Sum('join__amount'))
 
-
+  
   for sh in shirts:
       if sh.is_on_shelf :
         sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
       else:
       # if sh.current_amount !=
         cur = Join.objects.filter(shirt_id=sh.id).count()
+        # req_amount = sh.waiting_id.require_amount
+        # if cur != req_amount:
+        #   if(cur!=0):
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
+        #   else:
+        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
+        # else:
         req_amount = sh.waiting_id.require_amount
-        if cur != req_amount:
-          if(cur!=0):
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
-          else:
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
-        else:
-          sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+        sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
       sh.price = int(sh.price)
   return render(request, 'index.html', {
     'shirts' :shirts,
@@ -199,22 +200,15 @@ def catalog(request):
       # if sh.current_amount !=
         cur = Join.objects.filter(shirt_id=sh.id).count()
         req_amount = sh.waiting_id.require_amount
-        if cur != req_amount:
-          if(cur!=0):
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
-          else:
-            sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
-        else:
-          sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
-      sh.price = int(sh.price)
         # if cur != req_amount:
         #   if(cur!=0):
         #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
         #   else:
         #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
         # else:
-      sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
-      sh.price = int(sh.price)   
+        sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+      sh.price = int(sh.price)
+        
     return render_to_response('catalog.html', {
       'all_shirts': all_shirts,
       'css_list': [
