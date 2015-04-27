@@ -3,54 +3,65 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div id="status-waiting-wrapper" class="container boxContent" id="status-waiting">
+<div class="container boxContent" id="status-waiting">
 	<h1>ORDER STATUS</h1>
 	<div class="row textcenter" id="menu-status">
-		<a href="status/waiting" class="btn menuStatus active" id="menuStatusL">WAITING (N)</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS (N)</a><a href="/status/purchase-history" class="btn menuStatus" id="menuStatusR">PURCHASE HISTORY (N)</a>
+		<a href="status/waiting" class="btn menuStatus active" id="menuStatusL">WAITING ({{join_len}})</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
 	</div>
 	<div class="shirtViewOrderStatus">
-		<div class="row shirtItemOrderStatus">
-			<div class="col-sm-3 shirtImgDiv">
-
-				<div class="shirt-image">
-	        <div class="inner">
-	          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
-	          <div class="filler-wrapper">
-	            <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
-	          </div>
-	        </div>
-	      </div>
-
-			</div>
-			<div class="col-sm-9 shirtInfoDiv">
-				<div class="row">
-					<p class="fontBold noMarBot">SHIRT NAME</p>
-					<p class="italic noMarBot" id="designer">by Xmenza</p>
-					<p class="noMarBot limitLine">Was inspired by the graffit old school things. This is a personal illustration designed just to
-	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable
-	at A Better Tomorrow. Was inspired by the graffit old school things. This is a personal illustration designed just to
-	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable
-	at A Better Tomorrow. Was inspired by the graffit old school things. This is a personal illustration designed just to
-	participate on design contests for T-shirts or Posters around the internet. T-shirt avaliable
-	at A Better Tomorrow.</p>
+		{% if join.count == 0 %}
+			<span class="textcenter"><h1>Seems like you don't have any shirt to wait :P</h1></span>
+		{% else %}
+			{% for join_list in join %}
+			<div class="row shirtItemOrderStatus">
+				<div class="col-sm-3 shirtImgDiv">
+					<img src="{% static 'img/shirt.png' %}"}>
 				</div>
-
-
-				<div class="row shirtStatusDiv">
-					<div class="col-sm-6 peopleStatusDiv centerOnSmall">
-						<span class="peopleStatus">23/100</span><span>people joined</span>
+				
+				<div class="col-sm-9 shirtInfoDiv">
+					<div class="row">
+						<p class="fontBold noMarBot">{{join_list.shirt_id.name}}</p>
+						<p class="italic noMarBot" id="designer">by {{join.user}}</p>
+						<p class="noMarBot limitLine">{{join_list.shirt_id.description}}</p>
 					</div>
-					<div class="col-sm-6 peopleStatusDiv centerOnSmall">
-						<span class="peopleStatus">23</span><span>days left</span>
+					
+					{% if join_list.shirt_size == '1' %}
+						<h4>S: {{join_list.amount}} </h4>
+					{% endif %}
+					{% if join_list.shirt_size == '2' %}
+						<h4>M: {{join_list.amount}}</h4>
+					{% endif %}
+					{% if join_list.shirt_size == '3' %}
+						<h4>L: {{join_list.amount}}</h4>
+					{% endif %}
+					{% if join_list.shirt_size == '4' %}
+						<h4>XL: {{join_list.amount}}</h4>
+					{% endif %}
+					<div class="row shirtStatusDiv">
+						<div class="col-sm-6 peopleStatusDiv centerOnSmall">
+							<span class="peopleStatus"></span><span>House No. {{join_list.address_house_no}} Building {{join_list.address_building}}  Road {{join_list.address_road}} <br> Subdistrict {{join_list.address_subdistrict}} District {{join_list.address_district}} Province {{join_list.address_province}}<br> Country {{join_list.address_country}} postcode {{join_list.address_postcode}}</span> 
+						</div>
+					</div>
+					<div class="row italic">
+					{% if join_list.shirt_size == '1' %}
+						<p>Order date : {{join_list.time}}  </p>
+					{% endif %}
+					{% if join_list.shirt_size == '2' %}
+						<p>Order date : {{join_list.time}}  </p>
+					{% endif %}
+					{% if join_list.shirt_size == '3' %}
+						<p>Order date : {{join_list.time}}  </p>
+					{% endif %}
+					{% if join_list.shirt_size == '4' %}
+						<p>Order date : {{join_list.time}}  </p>
+					{% endif %}
 					</div>
 				</div>
-				<div class="row italic">
-					<p>Order date : 12/11/14 | S1, M3, L2, XL1</p>
-				<div>
 			</div>
-
+			{% endfor %}
+		{% endif %}
 	</div>
-
+		
 </div>
 
 {% include "template.foot.html" %}

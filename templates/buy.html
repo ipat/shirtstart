@@ -19,7 +19,14 @@
 		</div>
 		<div class="col-md-6 info">
 			<!-- <h3>I'M NOT WEIRD. I'M LIMITED EDITION</h3> -->
-			<h3>{{shirt.name}}</h3>
+			<form method='GET' action="/like_buy/{{shirt.id}}">
+			<h3>{{shirt.name}}
+			{% if not is_like%}
+				<button name="like"  id="toUnlike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Like</button>
+			{% else %}
+				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Unlike</button>
+			{% endif %}
+			</h3> </form>
 			<h4>{{shirt.description}}</h4>
 			<h4>{{shirt.owner_id.firts_name}}</h4>
 			<p class="italic" id="designer">by Xmenza
@@ -63,10 +70,10 @@
 				<form  method= 'POST' action="/add_to_cart/{{shirt.id}}/">{% csrf_token %}
 
 					<div class="row" id="inputAmount">
-						S <input name="sAmount">
-						M <input name="mAmount">
-						L <input name="lAmount">
-						XL <input name="xlAmount">
+						S <input name="sAmount" placeholder="0"> 
+						M <input name="mAmount" placeholder="0">
+						L <input name="lAmount" placeholder="0">
+						XL <input name="xlAmount" placeholder="0">
 
 					</div>
 					<div class="row" id="btnAmount">
@@ -89,9 +96,8 @@
 
 		</div>
 	</div>
-		<form method='GET' action="/like_buy/{{shirt.id}}">
-			<button name="like" style="padding: 20px">like</button>
-		</form>
+		
+
 		<form id="commentForm" method='POST' action="/comment_buy/{{shirt.id}}/">{% csrf_token %}
 			<textarea placeholder="write your comment here ..." type="text" id="txtComment" name="comment_text"></textarea>
 			<button type="submit" class="btn btnWhite" id="btnSubmit">submit</button>

@@ -397,6 +397,18 @@ button:focus {outline:0 !important;}
 	border-top-right-radius: 2em;
 	border-bottom-right-radius: 2em;
 }
+.leftRound {
+	border-top-left-radius:2em;
+	border-bottom-left-radius:2em;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+.rightRound {
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	border-top-right-radius: 2em;
+	border-bottom-right-radius: 2em;
+}
 .shirtItemOrderStatus {
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -479,4 +491,47 @@ button:focus {outline:0 !important;}
 }
 .width50 {
 	max-width: 10em;
+}
+.btnLike {
+	color: #fff;
+	padding: 3px 7px;
+}
+#toLike {
+	background-color: #E866B6;
+	border : 3px solid #F0A8D4;
+}
+#toUnlike {
+	background-color: #bbb;
+	border : 3px solid #eee;
+}
+#logoutbtn {
+	padding: 0px 8px;
+	font-family: GillSans;
+	background-color: #ffffff;
+	text-decoration: none;
+	color : #555;
+	border: 3px solid #dcdcdc;
+	vertical-align: middle; 
+}
+#logoutbtn:hover {
+	background-color: #eee;
+}
+#deleteBtn {
+	background-color: #ED5151;
+}
+#deleteBtn:hover {
+	background-color: #F06E6E;
+}
+#clearBtn {
+	font-size: 1em;
+	background-color: #5B97EB;
+	padding: 0px 15px;
+}
+#clearBtn:hover {
+	background-color: #6DA2ED;
+}
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
 }

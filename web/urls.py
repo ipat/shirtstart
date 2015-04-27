@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^comment_buy/(?P<comment_shirt_id>[\w|\W]+)/$', views.comment_buy, name="comment_buy"),
     url(r'^like_buy/(?P<like_shirt_id>[\w|\W]+)/$', views.like_buy, name="like_buy"),
     url(r'^add_to_cart/(?P<add_shirt_id>[\w|\W]+)/$', views.add_to_cart, name="add_to_cart"),
+    url(r'^delete_in_cart/(?P<shirt_id>[\w|\W]+)/$', views.delete_in_cart, name="delete_in_cart"),
     # url(r'^register/$', views.register, name="re")
     # status things
     url(r'^status/waiting/', views.status_waiting, name="status_waiting"),
@@ -28,5 +29,7 @@ urlpatterns = [
     url(r'^design/', views.design, name="design"),
     url(r'^profile/', views.profile, name="profile"),
     url(r'^withdraw/', views.withdraw, name="withdraw"),
+
+    url(r'^admin_login/', views.admin_login, name="admin_login"),
     url(r'^admin/', views.admin, name="admin"),
 ]

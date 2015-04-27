@@ -4,7 +4,12 @@
 {% include "template.search.html" %}
 
 <div id="cart-wrapper" class="container boxContent animated fadeIn" id="status-waiting">
-	<h1>CART</h1>
+	<h1>CART
+		<div style="float:right;">
+			<a href="/delete_in_cart/0/" class="btn round fontWhite" id="clearBtn">Clear cart</a>
+		</div>
+	</h1>
+	
 	<div class="shirtViewOrderStatus">
 		{% for sh in shirt_amount %}
 		<div class="row shirtItemOrderStatus">
@@ -21,6 +26,11 @@
 
 			</div>
 			<div class="col-sm-9 shirtInfoDiv">
+
+				<div style="float:right">
+					<a href="/delete_in_cart/{{sh.8}}/" class="btn round fontWhite fontBold" id="deleteBtn">X</a>
+				</div>
+
 				<div class="row">
 					<p class="fontBold noMarBot">{{sh.0}}</p>
 					<p class="italic noMarBot" id="designer">by {{sh.5}}</p>
@@ -36,15 +46,23 @@
 				<div class="row italic">
 					<p>Amount : S{{sh.1}}, M{{sh.2}}, L{{sh.3}}, XL{{sh.4}}</p>
 				</div>
+
 			</div>
+
 		</div>
 		{% endfor %}
+		{% if  len == 0 %}
+			<span class="textcenter"><h1>Looks like an empty cart ...</h1></span>
+		{% endif %}
 	</div>
-
+	{% if not len == 0 %}
 	<div class="row textcenter">
 		<h1>Total : {{total}} Baht</h1>
+		
 		<a href="/checkout" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow width50" />Check out</a>
+		
 	</div>
+	{% endif %}
 </div>
 
 
