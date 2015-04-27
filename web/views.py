@@ -193,6 +193,7 @@ def catalog(request):
     all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))  
     for sh in all_shirts:
       if sh.is_on_shelf :
+        print "xxxxx"
         sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
       else:
       # if sh.current_amount !=
@@ -261,6 +262,20 @@ def join(request, shirt_id):
     ratio = (shirt.current_amount/shirt.waiting_id.require_amount)
     ratio_date = 1-(shirt.left/shirt.created)
     print 'ratio' + str(ratio_date) + ' ' + str(shirt.waiting_id.require_amount)
+    
+
+    cur = Join.objects.filter(shirt_id=shirt_id).count()
+    req_amount = shirt.waiting_id.require_amount
+    if cur != req_amount:
+      if(cur!=0):
+        shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num/cur)
+      else:
+        shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirt.color_num)
+    else:
+      shirt.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*shirt.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *shirtcolor_num/req_amount)
+    shirt.price = int(shirt.price)  
+
+    # shirt.total = 
     return render(request, 'join.html', {
       'shirt':shirt,
       'css_list': [
@@ -370,7 +385,7 @@ def buy(request, shirt_id):
   shirt.comment_list = Comment.objects.filter(shirt_id=shirt_id)
   shirt.size_of_comment = shirt.comment_list.count
   shirt.like_count = Like.objects.filter(shirt_id=shirt_id).count()
-
+  shirt.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*shirt.color_num
   try:
     like = Like.objects.filter(shirt_id=shirt_id).filter(user_id=user.id)
   except Like.DoesNotExist:
