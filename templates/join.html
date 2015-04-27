@@ -104,10 +104,9 @@
 
 				</form>
 			</div>
-			<div class="row" id="commentDiv">
-
 		</div>
 	</div>
+	<div class="row" id="commentDiv">
 		<form id="commentForm" method="POST" action="/comment_join/{{shirt.id}}/">{% csrf_token %}
 			<textarea placeholder="write your comment here ..." type="text" id="txtComment" name="comment_text"></textarea>
 
@@ -117,7 +116,7 @@
 		{% for cmt in shirt.comment_list %}
 		<div class="container" id="commentView">
 			<div class="row card">
-				<p class="userComment">{{cmt.user_id}}</h2>
+				<p class="userComment">{{cmt.user_id}}</p>
 				<p class="txtComment">{{cmt.comment}}</p>
 			</div>
 		</div>
