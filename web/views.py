@@ -17,9 +17,6 @@ from django.conf import settings
 import pprint
 from datetime import date, timedelta, datetime
 
-PRICE_PER_SHIRT = 120
-PRICE_PER_COLOR = 50
-
 # Create your views here.
 
 def index(request):
@@ -37,7 +34,7 @@ def index(request):
 
 def logout(request):
   auth_logout(request)
-  return HttpResponseRedirect('/')
+  return HttpResponse("You are logout")
 
 def signup(request):
 
@@ -153,11 +150,6 @@ def catalog(request):
       all_shirts = all_shirts.annotate(comments_count=Count('comment')).order_by(order_prefix + 'comments_count')
     elif filters['attribute'] == 'price':
       all_shirts = all_shirts.order_by(order_prefix + 'color_num')
-    elif filters['attribute'] == 'time':
-      all_shirts = all_shirts.order_by(order_prefix + 'created_at')
-    else:
-      all_shirts = all_shirts.order_by('-created_at')
-
 
     # Add current amount of shirt join
     all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
@@ -174,7 +166,7 @@ def catalog(request):
       'search': search,
       'search_word': search_word,
       'filters': filters,
-
+      
     })
 
 def search(request, search_word):
@@ -191,10 +183,10 @@ def join(request, shirt_id):
     shirt.current_amount = 0
     for inJoin in Join.objects.filter(shirt_id=shirt_id):
       shirt.current_amount += inJoin.amount
-
+    
     shirt.comment_list = Comment.objects.filter(shirt_id=shirt_id)
     shirt.size_of_comment = shirt.comment_list.count
-
+    
     shirt.like_count = Like.objects.filter(shirt_id=shirt_id).count()
 
 
@@ -218,7 +210,7 @@ def comment_join(request,comment_shirt_id):
     b = Comment(user_id=request.user,shirt_id=Shirt.objects.get(pk=comment_shirt_id),comment=cmt,time=date.today())
     b.save()
   return HttpResponseRedirect('/join/' + comment_shirt_id + '/')
-
+  
 
 def like_join(request,like_shirt_id):
   if request.method == 'GET' and Like.objects.filter(user_id=request.user ,shirt_id=like_shirt_id).count()==0:
@@ -238,7 +230,7 @@ def comment_buy(request,comment_shirt_id):
   return HttpResponseRedirect('/buy/' + comment_shirt_id + '/')
 
 
-
+  
 
 def like_buy(request,like_shirt_id):
   if request.method == 'GET' and Like.objects.filter(user_id=request.user ,shirt_id=like_shirt_id).count()==0:
@@ -255,21 +247,21 @@ def like_buy(request,like_shirt_id):
 #   return HttpResponseRedirect('/cart/')
 
 def add_to_cart(request,add_shirt_id):
-
+  
   try:
     sa = request.POST.get('sAmount')
     if request.POST.get('sAmount') != '':
       s_amount = int(sa) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=1).amount
-      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=1).update(amount=s_amount)
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=1).update(amount=s_amount)  
   except Shirt_in_cart.DoesNotExist:
-    if request.POST.get('sAmount') != '':
+    if request.POST.get('sAmount') != '': 
       s = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=1,amount=request.POST.get('sAmount'),time=date.today())
       s.save()
   try:
     sm = request.POST.get('mAmount')
     if request.POST.get('mAmount') != '':
       m_amount = int(sm) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=2).amount
-      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=2).update(amount=m_amount)
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=2).update(amount=m_amount)    
   except Shirt_in_cart.DoesNotExist:
     if request.POST.get('mAmount') != '':
       m = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=2,amount=request.POST.get('mAmount'),time=date.today())
@@ -278,21 +270,21 @@ def add_to_cart(request,add_shirt_id):
     sl = request.POST.get('lAmount')
     if request.POST.get('lAmount') != '':
       l_amount = int(sl) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=3).amount
-      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=3).update(amount=l_amount)
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=3).update(amount=l_amount)  
   except Shirt_in_cart.DoesNotExist:
     if request.POST.get('lAmount') != '':
       l = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=3,amount=request.POST.get('lAmount'),time=date.today())
       l.save()
-  try:
+  try: 
     sxl = request.POST.get('xlAmount')
     if request.POST.get('xlAmount') != '':
       xl_amount = int(sxl) + Shirt_in_cart.objects.get(user_id=request.user,shirt_id=add_shirt_id,shirt_size=4).amount
-      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=4).update(amount=xl_amount)
+      Shirt_in_cart.objects.filter(user_id=request.user,shirt_id=add_shirt_id,shirt_size=4).update(amount=xl_amount)  
   except Shirt_in_cart.DoesNotExist:
     if request.POST.get('xlAmount') != '':
       xl = Shirt_in_cart(user_id=request.user,shirt_id=Shirt.objects.get(pk=add_shirt_id),shirt_size=4,amount=request.POST.get('xlAmount'),time=date.today())
       xl.save()
-
+   
   return HttpResponseRedirect('/cart/' + add_shirt_id + '/')
 
 
@@ -313,11 +305,160 @@ def status_waiting(request):
 
 @login_required
 def status_in_progress(request):
-  return render_to_response('status_in-progress.html', {})
+  user = request.user
+  shirt_inpro = {}
+  shirt_purhis = {}
+  shirt_info_inpro = []
+  try:
+    order = Order.objects.filter(user_id=user.id)
+    for o in order:
+      if o.status == 0:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          shirt_inpro[str(order_item.shirt_id.id)] = ['a']*9
+          shirt_inpro[str(order_item.shirt_id.id)][0] = order_item.shirt_id.name
+          shirt_inpro[str(order_item.shirt_id.id)][1] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][2] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][3] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][4] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][5] = order_item.shirt_id.owner_id.username 
+          shirt_inpro[str(order_item.shirt_id.id)][6] = order_item.shirt_id.description 
+          shirt_inpro[str(order_item.shirt_id.id)][8] = order_item.shirt_id
+      elif o.status == 1:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          shirt_purhis[str(order_item.shirt_id.id)] = ['a']*9
+          shirt_purhis[str(order_item.shirt_id.id)][0] = order_item.shirt_id.name
+          shirt_purhis[str(order_item.shirt_id.id)][1] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][2] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][3] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][4] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][5] = order_item.shirt_id.owner_id.username 
+          shirt_purhis[str(order_item.shirt_id.id)][6] = order_item.shirt_id.description 
+          shirt_purhis[str(order_item.shirt_id.id)][8] = order_item.shirt_id
+
+  
+    for o in order:
+      if o.status == 0:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          if order_item.shirt_size == '1':
+            shirt_inpro[str(order_item.shirt_id.id)][1] = order_item.amount
+          elif order_item.shirt_size == '2':
+            shirt_inpro[str(order_item.shirt_id.id)][2] = order_item.amount
+          elif order_item.shirt_size == '3':
+            shirt_inpro[str(order_item.shirt_id.id)][3] = order_item.amount
+          elif order_item.shirt_size == '4':
+            shirt_inpro[str(order_item.shirt_id.id)][4] = order_item.amount
+          shirt_inpro[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_inpro[str(order_item.shirt_id.id)][4])) + (int(shirt_inpro[str(order_item.shirt_id.id)][3])) + (int(shirt_inpro[str(order_item.shirt_id.id)][2])) + (int(shirt_inpro[str(order_item.shirt_id.id)][1])))) 
+      elif o.status == 1:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          if order_item.shirt_size == '1':
+            shirt_purhis[str(order_item.shirt_id.id)][1] = order_item.amount
+          elif order_item.shirt_size == '2':
+            shirt_purhis[str(order_item.shirt_id.id)][2] = order_item.amount
+          elif order_item.shirt_size == '3':
+            shirt_purhis[str(order_item.shirt_id.id)][3] = order_item.amount
+          elif order_item.shirt_size == '4':
+            shirt_purhis[str(order_item.shirt_id.id)][4] = order_item.amount
+          shirt_purhis[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_purhis[str(order_item.shirt_id.id)][4])) + (int(shirt_purhis[str(order_item.shirt_id.id)][3])) + (int(shirt_purhis[str(order_item.shirt_id.id)][2])) + (int(shirt_purhis[str(order_item.shirt_id.id)][1])))) 
+  except Shirt_in_cart.DoesNotExist:
+    shirt_ordered = None
+  # return HttpResponse(shirt_inpro['5'])
+  total = 0
+  noti_inpro = len(shirt_inpro)
+  noti_purhis = len(shirt_purhis)
+  for sh in shirt_inpro:
+    shirt_info_inpro.append(shirt_inpro[sh])
+    total += int(shirt_inpro[sh][7])
+
+  return render_to_response('status_in-progress.html', {
+    'shirt_amount' : shirt_info_inpro,
+    'user' : user,
+    'total' : total,
+    'noti_inpro' : noti_inpro,
+    'noti_purhis' : noti_purhis,
+  })
 
 @login_required
 def status_purchase_history(request):
-  return render_to_response('status_purchased.html', {})
+  user = request.user
+  shirt_inpro = {}
+  shirt_purhis = {}
+  shirt_info_inpro = []
+  shirt_info_purhis = []
+  try:
+    order = Order.objects.filter(user_id=user.id)
+    for o in order:
+      if o.status == 0:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          shirt_inpro[str(order_item.shirt_id.id)] = ['a']*9
+          shirt_inpro[str(order_item.shirt_id.id)][0] = order_item.shirt_id.name
+          shirt_inpro[str(order_item.shirt_id.id)][1] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][2] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][3] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][4] = '0'
+          shirt_inpro[str(order_item.shirt_id.id)][5] = order_item.shirt_id.owner_id.username 
+          shirt_inpro[str(order_item.shirt_id.id)][6] = order_item.shirt_id.description 
+          shirt_inpro[str(order_item.shirt_id.id)][8] = order_item.shirt_id
+      elif o.status == 1:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          shirt_purhis[str(order_item.shirt_id.id)] = ['a']*10
+          shirt_purhis[str(order_item.shirt_id.id)][0] = order_item.shirt_id.name
+          shirt_purhis[str(order_item.shirt_id.id)][1] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][2] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][3] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][4] = '0'
+          shirt_purhis[str(order_item.shirt_id.id)][5] = order_item.shirt_id.owner_id.username 
+          shirt_purhis[str(order_item.shirt_id.id)][6] = order_item.shirt_id.description 
+          shirt_purhis[str(order_item.shirt_id.id)][8] = order_item.shirt_id
+          shirt_purhis[str(order_item.shirt_id.id)][9] = order_item.ship_date
+  
+    for o in order:
+      if o.status == 0:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          if order_item.shirt_size == '1':
+            shirt_inpro[str(order_item.shirt_id.id)][1] = order_item.amount
+          elif order_item.shirt_size == '2':
+            shirt_inpro[str(order_item.shirt_id.id)][2] = order_item.amount
+          elif order_item.shirt_size == '3':
+            shirt_inpro[str(order_item.shirt_id.id)][3] = order_item.amount
+          elif order_item.shirt_size == '4':
+            shirt_inpro[str(order_item.shirt_id.id)][4] = order_item.amount
+          shirt_inpro[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_inpro[str(order_item.shirt_id.id)][4])) + (int(shirt_inpro[str(order_item.shirt_id.id)][3])) + (int(shirt_inpro[str(order_item.shirt_id.id)][2])) + (int(shirt_inpro[str(order_item.shirt_id.id)][1])))) 
+      elif o.status == 1:
+        order_list = Order_list.objects.filter(order_id=o.id)
+        for order_item in order_list:
+          if order_item.shirt_size == '1':
+            shirt_purhis[str(order_item.shirt_id.id)][1] = order_item.amount
+          elif order_item.shirt_size == '2':
+            shirt_purhis[str(order_item.shirt_id.id)][2] = order_item.amount
+          elif order_item.shirt_size == '3':
+            shirt_purhis[str(order_item.shirt_id.id)][3] = order_item.amount
+          elif order_item.shirt_size == '4':
+            shirt_purhis[str(order_item.shirt_id.id)][4] = order_item.amount
+          shirt_purhis[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_purhis[str(order_item.shirt_id.id)][4])) + (int(shirt_purhis[str(order_item.shirt_id.id)][3])) + (int(shirt_purhis[str(order_item.shirt_id.id)][2])) + (int(shirt_purhis[str(order_item.shirt_id.id)][1])))) 
+  except Shirt_in_cart.DoesNotExist:
+    shirt_ordered = None
+  # return HttpResponse(shirt_inpro['5'])
+  total = 0
+  noti_inpro = len(shirt_inpro)
+  noti_purhis = len(shirt_purhis)
+  for sh in shirt_purhis:
+    shirt_info_purhis.append(shirt_purhis[sh])
+    total += int(shirt_inpro[sh][7])
+
+  return render_to_response('status_purchased.html', {
+    'shirt_amount' : shirt_info_purhis,
+    'user' : user,
+    'total' : total,
+    'noti_inpro' : noti_inpro,
+    'noti_purhis' : noti_purhis,
+  })
 
 @login_required
 def payment(request, shirt_id):
@@ -337,8 +478,8 @@ def payment(request, shirt_id):
       credit.exp = credit.expiry_year + "-" + credit.expiry_month
     except Credit_card.DoesNotExist:
       credit = None
-
-
+    
+    
     # credit.exp = (credit.expiry_year, credit.expiry_month)
 
     shirt = Shirt.objects.get(pk=shirt_id)
@@ -378,6 +519,7 @@ def payment(request, shirt_id):
       credit.save()
     except Credit_card.DoesNotExist:
       credit = Credit_card.objects.create(user_id=User.objects.get(pk=request.user.id), name_on_card=input_info.get('name_on_card'), number=input_info.get('number'), expiry_month=input_info.get('expiry_month').split('-')[1], expiry_year=input_info.get('expiry_month').split('-')[0])
+      # credit.save()
 
 
     for i in range(1,4):
@@ -397,6 +539,9 @@ def payment(request, shirt_id):
           user_id = User.objects.get(pk=request.user.id),
           shirt_id = Shirt.objects.get(pk=shirt_id))
 
+    # user_profile.save(request.POST)
+    # credit = Credit_card.objects.get(user_id=request.user.id)
+    # credit.save(request.POST)
     return HttpResponseRedirect('/status/waiting')
 
 @login_required
@@ -412,55 +557,7 @@ def checkout(request):
     return render(request,'checkout.html', {'credit': credit, 'user_profile': user_profile})
 
   else:
-    input_info = request.POST
-    user_profile = UserProfile.objects.get(user_id=request.user.id)
-    user_profile.address_house_no = input_info.get('address_house_no')
-    user_profile.address_building = input_info.get('address_building')
-    user_profile.address_road = input_info.get('address_road')
-    user_profile.address_subdistrict = input_info.get('address_subdistrict')
-    user_profile.address_district = input_info.get('address_district')
-    user_profile.address_province = input_info.get('address_province')
-    user_profile.address_country = input_info.get('address_country')
-    user_profile.address_postcode = input_info.get('address_postcode')
-    user_profile.save()
-
-    try:
-      credit = Credit_card.objects.get(user_id=request.user.id)
-      credit.name_on_card = input_info.get('name_on_card')
-      credit.number = input_info.get('number')
-      credit.expiry_month = input_info.get('expiry_month').split('-')[1]
-      credit.expiry_year = input_info.get('expiry_month').split('-')[0]
-      credit.save()
-    except Credit_card.DoesNotExist:
-      credit = Credit_card.objects.create(user_id=User.objects.get(pk=request.user.id), name_on_card=input_info.get('name_on_card'), number=input_info.get('number'), expiry_month=input_info.get('expiry_month').split('-')[1], expiry_year=input_info.get('expiry_month').split('-')[0])
-    
-
-    order = Order.objects.create(
-      time = datetime.now(),
-      address_house_no = input_info.get('address_house_no'),
-      address_building = input_info.get('address_building'),
-      address_road = input_info.get('address_road'),
-      address_subdistrict = input_info.get('address_subdistrict'),
-      address_district = input_info.get('address_district'),
-      address_province = input_info.get('address_province'),
-      address_country = input_info.get('address_country'),
-      address_postcode = input_info.get('address_postcode'),
-      status = 0,
-      user_id = User.objects.get(pk=request.user.id))
-
-    order_lists = Shirt_in_cart.objects.filter(user_id=request.user.id)
-
-    for od in order_lists:
-      price_each = PRICE_PER_SHIRT + od.shirt_id.color_num * PRICE_PER_COLOR
-      Order_list.objects.create(
-        shirt_size = od.shirt_size,
-        amount = od.amount,
-        order_id = order,
-        shirt_id = od.shirt_id,
-        price_each = price_each,)
-      od.delete()
-
-    return HttpResponseRedirect('/status/in-progress/')
+    return HttpResponse("hello")
 
 
 @login_required
@@ -477,10 +574,10 @@ def cart(request):
       shirt_amount[str(shirt.shirt_id.id)][2] = '0'
       shirt_amount[str(shirt.shirt_id.id)][3] = '0'
       shirt_amount[str(shirt.shirt_id.id)][4] = '0'
-      shirt_amount[str(shirt.shirt_id.id)][5] = shirt.shirt_id.owner_id.username
-      shirt_amount[str(shirt.shirt_id.id)][6] = shirt.shirt_id.description
-
-
+      shirt_amount[str(shirt.shirt_id.id)][5] = shirt.shirt_id.owner_id.username 
+      shirt_amount[str(shirt.shirt_id.id)][6] = shirt.shirt_id.description 
+      
+  
     for shirt in shirt_in_cart:
       if shirt.shirt_size == '1':
         shirt_amount[str(shirt.shirt_id.id)][1] = shirt.amount
@@ -490,7 +587,7 @@ def cart(request):
         shirt_amount[str(shirt.shirt_id.id)][3] = shirt.amount
       elif shirt.shirt_size == '4':
         shirt_amount[str(shirt.shirt_id.id)][4] = shirt.amount
-      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * 30 + 50) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
+      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * 30 + 50) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1])))) 
   except Shirt_in_cart.DoesNotExist:
     shirt_in_cart = None
   # return HttpResponse(shirt_amount['5'])
@@ -511,14 +608,8 @@ def design(request):
   if request.method == 'GET':
     context = RequestContext(request)
     return render_to_response('design.html', {
-      'css_list': [
-        'design.css',
-        'bootstrap-slider.min.css',
-      ],
-      'js_list': [
-        'dropzone.js',
-        'bootstrap-slider.min.js',
-      ],
+      'css_list': [ 'design.css' ],
+      'js_list': ['dropzone.js'],
     }, context)
 
   elif request.method == 'POST':
@@ -528,12 +619,6 @@ def design(request):
     extension = name.split('.')[-1]
     # user info
     user = User.objects.get(username=request.user)
-    # create a waiting shirt
-    time_d = timedelta(days=int(request.POST['require_days']))
-    require_date = datetime.now() + time_d
-    waiting = Waiting.objects.create(
-      require_amount=request.POST['require_amount'],
-      require_date=require_date)
     # create a new shirt
     shirt = Shirt.objects.create(
       name=request.POST['name'],
@@ -543,8 +628,7 @@ def design(request):
       owner_id=user,
       is_on_shelf=False,
       color_num=request.POST['color_num'],
-      created_at=datetime.now(),
-      waiting_id=waiting)
+      created_at=datetime.now() )
 
     # writintg the uploaded file
     newFilePath = settings.SHIRTS + '/' + str(shirt.id) + '.' + extension

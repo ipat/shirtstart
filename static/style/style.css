@@ -405,6 +405,7 @@ button:focus {outline:0 !important;}
 	-webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.2);
 	-moz-box-shadow:    0px 0px 10px 0px rgba(50, 50, 50, 0.2);
 	box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+	background-color: #fff;
 }
 .shirtImgDiv img {
 	max-width: 100%;
@@ -417,6 +418,8 @@ button:focus {outline:0 !important;}
 .shirtViewOrderStatus {
 	margin-top: 20px;
 	margin-bottom: 20px;
+	background-color: #f3f3f3;
+	padding: 30px 30px;
 }
 .shirtInfoDiv {
 	padding: 10px 20px;
