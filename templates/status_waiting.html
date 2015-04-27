@@ -15,7 +15,16 @@
 			{% for join_list in join %}
 			<div class="row shirtItemOrderStatus">
 				<div class="col-sm-3 shirtImgDiv">
-					<img src="{% static 'img/shirt.png' %}"}>
+
+					<div class="shirt-image">
+		        <div class="inner">
+		          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+		          <div class="filler-wrapper">
+		            <img class="filler" src="{% static 'shirts/' %}{{join_list.shirt_id.id}}.{{join_list.shirt_id.file_url}}">
+		          </div>
+		        </div>
+		      </div>
+
 				</div>
 
 				<div class="col-sm-9 shirtInfoDiv">
