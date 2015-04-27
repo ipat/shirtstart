@@ -438,7 +438,7 @@ def status_purchase_history(request):
             shirt_inpro[str(order_item.shirt_id.id)][3] = order_item.amount
           elif order_item.shirt_size == '4':
             shirt_inpro[str(order_item.shirt_id.id)][4] = order_item.amount
-          shirt_inpro[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_inpro[str(order_item.shirt_id.id)][4])) + (int(shirt_inpro[str(order_item.shirt_id.id)][3])) + (int(shirt_inpro[str(order_item.shirt_id.id)][2])) + (int(shirt_inpro[str(order_item.shirt_id.id)][1]))))
+          shirt_inpro[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_inpro[str(order_item.shirt_id.id)][4])) + (int(shirt_inpro[str(order_item.shirt_id.id)][3])) + (int(shirt_inpro[str(order_item.shirt_id.id)][2])) + (int(shirt_inpro[str(order_item.shirt_id.id)][1]))))
       elif o.status == 1:
         order_list = Order_list.objects.filter(order_id=o.id)
         for order_item in order_list:
@@ -450,7 +450,7 @@ def status_purchase_history(request):
             shirt_purhis[str(order_item.shirt_id.id)][3] = order_item.amount
           elif order_item.shirt_size == '4':
             shirt_purhis[str(order_item.shirt_id.id)][4] = order_item.amount
-          shirt_purhis[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_purhis[str(order_item.shirt_id.id)][4])) + (int(shirt_purhis[str(order_item.shirt_id.id)][3])) + (int(shirt_purhis[str(order_item.shirt_id.id)][2])) + (int(shirt_purhis[str(order_item.shirt_id.id)][1]))))
+          shirt_purhis[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_purhis[str(order_item.shirt_id.id)][4])) + (int(shirt_purhis[str(order_item.shirt_id.id)][3])) + (int(shirt_purhis[str(order_item.shirt_id.id)][2])) + (int(shirt_purhis[str(order_item.shirt_id.id)][1]))))
   except Shirt_in_cart.DoesNotExist:
     shirt_ordered = None
   # return HttpResponse(shirt_inpro['5'])
@@ -644,7 +644,7 @@ def cart(request):
         shirt_amount[str(shirt.shirt_id.id)][3] = shirt.amount
       elif shirt.shirt_size == '4':
         shirt_amount[str(shirt.shirt_id.id)][4] = shirt.amount
-      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * 30 + 50) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
+      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
   except Shirt_in_cart.DoesNotExist:
     shirt_in_cart = None
   # return HttpResponse(shirt_amount['5'])
