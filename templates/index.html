@@ -37,7 +37,7 @@
 
             <div class="content">
               <h4 class="title">
-                <span class="nl">{{shirt.title}}</span>
+                <span class="nl">{{shirt.name}}</span>
               </h4>
               <p class="description">
                 {{shirt.description}}
@@ -57,7 +57,11 @@
                 {% else %}
                   <div class="people col-xs-6">
                     <i class="glyphicon glyphicon-user"></i>
-                    <span>{{shirt.current_amount}}/{{shirt.waiting_id.require_amount}}</span>
+                    {% if shirt.current_amount == None %}
+                      <span>0/{{shirt.waiting_id.require_amount}}</span>
+                    {% else %}
+                      <span>{{shirt.current_amount}}/{{shirt.waiting_id.require_amount}}</span>
+                    {% endif %}
                   </div>
                   <div class="price col-xs-6">
                     <i class="glyphicon glyphicon-bitcoin"></i>
