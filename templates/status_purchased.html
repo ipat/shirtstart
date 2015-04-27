@@ -6,7 +6,7 @@
 <div class="container boxContent" id="status-waiting">
 	<h1>ORDER STATUS</h1>
 	<div class="row textcenter" id="menu-status">
-		<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING (N)</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus active" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
+		<a href="/status/waiting" class="btn menuStatus" id="menuStatusL">WAITING ({{join_len}})</a><a href="/status/in-progress" class="btn menuStatus" id="menuStatusM">IN PROGRESS ({{noti_inpro}})</a><a href="/status/purchase-history" class="btn menuStatus active" id="menuStatusR">PURCHASE HISTORY ({{noti_purhis}})</a>
 	</div>
 	<div class="shirtViewOrderStatus">
 		{% for sh in shirt_amount %}
@@ -44,7 +44,7 @@
 		</div>
 		{% endfor %}
 		{% if noti_purhis == 0 %}
-		<span class="textcenter"><h1>No shirt in purchased history</h1></span>
+		<span class="textcenter"><h1>Seems like you havn't purchased anything :(</h1></span>
 		{% endif %}
 	</div>
 

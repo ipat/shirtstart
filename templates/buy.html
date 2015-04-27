@@ -22,7 +22,7 @@
 			<form method='GET' action="/like_buy/{{shirt.id}}">
 			<h3>{{shirt.name}}
 			{% if not is_like%}
-				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Like</button>
+				<button name="like"  id="toUnlike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Like</button>
 			{% else %}
 				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Unlike</button>
 			{% endif %}
@@ -70,10 +70,10 @@
 				<form  method= 'POST' action="/add_to_cart/{{shirt.id}}/">{% csrf_token %}
 
 					<div class="row" id="inputAmount">
-						S <input name="sAmount">
-						M <input name="mAmount">
-						L <input name="lAmount">
-						XL <input name="xlAmount">
+						S <input name="sAmount" placeholder="0"> 
+						M <input name="mAmount" placeholder="0">
+						L <input name="lAmount" placeholder="0">
+						XL <input name="xlAmount" placeholder="0">
 
 					</div>
 					<div class="row" id="btnAmount">
