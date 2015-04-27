@@ -3,10 +3,19 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div class="container boxContent" id="join">
+<div id="join-wrapper" class="container boxContent" id="join">
 	<div class="row" id="shirtPreview">
 		<div class="col-md-6">
-			<img src="{% static 'img/shirt.png' %}">
+
+			<div class="shirt-image">
+        <div class="inner">
+          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+          <div class="filler-wrapper">
+            <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
+          </div>
+        </div>
+      </div>
+
 		</div>
 		<div class="col-md-6 info">
 			<form method='GET' action="/like_join/{{shirt.id}}/">
@@ -19,7 +28,7 @@
 			</h3> </form>
 			<p class="italic" id="designer">by {{shirt.owned_id.first_name}}
 				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {{shirt.like_count}}
-				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{shirt.size_of_comment}} 
+				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{shirt.size_of_comment}}
 			</p>
 			<p id="expDate">Timer ended at : </p>
 			<div id="dayLeftDiv">
@@ -84,7 +93,7 @@
 	</div>
 		<form id="commentForm" method="POST" action="/comment_join/{{shirt.id}}/">{% csrf_token %}
 			<textarea placeholder="write your comment here ..." type="text" id="txtComment" name="comment_text"></textarea>
-			
+
 			<button type="submit" class="btn btnWhite" id="btnSubmit">submit</button>
 		</form>
 

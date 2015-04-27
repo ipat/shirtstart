@@ -3,10 +3,19 @@
 {% include "template.nav.html" %}
 {% include "template.search.html" %}
 
-<div class="container boxContent" id="join">
+<div id="buy-wrapper" class="container boxContent" id="join">
 	<div class="row" id="shirtPreview">
 		<div class="col-md-6">
-			<img src="img/shirt.png">
+
+			<div class="shirt-image">
+        <div class="inner">
+          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+          <div class="filler-wrapper">
+            <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
+          </div>
+        </div>
+      </div>
+
 		</div>
 		<div class="col-md-6 info">
 			<!-- <h3>I'M NOT WEIRD. I'M LIMITED EDITION</h3> -->
@@ -59,7 +68,7 @@
 			</div>
 			<div class="row textRight centerOnSmall">
 				<form  method= 'POST' action="/add_to_cart/{{shirt.id}}/">{% csrf_token %}
-					
+
 					<div class="row" id="inputAmount">
 						S <input name="sAmount">
 						M <input name="mAmount">
@@ -77,7 +86,7 @@
 							<button class="btn round btn-green btn-bigpad fontBold fontWhite hvr-shadow" id="btnJoin">
 									ADD TO CART
 							</button>
-							
+
 						</div>
 					</div>
 

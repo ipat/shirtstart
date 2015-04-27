@@ -159,6 +159,10 @@ def catalog(request):
       all_shirts = all_shirts.annotate(comments_count=Count('comment')).order_by(order_prefix + 'comments_count')
     elif filters['attribute'] == 'price':
       all_shirts = all_shirts.order_by(order_prefix + 'color_num')
+    elif filters['attribute'] == 'time':
+      all_shirts = all_shirts.order_by(order_prefix + 'created_at')
+    else:
+      all_shirts = all_shirts.order_by('-created_at')
 
     # Add current amount of shirt join
     all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
@@ -215,7 +219,13 @@ def join(request, shirt_id):
     else:
       is_like = True
 
-    return render(request, 'join.html', {'shirt':shirt, 'is_like': is_like})
+    return render(request, 'join.html', {
+      'shirt':shirt,
+      'css_list': [
+        'join.css'
+      ],
+      'is_like': is_like,
+    })
 
   elif request.method == 'POST':
     # do something interesting here !
@@ -316,11 +326,20 @@ def buy(request, shirt_id):
   shirt.size_of_comment = shirt.comment_list.count
   shirt.like_count = Like.objects.filter(shirt_id=shirt_id).count()
 
-  return render(request,'buy.html', {'shirt':shirt})
+  return render(request,'buy.html', {
+    'shirt':shirt,
+    'css_list': [
+      'buy.css'
+    ],
+  })
 
 @login_required
 def status_waiting(request):
-  return render_to_response('status_waiting.html', {})
+  return render_to_response('status_waiting.html', {
+    'css_list': [
+      'status-waiting.css',
+    ],
+  })
 
 @login_required
 def status_in_progress(request):
@@ -398,6 +417,9 @@ def status_in_progress(request):
     'total' : total,
     'noti_inpro' : noti_inpro,
     'noti_purhis' : noti_purhis,
+    'css_list': [
+      'status-in-progress.css',
+    ],
   })
 
 @login_required
@@ -448,7 +470,7 @@ def status_purchase_history(request):
             shirt_inpro[str(order_item.shirt_id.id)][3] = order_item.amount
           elif order_item.shirt_size == '4':
             shirt_inpro[str(order_item.shirt_id.id)][4] = order_item.amount
-          shirt_inpro[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_inpro[str(order_item.shirt_id.id)][4])) + (int(shirt_inpro[str(order_item.shirt_id.id)][3])) + (int(shirt_inpro[str(order_item.shirt_id.id)][2])) + (int(shirt_inpro[str(order_item.shirt_id.id)][1]))))
+          shirt_inpro[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_inpro[str(order_item.shirt_id.id)][4])) + (int(shirt_inpro[str(order_item.shirt_id.id)][3])) + (int(shirt_inpro[str(order_item.shirt_id.id)][2])) + (int(shirt_inpro[str(order_item.shirt_id.id)][1]))))
       elif o.status == 1:
         order_list = Order_list.objects.filter(order_id=o.id)
         for order_item in order_list:
@@ -460,7 +482,7 @@ def status_purchase_history(request):
             shirt_purhis[str(order_item.shirt_id.id)][3] = order_item.amount
           elif order_item.shirt_size == '4':
             shirt_purhis[str(order_item.shirt_id.id)][4] = order_item.amount
-          shirt_purhis[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * 30 + 50) * ((int(shirt_purhis[str(order_item.shirt_id.id)][4])) + (int(shirt_purhis[str(order_item.shirt_id.id)][3])) + (int(shirt_purhis[str(order_item.shirt_id.id)][2])) + (int(shirt_purhis[str(order_item.shirt_id.id)][1]))))
+          shirt_purhis[str(order_item.shirt_id.id)][7] = str((order_item.shirt_id.shirt_color * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_purhis[str(order_item.shirt_id.id)][4])) + (int(shirt_purhis[str(order_item.shirt_id.id)][3])) + (int(shirt_purhis[str(order_item.shirt_id.id)][2])) + (int(shirt_purhis[str(order_item.shirt_id.id)][1]))))
   except Shirt_in_cart.DoesNotExist:
     shirt_ordered = None
   # return HttpResponse(shirt_inpro['5'])
@@ -477,6 +499,9 @@ def status_purchase_history(request):
     'total' : total,
     'noti_inpro' : noti_inpro,
     'noti_purhis' : noti_purhis,
+    'css_list': [
+      'status-purchase-history.css',
+    ],
   })
 
 @login_required
@@ -654,7 +679,7 @@ def cart(request):
         shirt_amount[str(shirt.shirt_id.id)][3] = shirt.amount
       elif shirt.shirt_size == '4':
         shirt_amount[str(shirt.shirt_id.id)][4] = shirt.amount
-      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * 30 + 50) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
+      shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.shirt_color * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
   except Shirt_in_cart.DoesNotExist:
     shirt_in_cart = None
   # return HttpResponse(shirt_amount['5'])
@@ -667,6 +692,9 @@ def cart(request):
     'shirt_amount' : shirt_if,
     'user' : user,
     'total' : total,
+    'css_list': [
+      'cart.css',
+    ],
   })
 
 
