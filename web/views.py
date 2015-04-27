@@ -882,12 +882,17 @@ def profile(request):
   except Designer.DoesNotExist:
       designer = None
 
+  address = str(user_profile.address_house_no)+ ' ' + str(user_profile.address_building)+ ' ' + str(user_profile.address_road)+ ' ' + str(user_profile.address_subdistrict)+ ' ' + str(user_profile.address_district)+ ' ' + str(user_profile.address_province)+ ' ' + str(user_profile.address_country)+ ' ' + str(user_profile.address_postcode)
+  if address == '       ':
+    address = "None"
+  print 'ad' + address
   return render_to_response('profile.html', {
     'user' : user,
     'user_profile' : user_profile,
     'credit' : credit,
     'all_shirts' : all_shirts,
     'designer' : designer,
+    'address' : address,
     })
 
 @login_required

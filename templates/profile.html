@@ -5,8 +5,8 @@
 
 <div class="container boxContent animated fadeIn" id="payment">
 	<h1>PROFILE</h1>
-	<span style:"float:right">{{ user.username }}</span>
 	<div class="row textcenter">
+		<span class="h0">{{ user.username }}</span>
 	</div>
 	<div id="profileDiv" class="textcenter">
 		<table align="center">
@@ -44,7 +44,7 @@
 			</tr>
 			<tr>
 				<td class="leftTD">Default Address :</td>
-				<td class="rightTD">{{user_profile.address_house_no}} {{user_profile.address_building}} {{user_profile.address_road}} {{user_profile.address_subdistrict}} {{user_profile.address_district}} {{user_profile.address_province}} {{user_profile.address_country}} {{user_profile.address_postcode}}</td>
+				<td class="rightTD">{{address}}</td>
 			</tr>
 			<tr>
 				<td class="leftTD">Default credit card :</td>
