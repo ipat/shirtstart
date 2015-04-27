@@ -21,7 +21,7 @@
 			<form method='GET' action="/like_join/{{shirt.id}}/">
 			<h3>{{shirt.name}}
 			{% if not is_like%}
-				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Like</button>
+				<button name="like"  id="toUnlike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Like</button>
 			{% else %}
 				<button name="like"  id="toLike" class="btnLike round btn btn-grey"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Unlike</button>
 			{% endif %}
@@ -36,16 +36,31 @@
 				<span>days</span>
 			</div>
 			<div class="progress">
+			{% if ratio_date >= 0.7 %}
+			  	<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{shirt.percent_left}}%;">
+			  	</div>
+			{% elif ratio_date >= 0.4 %}
+			  	<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{shirt.percent_left}}%;">
+			  	</div>
+			{% else %}
 			  	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{shirt.percent_left}}%;">
 			  	</div>
+			{% endif %}
 			</div>
 			<div id="userJoinedDiv">
 				<span id="numberh1">{{shirt.current_amount}}</span><span id="numberh2">/{{shirt.waiting_id.require_amount}}</span>
 				<span>people</span>
 			</div>
+
 			<div class="progress">
+			{% if ratio >= 0.7 %}
 			  	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{shirt.people_left}}%;">
 			  	</div>
+			{% elif ratio >= 0.4 %}
+				<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{shirt.people_left}}%;">
+			{% else %}
+				<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{shirt.people_left}}%;">
+			{% endif %}
 			</div>
 			<div class="row textRight centerOnSmall" id="priceView">
 				<div class="col-xs-6">
@@ -66,10 +81,10 @@
 			<div class="row textRight centerOnSmall">
 				<form method="get" action="/payment/{{shirt.id}}">
 					<div class="row" id="inputAmount">
-						S <input name="sAmount">
-						M <input name="mAmount">
-						L <input name="lAmount">
-						XL <input name="xlAmount">
+						S <input name="sAmount" placeholder="0">
+						M <input name="mAmount" placeholder="0">
+						L <input name="lAmount" placeholder="0">
+						XL <input name="xlAmount" placeholder="0">
 
 					</div>
 					<div class="row" id="btnAmount">

@@ -5,8 +5,8 @@
 
 <div id="cart-wrapper" class="container boxContent animated fadeIn" id="status-waiting">
 	<h1>CART
-		<div style="float:right">
-			<a href="/delete_in_cart/0/">Clear cart</a>
+		<div style="float:right;">
+			<a href="/delete_in_cart/0/" class="btn round fontWhite" id="clearBtn">Clear cart</a>
 		</div>
 	</h1>
 	
@@ -28,7 +28,7 @@
 			<div class="col-sm-9 shirtInfoDiv">
 
 				<div style="float:right">
-					<a href="/delete_in_cart/{{sh.8}}/">X</a>
+					<a href="/delete_in_cart/{{sh.8}}/" class="btn round fontWhite fontBold" id="deleteBtn">X</a>
 				</div>
 
 				<div class="row">
@@ -51,12 +51,18 @@
 
 		</div>
 		{% endfor %}
+		{% if  len == 0 %}
+			<span class="textcenter"><h1>Looks like an empty cart ...</h1></span>
+		{% endif %}
 	</div>
-
+	{% if not len == 0 %}
 	<div class="row textcenter">
 		<h1>Total : {{total}} Baht</h1>
+		
 		<a href="/checkout" class="round btn btn-green fontWhite btn-bigpad fontBold hvr-shadow width50" />Check out</a>
+		
 	</div>
+	{% endif %}
 </div>
 
 

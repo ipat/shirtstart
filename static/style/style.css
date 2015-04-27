@@ -516,3 +516,22 @@ button:focus {outline:0 !important;}
 #logoutbtn:hover {
 	background-color: #eee;
 }
+#deleteBtn {
+	background-color: #ED5151;
+}
+#deleteBtn:hover {
+	background-color: #F06E6E;
+}
+#clearBtn {
+	font-size: 1em;
+	background-color: #5B97EB;
+	padding: 0px 15px;
+}
+#clearBtn:hover {
+	background-color: #6DA2ED;
+}
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
+}
