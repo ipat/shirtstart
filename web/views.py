@@ -831,7 +831,8 @@ def design(request):
       owner_id=user,
       is_on_shelf=False,
       color_num=request.POST['color_num'],
-      created_at=datetime.now() )
+      created_at=datetime.now(),
+      waiting_id=waiting )
 
     user_profile = UserProfile.objects.get(user_id=user.id)
     user_profile.is_designer = True
