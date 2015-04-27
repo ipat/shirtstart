@@ -765,7 +765,7 @@ def cart(request):
   try:
     shirt_in_cart = Shirt_in_cart.objects.filter(user_id=user.id)
     for shirt in shirt_in_cart:
-      shirt_amount[str(shirt.shirt_id.id)] = ['a']*9
+      shirt_amount[str(shirt.shirt_id.id)] = ['a']*10
       shirt_amount[str(shirt.shirt_id.id)][0] = shirt.shirt_id.name
       shirt_amount[str(shirt.shirt_id.id)][1] = '0'
       shirt_amount[str(shirt.shirt_id.id)][2] = '0'
@@ -786,6 +786,8 @@ def cart(request):
         shirt_amount[str(shirt.shirt_id.id)][4] = shirt.amount
       shirt_amount[str(shirt.shirt_id.id)][7] = str((shirt.shirt_id.color_num * PRICE_PER_COLOR + PRICE_PER_SHIRT) * ((int(shirt_amount[str(shirt.shirt_id.id)][4])) + (int(shirt_amount[str(shirt.shirt_id.id)][3])) + (int(shirt_amount[str(shirt.shirt_id.id)][2])) + (int(shirt_amount[str(shirt.shirt_id.id)][1]))))
       shirt_amount[str(shirt.shirt_id.id)][8] = shirt.shirt_id.id
+      shirt_amount[str(shirt.shirt_id.id)][9] = shirt.shirt_id.file_url
+
   except Shirt_in_cart.DoesNotExist:
     shirt_in_cart = None
   # return HttpResponse(shirt_amount['5'])
