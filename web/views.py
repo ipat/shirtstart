@@ -159,6 +159,10 @@ def catalog(request):
       all_shirts = all_shirts.annotate(comments_count=Count('comment')).order_by(order_prefix + 'comments_count')
     elif filters['attribute'] == 'price':
       all_shirts = all_shirts.order_by(order_prefix + 'color_num')
+    elif filters['attribute'] == 'time':
+      all_shirts = all_shirts.order_by(order_prefix + 'created_at')
+    else:
+      all_shirts = all_shirts.order_by('-created_at')
 
     # Add current amount of shirt join
     all_shirts = all_shirts.annotate(current_amount=Sum('join__amount'))
@@ -205,7 +209,12 @@ def join(request, shirt_id):
     shirt.percent_left = d*100/shirt.created
     shirt.people_left = shirt.current_amount * 100 / shirt.waiting_id.require_amount
 
-    return render(request, 'join.html', {'shirt':shirt})
+    return render(request, 'join.html', {
+      'shirt':shirt,
+      'css_list': [
+        'join.css'
+      ],
+    })
 
   elif request.method == 'POST':
     # do something interesting here !
@@ -306,11 +315,20 @@ def buy(request, shirt_id):
   shirt.size_of_comment = shirt.comment_list.count
   shirt.like_count = Like.objects.filter(shirt_id=shirt_id).count()
 
-  return render(request,'buy.html', {'shirt':shirt})
+  return render(request,'buy.html', {
+    'shirt':shirt,
+    'css_list': [
+      'buy.css'
+    ],
+  })
 
 @login_required
 def status_waiting(request):
-  return render_to_response('status_waiting.html', {})
+  return render_to_response('status_waiting.html', {
+    'css_list': [
+      'status-waiting.css',
+    ],
+  })
 
 @login_required
 def status_in_progress(request):
@@ -388,6 +406,9 @@ def status_in_progress(request):
     'total' : total,
     'noti_inpro' : noti_inpro,
     'noti_purhis' : noti_purhis,
+    'css_list': [
+      'status-in-progress.css',
+    ],
   })
 
 @login_required
@@ -467,6 +488,9 @@ def status_purchase_history(request):
     'total' : total,
     'noti_inpro' : noti_inpro,
     'noti_purhis' : noti_purhis,
+    'css_list': [
+      'status-purchase-history.css',
+    ],
   })
 
 @login_required
@@ -657,6 +681,9 @@ def cart(request):
     'shirt_amount' : shirt_if,
     'user' : user,
     'total' : total,
+    'css_list': [
+      'cart.css',
+    ],
   })
 
 

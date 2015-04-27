@@ -43,13 +43,13 @@
       position: relative;
       margin: 0px auto;
       width: 550px; }
-      #dropzone .body .empty-shirt .filler {
+      #dropzone .body .empty-shirt .filler-wrapper {
+        width: 100%;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-left: -80px;
-        margin-top: -135px;
-        width: 160px;
+        top: 25%;
+        text-align: center; }
+      #dropzone .body .empty-shirt .filler {
+        width: 30%;
         display: none; }
       #dropzone .body .empty-shirt img {
         width: 100%; }

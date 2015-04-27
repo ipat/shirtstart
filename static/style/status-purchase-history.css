@@ -1,0 +1,18 @@
+#status-purchase-history-wrapper .shirt-image {
+  margin: 5px; }
+  #status-purchase-history-wrapper .shirt-image img {
+    padding: 0px;
+    margin: 0px; }
+  #status-purchase-history-wrapper .shirt-image .inner {
+    position: relative;
+    width: 100%; }
+  #status-purchase-history-wrapper .shirt-image .shirt-template {
+    width: 100%; }
+  #status-purchase-history-wrapper .shirt-image .filler-wrapper {
+    width: 100%;
+    position: absolute;
+    top: 25%;
+    text-align: center; }
+  #status-purchase-history-wrapper .shirt-image .filler {
+    width: 30%;
+    box-shadow: none; }

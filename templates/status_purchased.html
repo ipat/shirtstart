@@ -12,7 +12,16 @@
 		{% for sh in shirt_amount %}
 		<div class="row shirtItemOrderStatus">
 			<div class="col-sm-3 shirtImgDiv">
-				<img src="{% static 'img/shirt.png' %}"}>
+
+				<div class="shirt-image">
+	        <div class="inner">
+	          <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
+	          <div class="filler-wrapper">
+	            <img class="filler" src="{% static 'shirts/' %}{{shirt.id}}.{{shirt.file_url}}">
+	          </div>
+	        </div>
+	      </div>
+
 			</div>
 			<div class="col-sm-9 shirtInfoDiv">
 				<div class="row">
@@ -38,7 +47,7 @@
 		<span class="textcenter"><h1>No shirt in purchased history</h1></span>
 		{% endif %}
 	</div>
-		
+
 </div>
 
 {% include "template.foot.html" %}
