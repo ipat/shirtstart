@@ -879,7 +879,7 @@ def profile(request):
   except UserProfile.DoesNotExist:
       user_profile = None
   try:
-    all_shirts = Shirt.objects.filter(owner_id=user.id)
+    all_shirts = Shirt.objects.filter(owner_id=user.id).annotate(current_amount=Sum('join__amount'))
   except Shirt.DoesNotExist:
       all_shirts = None
   try:

@@ -26,8 +26,8 @@
 			{% endif %}
 			</h3> </form>
 			<h4>{{shirt.description}}</h4>
-			<h4>{{shirt.owner_id.firts_name}}</h4>
-			<p class="italic" id="designer">by Xmenza
+			
+			<p class="italic" id="designer">by <h4>{{shirt.owner_id.first_name}}</h4>
 				<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {{shirt.like_count}}
 				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{shirt.size_of_comment}}
 			</p>
