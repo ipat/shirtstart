@@ -283,6 +283,7 @@ p {
 #commentView {
 	max-width: 500px;
 	margin-top: 30px;
+	text-align: left;
 }
 .card {
 	border: 3px solid #F3F3F3;
@@ -291,9 +292,10 @@ p {
 }
 .userComment {
 	font-weight: bold;
+	padding-left: 10px;
 }
 .txtComment {
-	padding-left: 10px;
+	padding-left: 20px;
 }
 #user_form input, #user_form select,.form input,.form select{
 	line-height: 1.8em;

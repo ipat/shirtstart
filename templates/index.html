@@ -17,14 +17,15 @@
       {% for shirt in shirts %}
         <div class="each-shirt-wrapper col-sm-4">
           <div class="each-shirt-inner">
-            <div class="flag">
-              {% if shirt.is_on_shelf %}
+            {% if shirt.is_on_shelf %}
+              <div class="flag" style="background-color : #4FD14F; color: white">
                 <span>พร้อมขาย</span>
+              </div>
               {% else %}
+              <div class="flag" style="background-color : #E6B15C; color: white">
                 <span>กำลังระดมทุน</span>
-              {% endif %}
-            </div>
-
+              </div>
+            {% endif %}
             <div class="shirt-image">
               <div class="inner">
                 <img class="shirt-template" src="{% static 'img/shirt_template.png' %}">
