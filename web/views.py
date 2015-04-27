@@ -43,15 +43,7 @@ def index(request):
       if sh.is_on_shelf :
         sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
       else:
-      # if sh.current_amount !=
         cur = Join.objects.filter(shirt_id=sh.id).count()
-        # req_amount = sh.waiting_id.require_amount
-        # if cur != req_amount:
-        #   if(cur!=0):
-        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/cur)
-        #   else:
-        #     sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num)
-        # else:
         req_amount = sh.waiting_id.require_amount
         sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
       sh.price = int(sh.price)
@@ -894,6 +886,14 @@ def profile(request):
       user_profile = None
   try:
     all_shirts = Shirt.objects.filter(owner_id=user.id).annotate(current_amount=Sum('join__amount'))
+    for sh in all_shirts:
+      if sh.is_on_shelf :
+        sh.price = PRICE_PER_SHIRT + PRICE_PER_COLOR*sh.color_num
+      else:
+        cur = Join.objects.filter(shirt_id=sh.id).count()
+        req_amount = sh.waiting_id.require_amount
+        sh.price = PRICE_PER_SHIRT + (PRICE_PER_COLOR*sh.color_num) + PRICE_BASE_BLOCK + (PRICE_BASE_PER_COLOR *sh.color_num/req_amount)
+      sh.price = int(sh.price)
   except Shirt.DoesNotExist:
       all_shirts = None
   try:
