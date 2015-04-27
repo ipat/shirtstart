@@ -29,5 +29,7 @@ urlpatterns = [
     url(r'^design/', views.design, name="design"),
     url(r'^profile/', views.profile, name="profile"),
     url(r'^withdraw/', views.withdraw, name="withdraw"),
+
+    url(r'^admin_login/', views.admin_login, name="admin_login"),
     url(r'^admin/', views.admin, name="admin"),
 ]

@@ -901,8 +901,33 @@ def withdraw(request):
       'designer' : designer,
     })
 
+def admin_login(request):
+  if request.session['admin_login'] == True:
+    return HttpResponseRedirect('/admin/')
+  if request.method == 'GET':
+    return render(request, 'admin_login.html')
+  else :
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+
+    if username == 'shirt' and password == 'start':
+      request.session['admin_login'] = True
+      return HttpResponseRedirect('/admin/')
+    else:
+      return HttpResponseRedirect('/admin_login/')
+
+
 def admin(request):
-  return HttpResponse('admin')
+  if request.session['admin_login'] != True:
+    return HttpResponseRedirect('/admin_login/')
+
+  if request.method == 'GET':
+    
+    return render(request, 'admin.html')
+  else :
+
+    return HttpResponseRedirect('/admin/')
+  
 
 def restricted(request):
   return HttpResponse("Since you're logged in, you can see this text!")
