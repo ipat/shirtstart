@@ -7,9 +7,14 @@
       </a>
     </div>
     <div id="toplinkdiv">
+    {% if user.is_authenticated %}
       <a href="/status/waiting" id="order" class="btn round">ORDER STATUS</a>
       <a href="/cart" id="cart" class="btn round">CART</a>
       <a href="/profile" id="loginbtn" class="btn round">{{user.username}}</a>
+    {% else %}
+      <a href="/profile" id="loginbtn" class="btn round">LOG IN</a>
+    
+    {% endif %}
     </div>
   </div>
 
